@@ -12,7 +12,12 @@
         <el-tab-pane label="已作废" name="invalid"></el-tab-pane>
         <el-tab-pane label="全部订单" name="allOrder"></el-tab-pane>
       </el-tabs>
-      <a target="_blank" style="float:right;" href="http://www.luxlano.com/ddkc/">玉兰·兰居尚品->订单及库存查询</a>
+      <a
+        target="_blank"
+        style="float:right;"
+        href="http://www.luxlano.com/ddkc/"
+        >玉兰·兰居尚品->订单及库存查询</a
+      >
     </div>
 
     <div>
@@ -23,7 +28,8 @@
         placeholder="日期区间"
         v-model="date1"
         style="width:14%;"
-      ></el-date-picker>&nbsp;至
+      ></el-date-picker
+      >&nbsp;至
       <el-date-picker
         type="date"
         format="yyyy-MM-dd"
@@ -32,7 +38,11 @@
         v-model="date2"
         style="width:14%;"
       ></el-date-picker>
-      <el-select style="width:160px;" v-model="CommodityType" placeholder="请选择商品类型">
+      <el-select
+        style="width:160px;"
+        v-model="CommodityType"
+        placeholder="请选择商品类型"
+      >
         <el-option
           v-for="item in commodityTypeOptions"
           :key="item.value"
@@ -40,7 +50,11 @@
           :value="item.value"
         ></el-option>
       </el-select>
-      <el-select style="width:160px;" v-model="orderStatus" placeholder="请选择审核状态">
+      <el-select
+        style="width:160px;"
+        v-model="orderStatus"
+        placeholder="请选择审核状态"
+      >
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -54,23 +68,36 @@
         v-model="find"
         style="width:280px;"
       >
-        <el-button @click="search()" slot="append" icon="el-icon-search">搜索</el-button>
+        <el-button @click="search()" slot="append" icon="el-icon-search"
+          >搜索</el-button
+        >
       </el-input>
     </div>
     <div id="outDiv">
-      <el-card style="position:relative;" v-for="(item,index) of data" :key="index">
+      <el-card
+        style="position:relative;"
+        v-for="(item, index) of data"
+        :key="index"
+      >
         <div slot="header">
           <span class="zoomLeft">时间：</span>
-          <span class="zoomRight">{{item.DATE_CRE}}</span>
+          <span class="zoomRight">{{ item.DATE_CRE }}</span>
           <span class="zoomLeft">订单号：</span>
-          <span class="zoomRight">{{item.ORDER_NO}}</span>
+          <span class="zoomRight">{{ item.ORDER_NO }}</span>
           <span class="zoomLeft">状态：</span>
-          <span
-            style="color:#8BC34A;font-weight:bold;"
-            class="zoomRight"
-          >{{item.STATUS_ID | transStatus}}{{item.CURTAIN_STATUS_ID | curtainStatus}}</span>
+          <span style="color:#8BC34A;font-weight:bold;" class="zoomRight"
+            >{{ item.STATUS_ID | transStatus
+            }}{{ item.CURTAIN_STATUS_ID | curtainStatus }}</span
+          >
           <el-tooltip
-            v-if="item.STATUS_ID==5||item.STATUS_ID==6||item.STATUS_ID==0||(item.STATUS_ID == 1 && item.CURTAIN_STATUS_ID !==''&& item.CURTAIN_STATUS_ID == 0)"
+            v-if="
+              item.STATUS_ID == 5 ||
+                item.STATUS_ID == 6 ||
+                item.STATUS_ID == 0 ||
+                (item.STATUS_ID == 1 &&
+                  item.CURTAIN_STATUS_ID !== '' &&
+                  item.CURTAIN_STATUS_ID == 0)
+            "
             class="item"
             effect="dark"
             content="作废订单"
@@ -83,7 +110,7 @@
             ></i>
           </el-tooltip>
           <el-tooltip
-            v-if="item.STATUS_ID==3 && item.ORDER_NO.slice(0, 1) == 'X'"
+            v-if="item.STATUS_ID == 3 && item.ORDER_NO.slice(0, 1) == 'X'"
             class="item"
             effect="dark"
             content="退回数据到购物车"
@@ -104,79 +131,117 @@
             style="width: 100%;margin-bottom:5px;"
             :row-class-name="tableRowClassName"
           >
-            <el-table-column prop="ITEM_NO" label="型号" align="center" width="150"></el-table-column>
-            <el-table-column prop="BRAND_NAME" label="品牌" align="center" width="150"></el-table-column>
-            <el-table-column prop="NOTE" label="类型" align="center" width="120"></el-table-column>
+            <el-table-column
+              prop="ITEM_NO"
+              label="型号"
+              align="center"
+              width="150"
+            ></el-table-column>
+            <el-table-column
+              prop="BRAND_NAME"
+              label="品牌"
+              align="center"
+              width="150"
+            ></el-table-column>
+            <el-table-column
+              prop="NOTE"
+              label="类型"
+              align="center"
+              width="120"
+            ></el-table-column>
             <el-table-column label="数量" align="center" width="100">
               <template slot-scope="scope1">
-                <span
-                  v-if="scope1.row.UNIT=='平方米'"
-                >{{scope1.row.CURTAIN_WIDTH}}×{{scope1.row.CURTAIN_HEIGHT}}={{scope1.row.QTY_REQUIRED}}</span>
-                <span v-else>{{scope1.row.QTY_REQUIRED}}</span>
+                <span v-if="scope1.row.UNIT == '平方米'"
+                  >{{ scope1.row.CURTAIN_WIDTH }}×{{
+                    scope1.row.CURTAIN_HEIGHT
+                  }}={{ scope1.row.QTY_REQUIRED }}</span
+                >
+                <span v-else>{{ scope1.row.QTY_REQUIRED }}</span>
               </template>
             </el-table-column>
             <el-table-column label="单位" align="center">
               <template slot-scope="scope1">
-                <span v-if="scope1.row.UNIT=='°ü'">包</span>
-                <span v-else>{{scope1.row.UNIT}}</span>
+                <span v-if="scope1.row.UNIT == '°ü'">包</span>
+                <span v-else>{{ scope1.row.UNIT }}</span>
               </template>
             </el-table-column>
             <el-table-column label="实际单价" align="center">
               <template slot-scope="scope1">
                 <span v-if="isManager === '0'">***</span>
                 <!-- <span v-else>{{scope1.row.UNIT_PRICE}}</span> -->
-                <span v-else>{{scope1.row.FINAL_COST/scope1.row.QTY_REQUIRED | priceFilter}}</span>
+                <span v-else>{{
+                  (scope1.row.FINAL_COST / scope1.row.QTY_REQUIRED)
+                    | priceFilter
+                }}</span>
               </template>
             </el-table-column>
             <el-table-column label="应付金额" align="center">
               <template slot-scope="scope1">
                 <span v-if="isManager === '0'">***</span>
-                <span v-else>{{scope1.row.FINAL_COST}}</span>
+                <span v-else>{{ scope1.row.FINAL_COST }}</span>
                 <!-- <span v-else>{{scope1.row.UNIT_PRICE*scope1.row.QTY_REQUIRED | priceFilter}}</span> -->
               </template>
             </el-table-column>
             <el-table-column width="150" align="center" label="出货详情">
               <template slot-scope="scope">
                 <el-button
-                  :disabled="scope.row.packDetailId==0?true:false"
+                  :disabled="scope.row.packDetailId == 0 ? true : false"
                   @click="shipmentDetail(scope.row)"
                   type="primary"
                   size="small"
-                >查看详情</el-button>
+                  >查看详情</el-button
+                >
                 <!-- :disabled="scope.row.packDetailId==0?true:false" -->
               </template>
             </el-table-column>
           </el-table>
         </div>
         <div class="buttonDiv">
-          <p style="width:100px; font-size:18px; color:tomato; text-align:center;">{{item.status}}</p>
+          <p
+            style="width:100px; font-size:18px; color:tomato; text-align:center;"
+          >
+            {{ item.status }}
+          </p>
           <router-link to="/order/checkOrder">
             <p>
               <el-button
                 @click="summitCurtain(item)"
-                v-if="((item.CURTAIN_STATUS_ID==0||item.CURTAIN_STATUS_ID==4) && item.STATUS_ID==0)"
+                v-if="
+                  (item.CURTAIN_STATUS_ID == 0 ||
+                    item.CURTAIN_STATUS_ID == 4) &&
+                    item.STATUS_ID == 0
+                "
                 size="medium"
                 type="primary"
                 plain
-              >提交订单</el-button>
+                >提交订单</el-button
+              >
             </p>
           </router-link>
           <p>
             <el-button
-              v-if="item.STATUS_ID==5||item.STATUS_ID==6"
+              v-if="item.STATUS_ID == 5 || item.STATUS_ID == 6"
               @click="refreshPay(item)"
               size="medium"
               type="danger"
               plain
-            >提交订单</el-button>
+              >提交订单</el-button
+            >
           </p>
           <router-link to="/order/checkExamine">
             <p>
               <el-button
-                @click="toCheckExamine(item.ORDER_NO,item.CURTAIN_STATUS_ID,item.STATUS_ID)"
+                @click="
+                  toCheckExamine(
+                    item.ORDER_NO,
+                    item.CURTAIN_STATUS_ID,
+                    item.STATUS_ID
+                  )
+                "
                 size="medium"
                 type="success"
-              >订单详情</el-button>
+                >订单详情</el-button
+              >
             </p>
           </router-link>
         </div>
@@ -563,7 +628,6 @@ export default {
     },
     //标签页切换
     handleClick(tab) {
-      console.log(tab);
       var tabName = tab.name;
       this.orderStatus = "";
       this.CommodityType = "";
@@ -630,15 +694,11 @@ export default {
           cancelOrderNew(data)
             .then(res => {
               if (pushOrderNum.slice(0, 1) == "X") {
-                this.$confirm(
-                  "作废成功，是否退回数据到购物车？",
-                  "提示",
-                  {
-                    confirmButtonText: "是",
-                    cancelButtonText: "否",
-                    type: "warning"
-                  }
-                )
+                this.$confirm("作废成功，是否退回数据到购物车？", "提示", {
+                  confirmButtonText: "是",
+                  cancelButtonText: "否",
+                  type: "warning"
+                })
                   .then(() => {
                     var data3 = {
                       orderNo: pushOrderNum
@@ -718,20 +778,27 @@ export default {
             }
           );
         } else {
-          payAgain(url2, data2).then(res => {
-            var recordData = {
-              ORDER_NO: item.ORDER_NO,
-              OPERATION_PERSON: Cookies.get("cid"),
-              OPERATION_NAME: "重新提交"
-            };
-            InsertOperationRecord(recordData); //插入操作记录
-            this.$alert("提交成功", "提示", {
-              confirmButtonText: "确定",
-              type: "success"
+          payAgain(url2, data2)
+            .then(res => {
+              var recordData = {
+                ORDER_NO: item.ORDER_NO,
+                OPERATION_PERSON: Cookies.get("cid"),
+                OPERATION_NAME: "重新提交"
+              };
+              InsertOperationRecord(recordData); //插入操作记录
+              this.$alert("提交成功", "提示", {
+                confirmButtonText: "确定",
+                type: "success"
+              });
+              this.refresh();
+              this.$root.$emit("refreshMoneyEvent"); //触发主页面刷新余额
+            })
+            .catch(res => {
+              this.$alert("操作失败，请稍后重试", "提示", {
+                confirmButtonText: "确定",
+                type: "warning"
+              });
             });
-            this.refresh();
-            this.$root.$emit("refreshMoneyEvent"); //触发主页面刷新余额
-          });
         }
       });
     },

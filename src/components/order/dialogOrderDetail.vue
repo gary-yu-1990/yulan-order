@@ -64,10 +64,17 @@
             <span v-else>{{scope1.row.PROMOTION_COST}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="应付金额" align="center">
+              <template slot-scope="scope1">
+                <span v-if="isManager === '0'">***</span>
+                <span v-else>{{scope1.row.FINAL_COST}}</span>
+                <!-- <span v-else>{{scope1.row.UNIT_PRICE*scope1.row.QTY_REQUIRED | priceFilter}}</span> -->
+              </template>
+            </el-table-column>
         <el-table-column align="center" prop="NOTES" label="备注"></el-table-column>
       </el-table>
 
-      <div style="float:right; margin-right:10%;height:100px;">
+      <div style="float:right; margin-right:10.4%;height:100px;">
         <p v-if="isManager === '0'">
           商品总价格：
           <span style="color:tomato;font-weight:bold;">***</span>

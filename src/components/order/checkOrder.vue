@@ -2,13 +2,33 @@
   <el-card class="centerCard">
     <div slot="header">
       <span class="headSpan">填写并核对订单信息</span>
-      <p @click="dialogOpen" class="charge" style="float:right;">管理收货地址</p>
+      <p @click="dialogOpen" class="charge" style="float:right;">
+        管理收货地址
+      </p>
       <!-- 地址管理信息 -->
-      <el-dialog width="70%" @close="dialogClose" title="管理收货信息" :visible.sync="dialogFormVisible">
+      <el-dialog
+        width="70%"
+        @close="dialogClose"
+        title="管理收货信息"
+        :visible.sync="dialogFormVisible"
+      >
         <el-button @click="clickNew()" type="success">添加地址</el-button>
-        <el-table border :data="data" style="width: 100%" :row-class-name="tableRowClassName">
-          <el-table-column prop="wlContacts" label="收货人" align="center"></el-table-column>
-          <el-table-column prop="wlTel" label="联系方式" align="center"></el-table-column>
+        <el-table
+          border
+          :data="data"
+          style="width: 100%"
+          :row-class-name="tableRowClassName"
+        >
+          <el-table-column
+            prop="wlContacts"
+            label="收货人"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="wlTel"
+            label="联系方式"
+            align="center"
+          ></el-table-column>
           <el-table-column label="收货地址">
             <template slot-scope="scope">
               <span>{{ scope.row.province }}</span>
@@ -20,18 +40,20 @@
           <el-table-column align="center" label="操作">
             <template slot-scope="scope">
               <el-button
-                v-show="scope.row.addressId!=0"
+                v-show="scope.row.addressId != 0"
                 @click="editIt(scope.row)"
                 type="warning"
                 size="small"
-              >编辑</el-button>
+                >编辑</el-button
+              >
               <el-button
-                v-show="scope.row.addressId!=0"
+                v-show="scope.row.addressId != 0"
                 @click="deleteIt(scope.row)"
                 type="danger"
                 size="small"
-              >删除</el-button>
-              <span v-show="scope.row.addressId===0">默认地址不可操作</span>
+                >删除</el-button
+              >
+              <span v-show="scope.row.addressId === 0">默认地址不可操作</span>
             </template>
           </el-table-column>
         </el-table>
@@ -42,17 +64,27 @@
           :visible.sync="innerVisible"
           append-to-body
         >
-          <el-select @change="getCity()" style="width:30%;" v-model="value" placeholder="请选择省份">
+          <el-select
+            @change="getCity()"
+            style="width:30%;"
+            v-model="value"
+            placeholder="请选择省份"
+          >
             <el-option
-              v-for="(item,index) in province"
+              v-for="(item, index) in province"
               :key="index"
               :label="item.regionName"
               :value="index"
             ></el-option>
           </el-select>
-          <el-select @change="getCountry()" style="width:30%;" v-model="value2" placeholder="请选择城市">
+          <el-select
+            @change="getCountry()"
+            style="width:30%;"
+            v-model="value2"
+            placeholder="请选择城市"
+          >
             <el-option
-              v-for="(item,index) in city"
+              v-for="(item, index) in city"
               :key="index"
               :label="item.regionName"
               :value="index"
@@ -65,15 +97,24 @@
             placeholder="请选择县区"
           >
             <el-option
-              v-for="(item,index) in country"
+              v-for="(item, index) in country"
               :key="index"
               :label="item.regionName"
               :value="index"
             ></el-option>
           </el-select>
           <div>
-            <el-form :model="form" ref="form" class="demo-ruleForm" :rules="formRules">
-              <el-form-item label="详细地址" :label-width="formLabelWidth" prop="address">
+            <el-form
+              :model="form"
+              ref="form"
+              class="demo-ruleForm"
+              :rules="formRules"
+            >
+              <el-form-item
+                label="详细地址"
+                :label-width="formLabelWidth"
+                prop="address"
+              >
                 <el-input
                   style="width:90%;"
                   v-model="form.address"
@@ -81,7 +122,11 @@
                   placeholder="请输入详细地址"
                 ></el-input>
               </el-form-item>
-              <el-form-item label="收货人" :label-width="formLabelWidth" prop="name">
+              <el-form-item
+                label="收货人"
+                :label-width="formLabelWidth"
+                prop="name"
+              >
                 <el-input
                   style="width:90%;"
                   v-model="form.name"
@@ -89,7 +134,11 @@
                   placeholder="请输入收货人姓名"
                 ></el-input>
               </el-form-item>
-              <el-form-item label="联系方式" :label-width="formLabelWidth" prop="telephone">
+              <el-form-item
+                label="联系方式"
+                :label-width="formLabelWidth"
+                prop="telephone"
+              >
                 <el-input
                   style="width:90%;"
                   v-model="form.telephone"
@@ -98,20 +147,30 @@
                 ></el-input>
               </el-form-item>
             </el-form>
-            <el-button v-if="chageOrAdd" type="danger" @click="changeAddress('form')">确认修改</el-button>
-            <el-button v-else type="success" @click="NewAddress('form')">确认添加</el-button>
+            <el-button
+              v-if="chageOrAdd"
+              type="danger"
+              @click="changeAddress('form')"
+              >确认修改</el-button
+            >
+            <el-button v-else type="success" @click="NewAddress('form')"
+              >确认添加</el-button
+            >
           </div>
         </el-dialog>
       </el-dialog>
       <!-- 查看使用记录 -->
       <el-dialog
-        :title="'优惠券使用记录[券号:'+useTable.couponId+']'"
+        :title="'优惠券使用记录[券号:' + useTable.couponId + ']'"
         :visible.sync="dialogUse"
         width="60%"
         top="5vh"
       >
         <keep-alive>
-          <useRecordDetail v-if="dialogUse" :useTable="useTable"></useRecordDetail>
+          <useRecordDetail
+            v-if="dialogUse"
+            :useTable="useTable"
+          ></useRecordDetail>
         </keep-alive>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogUse = false">关闭</el-button>
@@ -119,7 +178,7 @@
       </el-dialog>
       <!-- 查看返利记录 -->
       <el-dialog
-        :title="'优惠券返利记录[券号:'+backTable.couponId+']'"
+        :title="'优惠券返利记录[券号:' + backTable.couponId + ']'"
         :visible.sync="dialogBack"
         width="60%"
         top="5vh"
@@ -136,23 +195,29 @@
         <span class="zoomLeft">甲方：</span>
         <span class="zoomRight">广东玉兰集团股份有限公司</span>
         <span class="zoomLeft">乙方：</span>
-        <span class="zoomRight">{{realName}}</span>
+        <span class="zoomRight">{{ realName }}</span>
         <span class="zoomLeft">经办人：</span>
-        <span class="zoomRight">{{chargeData.CUSTOMER_AGENT}}({{chargeData.OFFICE_TEL}})</span>
+        <span class="zoomRight"
+          >{{ chargeData.CUSTOMER_AGENT }}({{ chargeData.OFFICE_TEL }})</span
+        >
       </div>
       <div :class="overflow">
         <!-- style="height:160px; overflow:auto;"用三元运算改变高度 -->
-        <p v-for="(item,index) of data" :key="index">
-          <el-radio
-            @change="showAddress"
-            v-model="radio"
-            :label="index"
-            border
-          >{{item.wlContacts}} ({{item.wlTel}}) {{item.province}}{{item.city}}{{item.country}}{{item.postAddress}}</el-radio>
-          <span v-if="item.addressId===0" style="color:tomato; font-weight:bold;">默认地址</span>
+        <p v-for="(item, index) of data" :key="index">
+          <el-radio @change="showAddress" v-model="radio" :label="index" border
+            >{{ item.wlContacts }} ({{ item.wlTel }}) {{ item.province
+            }}{{ item.city }}{{ item.country }}{{ item.postAddress }}</el-radio
+          >
+          <span
+            v-if="item.addressId === 0"
+            style="color:tomato; font-weight:bold;"
+            >默认地址</span
+          >
         </p>
       </div>
-      <p class="charge" style="font-weight:bold;" @click="showAddress">{{addressAppear}}</p>
+      <p class="charge" style="font-weight:bold;" @click="showAddress">
+        {{ addressAppear }}
+      </p>
 
       <div class="grayDiv">
         <!-- 配送信息 -->
@@ -174,68 +239,105 @@
         <span>物流公司：</span>
         <el-input
           style="width:30%;"
-          :disabled="this.ctm_order.deliveryType==3? false:true"
+          :disabled="this.ctm_order.deliveryType == 3 ? false : true"
           v-model="ctm_order.deliveryNotes"
           placeholder="物流备注"
         ></el-input>
         <br />
         <br />
         <span>购买人：</span>
-        <el-input style="width:35%;" v-model="ctm_order.buyUser" placeholder="请输入购买者姓名"></el-input>
+        <el-input
+          style="width:35%;"
+          v-model="ctm_order.buyUser"
+          placeholder="请输入购买者姓名"
+        ></el-input>
         <span style=" display:inline-block;margin-left:32px;">联系方式：</span>
-        <el-input style="width:30%;" v-model="ctm_order.buyUserPhone" placeholder="请输入联系方式"></el-input>
+        <el-input
+          style="width:30%;"
+          v-model="ctm_order.buyUserPhone"
+          placeholder="请输入联系方式"
+        ></el-input>
         <br />
         <span>备注：</span>
         <el-input
           type="textarea"
           maxlength="140"
-          :autosize="{ minRows:3, maxRow:4}"
+          :autosize="{ minRows: 3, maxRow: 4 }"
           resize="none"
           v-model="ctm_order.notes"
           placeholder="请输入订单备注(140字符以内，任何发货信息写在备注无效！)"
         ></el-input>
-        <span style="color:#ccc">{{ctm_order.notes | calLength}}/140</span>
+        <span style="color:#ccc">{{ ctm_order.notes | calLength }}/140</span>
         <br />
         <span>工程报备单号：</span>
-        <el-input style="width:40%;" v-model="ctm_order.projectNo" placeholder="请输入工程报备单号"></el-input>
+        <el-input
+          style="width:40%;"
+          v-model="ctm_order.projectNo"
+          placeholder="请输入工程报备单号"
+        ></el-input>
       </div>
 
-      <el-table :data="ORDERBODY" border style="width: 100%" :row-class-name="tableRowClassName">
-        <el-table-column prop="itemNo" align="center" label="型号"></el-table-column>
+      <el-table
+        :data="ORDERBODY"
+        border
+        style="width: 100%"
+        :row-class-name="tableRowClassName"
+      >
+        <el-table-column
+          prop="itemNo"
+          align="center"
+          label="型号"
+        ></el-table-column>
         <!-- :formatter="FixIt"  -->
         <el-table-column align="center" label="数量">
           <template slot-scope="scope1">
-            <span>{{scope1.row.qtyRequired}}</span>
+            <span>{{ scope1.row.qtyRequired }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="unit" align="center" label="单位"></el-table-column>
-        <el-table-column prop="promotion" align="center" label="活动类型"></el-table-column>
-        <el-table-column prop="partSendId" align="center" :formatter="formatRole" label="发货说明"></el-table-column>
+        <el-table-column
+          prop="unit"
+          align="center"
+          label="单位"
+        ></el-table-column>
+        <el-table-column
+          prop="promotion"
+          align="center"
+          label="活动类型"
+        ></el-table-column>
+        <el-table-column
+          prop="partSendId"
+          align="center"
+          :formatter="formatRole"
+          label="发货说明"
+        ></el-table-column>
         <el-table-column align="center" label="折后金额">
           <template slot-scope="scope1">
             <span v-if="isManager === '0'">***</span>
-            <span v-else>{{scope1.row.finalPrice}}</span>
+            <span v-else>{{ scope1.row.finalPrice }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="月返利">
           <template slot-scope="scope1">
             <span v-if="isManager === '0'">***</span>
-            <span v-else>{{scope1.row.yuefanli}}</span>
+            <span v-else>{{ scope1.row.yuefanli }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="年返利">
           <template slot-scope="scope1">
             <span v-if="isManager === '0'">***</span>
-            <span v-else>{{scope1.row.nianfanli}}</span>
+            <span v-else>{{ scope1.row.nianfanli }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="应付金额">
           <template slot-scope="scope1">
             <span v-if="isManager === '0'">***</span>
             <!-- <span v-else>{{(scope1.row.qtyRequired*scope1.row.finalPrice)-scope1.row.yuefanli-scope1.row.nianfanli | priceFilter}}</span> -->
-            <span
-              v-else
-            >{{scope1.row.finalPrice-scope1.row.yuefanli-scope1.row.nianfanli | priceFilter}}</span>
+            <span v-else>{{
+              (scope1.row.finalPrice -
+                scope1.row.yuefanli -
+                scope1.row.nianfanli)
+                | priceFilter
+            }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -244,40 +346,51 @@
     <el-card class="childCard" shadow="never">
       <el-collapse v-model="activeNames">
         <el-collapse-item title="使用优惠券/礼品卡" name="1">
-          <div v-for="(item,index) of couponData" :key="index" class="cctv">
+          <div v-for="(item, index) of couponData" :key="index" class="cctv">
             <div class="couponHead">
               <div class="logo"></div>
               <div class="logoTxt">
                 <p
                   style="color:white; font-size:15px; padding-top:5px; font-weight:bold; letter-spacing:2px;"
-                >{{item.notes}}</p>
-                <span>总返利&nbsp;{{item.rebateMoney}}元</span>
-                <span class="rightCoupon">券号：{{item.id}}</span>
+                >
+                  {{ item.notes }}
+                </p>
+                <span>总返利&nbsp;{{ item.rebateMoney }}元</span>
+                <span class="rightCoupon">券号：{{ item.id }}</span>
               </div>
             </div>
 
             <div class="couponBody">
               <p style="text-align:center">
-                <span style="color:rgb(253,59,49); font-size:18px;">余额￥</span>
+                <span style="color:rgb(253,59,49); font-size:18px;"
+                  >余额￥</span
+                >
                 <span v-if="isManager === '0'" class="transTxt">***</span>
-                <span v-else class="transTxt">{{item.rebateMoneyOver}}</span>
+                <span v-else class="transTxt">{{ item.rebateMoneyOver }}</span>
               </p>
               <div style="margin:0 auto; width:245px;">
                 <div class="roundedRectangle">
-                  <p>&nbsp;&nbsp;&nbsp;有效期：{{item.dateStart | datatrans}}至{{item.dateEnd | datatrans}}</p>
+                  <p>
+                    &nbsp;&nbsp;&nbsp;有效期：{{
+                      item.dateStart | datatrans
+                    }}至{{ item.dateEnd | datatrans }}
+                  </p>
                 </div>
                 <el-checkbox
                   v-model="couponStatus[index]"
-                  @change="changeCoupon(couponStatus[index],item.id,item.rebateType)"
+                  @change="
+                    changeCoupon(couponStatus[index], item.id, item.rebateType)
+                  "
                 ></el-checkbox>
               </div>
-              <p style="text-align:center;">适用：{{item.application}}</p>
+              <p style="text-align:center;">适用：{{ item.application }}</p>
               <div class="Record" style="text-align:center">
-                <span
-                  @click="RecordUse(item.id)"
-                  style="cursor: pointer;"
-                >查看使用记录>>&nbsp;&nbsp;&nbsp;</span>
-                <span @click="RecordBack(item.id)" style="cursor: pointer;">查看返利记录>></span>
+                <span @click="RecordUse(item.id)" style="cursor: pointer;"
+                  >查看使用记录>>&nbsp;&nbsp;&nbsp;</span
+                >
+                <span @click="RecordBack(item.id)" style="cursor: pointer;"
+                  >查看返利记录>></span
+                >
               </div>
             </div>
           </div>
@@ -291,7 +404,7 @@
         </p>
         <p v-else>
           折后总金额：
-          <span>{{totalPrice| priceFilter}}</span>
+          <span>{{ totalPrice | priceFilter }}</span>
         </p>
         <p v-if="isManager === '0'">
           总返利：
@@ -299,7 +412,7 @@
         </p>
         <p v-else>
           总返利：
-          <span>{{backPrice| priceFilter}}</span>
+          <span>{{ backPrice | priceFilter }}</span>
         </p>
         <p v-if="isManager === '0'">
           应付总金额：
@@ -307,10 +420,19 @@
         </p>
         <p v-else>
           应付总金额：
-          <span>{{allSpend| priceFilter}}</span>
+          <span>{{ allSpend | priceFilter }}</span>
         </p>
-        <el-button @click="backToOrder" size="medium" type="success" plain>返回订单</el-button>
-        <el-button v-if="curtainStatus =='0'" @click="payIt" size="medium" type="danger" plain>立即提交</el-button>
+        <el-button @click="backToOrder" size="medium" type="success" plain
+          >返回订单</el-button
+        >
+        <el-button
+          v-if="curtainStatus == '0'"
+          @click="payIt"
+          size="medium"
+          type="danger"
+          plain
+          >立即提交</el-button
+        >
         <!-- <el-button
           v-if="curtainStatus =='1'"
           @click="payCurtain()"
@@ -318,7 +440,14 @@
           type="danger"
           plain
         >确认提交</el-button>-->
-        <el-button v-if="curtainStatus =='3'" @click="payNew" size="medium" type="danger" plain>确认提交</el-button>
+        <el-button
+          v-if="curtainStatus == '3'"
+          @click="payNew"
+          size="medium"
+          type="danger"
+          plain
+          >确认提交</el-button
+        >
       </div>
     </el-card>
   </el-card>
@@ -377,9 +506,9 @@ export default {
       transferData: [],
       data: [
         {
-          wlContacts: "张三",
-          wlTel: "15515515515",
-          postAddress: "广东省汕头市潮阳区广东工业大学生活西区",
+          wlContacts: "",
+          wlTel: "",
+          postAddress: "",
           addressId: 1
         }
       ],
@@ -480,7 +609,6 @@ export default {
       if (realVal <= 0) {
         realVal = 0.0;
       }
-
       return realVal;
     },
     datatrans(value) {
@@ -527,9 +655,6 @@ export default {
     }
   },
   methods: {
-    test(a) {
-      console.log(a);
-    },
     //清除表单验证规则
     clearRule(formName) {
       this.$refs[formName].resetFields();
@@ -551,9 +676,8 @@ export default {
           return 0;
         }
       };
-      console.log(this.transferData.sort(compare));
-      console.log(this.transferData.reverse());
-      //console.log(this.transferData.pop());
+      this.transferData.sort(compare);
+      this.transferData.reverse();
       var morendizhi = this.transferData.pop();
       this.transferData.unshift(morendizhi);
     },
@@ -579,8 +703,6 @@ export default {
       }, */
     //单选框使用优惠券
     changeCoupon(index, id, type) {
-      /* console.log(id);
-        console.log(typeof id); */
       if (type == "year" && index == true) {
         this.rebateY = id;
       } else if (type == "year" && index == false) {
@@ -601,7 +723,6 @@ export default {
         ctm_order: this.ctm_order
       };
       usetheCoupon(url, data).then(res => {
-        console.log(res);
         for (var i = 0; i < res.data.rebate.length; i++) {
           this.array2[i].nianfanli = res.data.rebate[i].rebateYear;
           this.array2[i].yuefanli = res.data.rebate[i].rebateMonth;
@@ -621,7 +742,6 @@ export default {
         typeId: this.product_group_tpye //"A",
       };
       searchTickets(url, data).then(res => {
-        console.log(res.data);
         this.couponData = res.data;
         for (let i = 0; i < this.couponData.length; i++) {
           if (
@@ -649,8 +769,6 @@ export default {
       };
       //CouponUseRecord(url, data)
       getUseRecord(data).then(res => {
-        console.log(res);
-        console.log(res.data);
         this.useTable = res.data;
         this.useTable.couponId = itemID;
         this.useTable.count = res.count;
@@ -663,7 +781,6 @@ export default {
         id: itemId
       };
       CouponbackRecord(url, data).then(res => {
-        console.log(res);
         this.backTable = res.data;
         this.backTable.couponId = itemId;
         this.dialogBack = true;
@@ -703,8 +820,6 @@ export default {
           this.form.telephone != undefined
         ) {
           editAddress(url, data).then(res => {
-            console.log(res);
-            console.log("修改地址成功");
             this.dialogFormVisible = false;
             this.innerVisible = false;
             this.allAddress();
@@ -725,7 +840,6 @@ export default {
     //编辑地址弹窗初始化
     editIt(row) {
       //输入框初始化
-      console.log(row);
       this.chageOrAdd = true;
       this.innerVisible = true;
       this.value = row.province;
@@ -743,16 +857,11 @@ export default {
       this.form.telephone = row.wlTel;
       this.form.addressId = row.addressId;
       //接口
-      console.log(row.provinceID);
-      console.log(row.province);
-      console.log(row.cityID);
-      console.log(row.city);
       Axios.post("/areaRegion/getCity.do", {
         regionId: row.provinceID,
         regionName: row.provinceID
       })
         .then(res => {
-          console.log(res);
           this.city = res.data.city;
         })
         .catch(error => {
@@ -763,7 +872,6 @@ export default {
         regionName: row.city
       })
         .then(res => {
-          console.log(res);
           this.country = res.data.country;
         })
         .catch(error => {
@@ -772,7 +880,6 @@ export default {
     },
     //删除地址
     deleteIt(row) {
-      console.log(row.addressId);
       this.$confirm("确定删除该地址吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -785,8 +892,6 @@ export default {
             addressId: row.addressId
           };
           deleteAddress(url, data).then(res => {
-            console.log(res);
-            console.log("删除成功!");
             this.dialogFormVisible = false;
             this.innerVisible = false;
             this.allAddress();
@@ -814,7 +919,6 @@ export default {
       this.value3 = "";
       this.form.thequ = "";
       this.country = [];
-      console.log(this.value2);
       var city = this.value2;
       this.form.theshi = this.city[city].regionName;
       this.form.shiID = this.city[city].regionId;
@@ -823,7 +927,6 @@ export default {
         regionName: this.city[city].regionName
       })
         .then(res => {
-          console.log(res);
           this.country = res.data.country;
         })
         .catch(error => {
@@ -838,7 +941,6 @@ export default {
 
       this.value2 = "";
       this.value3 = "";
-      //console.log(this.value)
       var shengfen = this.value;
       this.form.theSheng = this.province[shengfen].regionName;
       this.form.shengID = this.province[shengfen].regionId;
@@ -847,7 +949,6 @@ export default {
         regionName: this.province[shengfen].regionName
       })
         .then(res => {
-          console.log(res);
           this.city = res.data.city;
         })
         .catch(error => {
@@ -858,8 +959,6 @@ export default {
     getProvince() {
       Axios.post("/areaRegion/getProvince.do", {})
         .then(res => {
-          console.log(res);
-          //console.log(res.data.province[0]);
           this.province = res.data.province;
         })
         .catch(error => {
@@ -902,7 +1001,6 @@ export default {
         cityID: this.form.shiID,
         countryID: this.form.quID
       };
-      console.log(this.form);
       this.$refs[formName].validate(valid => {
         if (
           valid &&
@@ -917,10 +1015,7 @@ export default {
           this.form.telephone != "" &&
           this.form.telephone != undefined
         ) {
-          console.log(this.form.telephone);
           addAddress(url, data).then(res => {
-            console.log(res);
-            console.log("新增成功!!!");
             this.dialogFormVisible = false;
             this.innerVisible = false;
             this.allAddress();
@@ -944,11 +1039,11 @@ export default {
         cid: Cookies.get("cid")
       })
         .then(res => {
-          console.log(res);
           this.transferData = res.data.data;
           this.sortAddress();
           this.data = [];
           if (this.ctm_order.wlTel && this.ctm_order.wlContacts) {
+            //如果是窗帘重新提交进来有默认值
             var addIndex = 0;
             for (var i = 0; i < this.transferData.length; i++) {
               var addArr = {
@@ -984,8 +1079,7 @@ export default {
             this.ctm_order.reciverArea1 = this.data[0].province;
             this.ctm_order.reciverArea2 = this.data[0].city;
             this.ctm_order.reciverArea3 = this.data[0].country;
-            this.ctm_order.allAddress = this.data[0].postAddress;
-            console.log(this.ctm_order.allAddress);
+            this.ctm_order.allAddress = `${this.ctm_order.reciverArea1?this.ctm_order.reciverArea1:''}${this.ctm_order.reciverArea2?this.ctm_order.reciverArea2:''}${this.ctm_order.reciverArea3?this.ctm_order.reciverArea3:''}${this.ctm_order.postAddress}`;
           }
         })
         .catch(error => {
@@ -1025,9 +1119,7 @@ export default {
         this.ctm_order.reciverArea1 = this.data[0].province;
         this.ctm_order.reciverArea2 = this.data[0].city;
         this.ctm_order.reciverArea3 = this.data[0].country;
-        this.ctm_order.allAddress = `${this.ctm_order.reciverArea1}${this.ctm_order.reciverArea2}${this.ctm_order.reciverArea3}${this.ctm_order.postAddress}`;
-        console.log(this.ctm_order.allAddress);
-        //var abcd=this.data[0].addressId;
+        this.ctm_order.allAddress = `${this.ctm_order.reciverArea1?this.ctm_order.reciverArea1:''}${this.ctm_order.reciverArea2?this.ctm_order.reciverArea2:''}${this.ctm_order.reciverArea3?this.ctm_order.reciverArea3:''}${this.ctm_order.postAddress}`;
         if (this.data[0].addressId == 0) {
           this.ctm_order.postAddressModified = "0";
           console.log("默认地址");
@@ -1042,15 +1134,12 @@ export default {
     //预留算法 获取活动价
     huodongjia() {
       let getPush = JSON.parse(sessionStorage.getItem("shopping"));
-      console.log(getPush);
       this.product_group_tpye = getPush[0].item.groupType; //产品类别
       if (getPush[0].salPromotion != null) {
         this.arrearsFlag = getPush[0].salPromotion.arrearsFlag; //用于活动N/Y
       } else {
         this.arrearsFlag = null;
       }
-      console.log(this.arrearsFlag);
-      //console.log(this.product_group_tpye);
       for (var i = 0; i < getPush.length; i++) {
         this.array[i] = new Object();
         //判断有没有活动时候传参的不同
@@ -1074,13 +1163,10 @@ export default {
           this.array[i].prime_cost = getPush[i].quantity * getPush[i].price;
         }
       }
-      //console.log(this.array);
       var url = "/order/getPromotion.do";
       var data = this.array;
       var allcost = 0;
-      console.log(data);
       activityPrice(url, data).then(res => {
-        console.log(res);
         for (var j = 0; j < res.data.length; j++) {
           this.array[j].questPrice = res.data[j].promotion_cost;
           allcost += parseFloat(res.data[j].promotion_cost);
@@ -1088,18 +1174,13 @@ export default {
         /* allcost=allcost.toString(); */
         //将allspend赋值活动后总价
         this.ctm_order.allSpend = allcost;
-        console.log(this.ctm_order.allSpend);
         this.totalPrice = allcost;
-        console.log(this.array);
-        //console.log(typeof this.totalPrice);
         this.orderList();
       });
     },
     //预留算法 获取订单列表
     orderList() {
       var getPush2 = JSON.parse(sessionStorage.getItem("shopping"));
-      console.log(getPush2);
-
       for (var i = 0; i < getPush2.length; i++) {
         this.array2[i] = new Object();
         this.array2[i].curtainWidth = getPush2[i].width;
@@ -1117,7 +1198,6 @@ export default {
           this.array2[i].promotionType = getPush2[0].salPromotion.orderType;
           this.array2[i].flagFlType = getPush2[0].salPromotion.falgFl;
         }
-        console.log(this.array2[0].promotionType);
         //初始化
         this.array2[i].orderNo = getPush2[i].orderNumber;
         this.array2[i].yuefanli = 0;
@@ -1275,7 +1355,10 @@ export default {
             });
           })
           .catch(res => {
-            console.log(res.msg);
+            this.$alert("提交失败:" + res.msg, "提示", {
+              confirmButtonText: "确定",
+              type: "warning"
+            });
           });
       });
     },
@@ -1321,8 +1404,6 @@ export default {
         //submitOrder(url2, data2)
         normalOrderSettlement(data2)
           .then(res => {
-            console.log(res);
-            console.log("成功!!!");
             //活动类型"N"或者应付为0不需要判断余额
             if (
               this.allSpend == 0 ||
@@ -1348,14 +1429,16 @@ export default {
             }
           })
           .then(() => {
-            //DeleteShopRecord(deleteArray); //删除订单信息（提交一起删除了）
             this.closeToTab({
               oldUrl: "order/checkOrder",
               newUrl: "order/myOrder"
             });
           })
           .catch(res => {
-            console.log(res.msg);
+            this.$alert("提交失败:" + res.msg, "提示", {
+              confirmButtonText: "确定",
+              type: "warning"
+            });
           });
       });
     },
@@ -1371,7 +1454,6 @@ export default {
 
       //querycharge(url, data).then(res => {
       getCustomerInfo(data).then(res => {
-        console.log(res);
         this.chargeData = res.data;
       });
     },
@@ -1393,6 +1475,7 @@ export default {
       var getPush = JSON.parse(sessionStorage.getItem("shopping"));
       var orderItem = JSON.parse(sessionStorage.getItem("shoppingHead"));
       if (getPush[0].orderNumber) {
+        //窗帘重新提交本身有表头数据，加载默认数据
         this.ctm_order.orderNo = orderItem.ORDER_NO;
         this.ctm_order.buyUser = orderItem.BUYUSER;
         this.ctm_order.buyUserPhone = orderItem.BUYUSERPHONE;
@@ -1415,7 +1498,6 @@ export default {
     }
   },
   created: function() {
-    console.log(Cookies.get("isManager"));
     this.getOrderHead();
     this.getProvince(); //三级联动
     this.allAddress(); //获取地址
@@ -1424,7 +1506,6 @@ export default {
     this.chargeQuery(); //经办人
     this.cid = Cookies.get("cid");
     this.realName = Cookies.get("realName");
-    console.log(Cookies.get("cur_status"));
     this.curtainStatus = Cookies.get("cur_status");
     if (Cookies.get("cur_status") == 1) {
       this.curtainOrOther = false;

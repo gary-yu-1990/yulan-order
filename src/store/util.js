@@ -1,6 +1,6 @@
 //根据传入的index对应修改其标签页名字
-export function tabsName(index){
-    switch(index){
+export function tabsName(index) {
+    switch (index) {
         case 'shops/wallPaper':
             return '墙纸';
         case 'shops/curtain':
@@ -29,6 +29,8 @@ export function tabsName(index){
             return '兰居设计';
         case 'marketInfo':
             return '市场信息';
+        case 'supplierModule/supplyPort':
+            return '供应商门户';
         case 'downloadSpace':
             return '下载专区';
         case 'shoppingCar/shopping':
@@ -56,13 +58,23 @@ export function tabsName(index){
         case 'detail/detailSoftSuit':
             return '软装详情';
         case 'order/examine':
-            return '审核订单'
+            return '审核订单';
         case 'order/examineDetail':
-            return '审核详情'
+            return '审核详情';
         case 'order/checkExamine':
-            return '订单详情'
+            return '订单详情';
         case 'myZone/myCoupon':
-            return '我的优惠券'
+            return '我的优惠券';
+        case 'notification/notificationMain':
+            return '公告';
+        case 'complaint':
+            return '投诉反馈';
+        case 'query/stockQuery':
+            return '库存查询';
+        case 'query/areaQuery':
+            return '区域订单查询';
+        case 'query/orderQuery':
+            return '订单查询';
         default:
             return 'xxx';
     }

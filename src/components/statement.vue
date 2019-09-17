@@ -297,7 +297,6 @@ export default {
   methods: {
     //打开对账单提货弹窗
     openTHdia(tab) {
-      console.log(tab);
       if (tab.billNo == "CZSK") {
         this.whatType = false;
         this.THtitle = "收款备注";
@@ -406,7 +405,6 @@ export default {
         page: this.outerCurrentPage
       };
       checkBill(url, data).then(res => {
-        console.log(res);
         this.tableData = res.customerBalancePeriodList;
         this.theHead = res.customerInfo;
         this.outercount = res.customerBalancePeriodList.length
@@ -489,7 +487,6 @@ export default {
         companyId: Cookies.get("companyId")
       };
       queryCash(url, data).then(res => {
-        console.log(res);
         this.CTMmoney = res.data;
       });
     },

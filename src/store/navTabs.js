@@ -175,7 +175,6 @@ const mutations = {
                 }
             }
         }
-        //console.log(state.tabList);
         state.activeTabName = index;
         state.activeUrlName = oldIndex;
     },
@@ -185,7 +184,6 @@ const mutations = {
     */
     setActiveTabName(state, name) {
         state.activeTabName = name;
-        console.log(state.activeTabName);
     },
     /*
     *传入一个标签的name，也就是activeTabName
@@ -193,9 +191,7 @@ const mutations = {
     */
     setActiveUrlName(state, name) {
         let _index = state.parameterArray.indexOf(name);
-        console.log(state.parameterArray, name);
         if (_index !== -1) {
-            console.log(_index);
             for (let i = 0; i < state.tabList.length; i++) {
                 if (state.tabList[i].name === name) {
                     state.activeUrlName = name + '?' + state.tabList[i].parameter;
@@ -206,9 +202,7 @@ const mutations = {
         else {
             state.activeUrlName = name;
         }
-        console.log('--------')
         state.activeTabName = name;
-        console.log(state.activeTabName + '------------')
     },
     /*
     *传入一个标签的name

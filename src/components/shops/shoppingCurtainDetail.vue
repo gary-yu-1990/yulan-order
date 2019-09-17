@@ -168,11 +168,12 @@
                 </el-table-column>
                 <el-table-column label="用量"
                     header-align="center"
+                    align="center"
                     width="80">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.itemType === 'lspb'"></span>
+                        <span v-if="scope.row.itemType === 'lspb'">--</span>
                         <span v-else-if="scope.row.modifyFlag === 'Y'">
-                            <el-input
+                            <el-input v-if ="scope.row.itemType != 'lt'"
                                 style="width: 75%;"
                                 size="mini"
                                 oninput="value=value.replace(/[^\d.]/g,'')
@@ -180,6 +181,16 @@
                                 .replace('.', '$#$').replace(/\./g, '')
                                 .replace('$#$', '.')
                                 .slice(0,value.indexOf('.') === -1? value.length: value.indexOf('.') + 2)"
+                                v-model="scope.row.dosage">
+                            </el-input>
+                            <el-input v-else
+                                style="width: 75%;"
+                                size="mini"
+                                oninput="value=value.replace(/[^\d.]/g,'')
+                                .replace(/^\./g, '').replace(/\.{2,}/g, '.')
+                                .replace('.', '$#$').replace(/\./g, '')
+                                .replace('$#$', '.')
+                                .slice(0,value.indexOf('.') === -1? value.length: value.indexOf('.') + 3)"
                                 v-model="scope.row.dosage">
                             </el-input>
                             {{(scope.row.dosage === '')?'':scope.row.unit}}
@@ -458,10 +469,8 @@ export default {
         // this.curtainData.width = this.message.width;
         // this.curtainData.height = this.message.height;
         // this.curtainData.wrinkle = this.message.foldMultiple;
-        // console.log(this.message);
         if(Cookies.get('curtainMsg') !== undefined && Cookies.get('curtainMsg') !== null){
             this.message = JSON.parse(Cookies.get('curtainMsg'));
-            console.log(this.message);
             this.getPJB();
             this.getDetail();
         }
@@ -578,7 +587,6 @@ export default {
                 this.allData = res;
                 this.getCurtainMsg(res);
                 this.getSpanArr(res);
-                console.log(res);
             }).catch(err =>{
                 console.log(err);
             })
@@ -625,7 +633,6 @@ export default {
                 this.curtainData.push(obj);
                 this.getDosage(obj,i);
             }
-            console.log(this.curtainData);
         },
         //点击更换编码名称
         getNewItemNo(data,index){
@@ -654,7 +661,6 @@ export default {
             this.dialogTitle = `【${this.getProductName(data.productType)}】类产品列表`;
             this.chooseIndex = index;
             this.chooseType = data.productType;
-            console.log(this.chooseType)
             if(data.productType !== 'GY'){
                 this.getAllItemNoData(1);
             }

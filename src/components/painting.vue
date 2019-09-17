@@ -262,7 +262,6 @@ export default {
         this.ImgStyle.height = theHeight * theBit + "px";
         this.DiaWidth = theWidth * theBit + 50 + "px";
       }
-      console.log("加载完毕");
     },
     //角标更新
     IconReflash() {
@@ -276,7 +275,6 @@ export default {
         state: "CUSTOMERAFFIRM"
       };
       getIconNumber(data).then(res => {
-        console.log(res);
         IconNum = res.airbrushDesignerAssureList.length;
         this.changeBadge({
           name: "painting",
@@ -294,7 +292,6 @@ export default {
       };
       let alertCode = `操作成功，${YN}该委托书`;
       changeStatus(url, data).then(res => {
-        console.log(res);
         this.PaintingDia = false;
         this.$alert(alertCode, "提示", {
           confirmButtonText: "确定",
@@ -316,11 +313,9 @@ export default {
       } else {
         this.agree = false;
       }
-      console.log(tab);
       this.tableData = tab;
       if (tab.abdrImage.length) {
         if (tab.abdrImage[0].imagePath.startsWith(Head)) {
-          console.log("OK");
         } else {
           for (let i = 0; i < tab.abdrImage.length; i++) {
             tab.abdrImage[i].imagePath = Head + tab.abdrImage[i].imagePath;
@@ -351,16 +346,14 @@ export default {
         data.endDate = this.endDate + "23:59:59";
       }
       getPaintingList(url, data).then(res => {
-        console.log(res);
         this.paintingData = res.airbrushDesignerAssureList;
-        if (res.airbrushDesignerAssureList) {
+        if (res.airbrushDesignerAssureList.length > 0) {
           this.count = res.airbrushDesignerAssureList[0].total;
         }
       });
     },
     //放大图片
     showBIG(BIGimgPath) {
-      console.log(BIGimgPath);
       this.BigPic = true;
       this.BIGimgPath = BIGimgPath;
     },

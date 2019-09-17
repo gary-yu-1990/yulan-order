@@ -19,14 +19,16 @@
               slot="append"
               style="cursor:pointer;"
               @click="_getShopsWallPaperMsg"
-            >搜索</div>
+            >
+              搜索
+            </div>
           </el-input>
           <div id="searchHistory" style="margin: 5px 0 0">
             <ul class="ovh l" style="font-size: 12px;">
               <li>历史搜索：</li>
               <li v-if="history.length === 0">暂无搜索记录</li>
               <li v-for="item in history" :key="item">
-                <a @click="searchByHistory(item)">{{item}}</a>
+                <a @click="searchByHistory(item)">{{ item }}</a>
               </li>
               <li v-if="history.length !== 0">
                 <a @click="removeHistory">删除历史记录</a>
@@ -55,7 +57,8 @@
                   :customStyle="'width: 75px;'"
                   :decimalNum="decimalNum"
                   v-model="scope.row.number"
-                ></currency-input>×
+                ></currency-input
+                >×
                 <span class="num-font">高</span>
                 <currency-input
                   :customStyle="'width: 75px;'"
@@ -64,7 +67,10 @@
                 ></currency-input>
               </div>
               <div v-else>
-                <currency-input :decimalNum="decimalNum" v-model="scope.row.number"></currency-input>
+                <currency-input
+                  :decimalNum="decimalNum"
+                  v-model="scope.row.number"
+                ></currency-input>
               </div>
             </template>
           </el-table-column>
@@ -72,17 +78,43 @@
           <el-table-column width="100px" label="操作">
             <template slot-scope="scope">
               <a class="mr10" @click="seeStore(scope)">查看库存</a>
-              <el-dialog title="库存查询" :visible.sync="dialogTableVisible" width="520px">
-                <el-table border :data="produceStore" style="width:500px;" :row-style="rowClass">
-                  <el-table-column property="stockNo" label="库房"></el-table-column>
-                  <el-table-column property="batchNo" label="批号" width="200" show-overflow-tooltip></el-table-column>
-                  <el-table-column property="qty" label="库存" width="70"></el-table-column>
+              <el-dialog
+                title="库存查询"
+                :visible.sync="dialogTableVisible"
+                width="520px"
+              >
+                <el-table
+                  border
+                  :data="produceStore"
+                  style="width:500px;"
+                  :row-style="rowClass"
+                >
+                  <el-table-column
+                    property="stockNo"
+                    label="库房"
+                  ></el-table-column>
+                  <el-table-column
+                    property="batchNo"
+                    label="批号"
+                    width="200"
+                    show-overflow-tooltip
+                  ></el-table-column>
+                  <el-table-column
+                    property="qty"
+                    label="库存"
+                    width="70"
+                  ></el-table-column>
                 </el-table>
                 <div slot="footer">
                   <p class="f14 tc border-b mb10">
                     <b>以上数值仅供参考，以实际订单处理为准</b>
                   </p>
-                  <el-button type="success" plain @click="dialogTableVisible = false">关 闭</el-button>
+                  <el-button
+                    type="success"
+                    plain
+                    @click="dialogTableVisible = false"
+                    >关 闭</el-button
+                  >
                 </div>
               </el-dialog>
             </template>
@@ -94,7 +126,11 @@
                   <el-select
                     :disabled="disableFlag"
                     v-model="seletedActivity"
-                    :placeholder="(disableFlag === false)?'请选择一个活动':'此产品不参与活动'"
+                    :placeholder="
+                      disableFlag === false
+                        ? '请选择一个活动'
+                        : '此产品不参与活动'
+                    "
                   >
                     <!-- <el-option-group
                                             v-for="group in activity"
@@ -122,20 +158,31 @@
                       type="textarea"
                       placeholder="请输入您的备注信息"
                       maxlength="200"
-                      :autosize="{ minRows: 3, maxRows: 6}"
+                      :autosize="{ minRows: 3, maxRows: 6 }"
                       v-model="remark"
                     ></el-input>
-                    <i class="el-icon-edit" style="position:absolute;right:10px;bottom:5px;"></i>
+                    <i
+                      class="el-icon-edit"
+                      style="position:absolute;right:10px;bottom:5px;"
+                    ></i>
                   </div>
-                  <span style="margin-left:10px;">{{remark?remark.length:0}}/200</span>
+                  <span style="margin-left:10px;"
+                    >{{ remark ? remark.length : 0 }}/200</span
+                  >
                 </el-form-item>
                 <el-form-item class="tc">
                   <el-button
                     style="width: 130px;"
                     type="danger"
                     @click="saveToShoppingCar(scope.row)"
-                  >加入购物车</el-button>
-                  <el-button style="width: 130px;" type="info" @click="closeExpand">取消</el-button>
+                    >加入购物车</el-button
+                  >
+                  <el-button
+                    style="width: 130px;"
+                    type="info"
+                    @click="closeExpand"
+                    >取消</el-button
+                  >
                 </el-form-item>
               </el-form>
             </template>
@@ -234,7 +281,6 @@ export default {
     },
     //收起展开行-获取商品的活动
     expandChange(row) {
-      console.log(row);
       /*
             console.log(row);
             this.clearMsg();
@@ -300,7 +346,6 @@ export default {
               ? (this.decimalNum = 1)
               : (this.decimalNum = 2);
           });
-          console.log(res);
           this.tableData = [];
           this.tableData.push({
             type: res.data.itemNo, //型号
@@ -322,20 +367,16 @@ export default {
           if (storage.history !== undefined && storage.history !== null) {
             arr = storage.history.toLocaleString().split(",");
           }
-          // storage.history = ['NPP155407','NPP123456'];
-          // console.log(storage.history.toLocaleString().split(',')[0]);
-          // console.log(storage.history.toLocaleString().split(','));
           //记录去重
           arr.push(this.searchKey.toUpperCase());
           arr = [...new Set(arr)];
-          //arr = ['NPP155407','NPP1551407','1NPP155407','NPP1525407','NPP15544507','NP4P155407','N4PP1554407','4NPP155407','NP1P155407']
           //只保留最新的8条记录
           if (arr.length > 8) {
             arr = arr.splice(arr.length - 8);
           }
           storage.history = arr;
           this.history = arr.reverse();
-          console.log(storage.history.toLocaleString());
+          storage.history.toLocaleString();
           this.clearMsg();
           findItemActivity({
             CID: this.cid,
@@ -346,7 +387,6 @@ export default {
             productBrand: data.brand
           })
             .then(res => {
-              console.log(res);
               if (res.length === 0) {
                 this.disableFlag = true;
               } else {
@@ -368,7 +408,6 @@ export default {
                 label: "不参与活动",
                 value: null
               });
-              console.log(this.activity);
             })
             .catch(err => {
               console.log(err);
@@ -400,7 +439,6 @@ export default {
           })
             .then(() => {
               storeMessage = "0";
-              console.log(storeMessage);
               this.addToCar(row, storeMessage);
               return;
             })
@@ -423,14 +461,12 @@ export default {
           })
             .then(() => {
               storeMessage = "1";
-              console.log(storeMessage);
               this.addToCar(row, storeMessage);
               return;
             })
             .catch(action => {
               if (action === "cancel") {
                 storeMessage = "0";
-                console.log(storeMessage);
                 this.addToCar(row, storeMessage);
               }
               return;
@@ -447,7 +483,6 @@ export default {
           })
             .then(() => {
               storeMessage = "0";
-              console.log(storeMessage);
               this.addToCar(row, storeMessage);
               return;
             })
@@ -498,10 +533,8 @@ export default {
           splitShipment: storeMessage
         };
       }
-      console.log(data);
       addShoppingCar(data)
         .then(res => {
-          console.log(res.data);
           if (res.data.code === 0) {
             this.$alert("此型号已添加成功，请前往购物车查看", "添加成功", {
               confirmButtonText: "确定",
@@ -535,7 +568,6 @@ export default {
           this.tableData = [];
           this.expands = [];
           this.clearMsg();
-          console.log(err);
         });
     },
     //保存到购物车
@@ -584,10 +616,7 @@ export default {
         });
     },
     //修改该商品的计量
-    numberChange(value, index) {
-      //value :String
-      console.log(value, index);
-    },
+    numberChange(value, index) {},
     //查看该商品的库存
     seeStore(scope) {
       this.dialogTableVisible = true;
@@ -596,19 +625,14 @@ export default {
         itemNo: scope.row.type
       })
         .then(res => {
-          console.log(res);
           this.produceStore = res.data;
         })
         .catch(err => {
           console.log(err.data);
         });
-      // console.log(scope.row.type);
-      // console.log(scope);
     },
     //选择该商品加入购物车
-    chooseItem(value) {
-      console.log(value);
-    },
+    chooseItem(value) {},
     //点击取消收起
     closeExpand() {
       this.searchKey = "";

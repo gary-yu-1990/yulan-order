@@ -1,10 +1,16 @@
 <template>
   <el-card class="centerCard">
-    <el-dialog title="窗帘详情" :show-close="true" :visible.sync="detailVisible" width="92%" top="5vh">
+    <el-dialog
+      title="窗帘详情"
+      :show-close="true"
+      :visible.sync="detailVisible"
+      width="95%"
+      top="5vh"
+    >
       <keep-alive>
         <detailCurtainTable
           v-if="detailVisible"
-          v-bind:tableStatus="check_CURTAIN_STATUS_ID!=1?3:2"
+          v-bind:tableStatus="check_CURTAIN_STATUS_ID != 1 ? 3 : 2"
           v-bind:headerData="headerData"
           v-bind:curtainData="curtainData"
           v-bind:suggestion="ljsuggestion"
@@ -17,37 +23,49 @@
 
     <div slot="header">
       <span class="headSpan">订单详情</span>
-      <el-button @click="backTowhere()" style="float:right;" size="small" type="success" plain>返回</el-button>
+      <el-button
+        @click="backTowhere()"
+        style="float:right;"
+        size="small"
+        type="success"
+        plain
+        >返回</el-button
+      >
     </div>
     <el-card class="tableCard" shadow="hover" body-style="padding:1px">
       <div slot="header">
         <span class="zoomLeft">
           订单号：
-          <span class="zoomRight">{{ruleForm.ORDER_NO}}</span>
+          <span class="zoomRight">{{ ruleForm.ORDER_NO }}</span>
         </span>
         <span class="zoomLeft">
           经办人：
-          <span class="zoomRight">{{ruleForm.LINKPERSON}}({{ruleForm.TELEPHONE}})</span>
+          <span class="zoomRight"
+            >{{ ruleForm.LINKPERSON }}({{ ruleForm.TELEPHONE }})</span
+          >
         </span>
         <span class="zoomLeft">
           收货人：
-          <span class="zoomRight">{{ruleForm.WL_CONTACTS}}({{ruleForm.WL_TEL}})</span>
+          <span class="zoomRight"
+            >{{ ruleForm.WL_CONTACTS }}({{ ruleForm.WL_TEL }})</span
+          >
         </span>
         <br />
         <span class="zoomLeft">
           收货地址：
-          <span
-            class="zoomRight"
-          >{{ruleForm.RECIVER_AREA1}}{{ruleForm.RECIVER_AREA2}}{{ruleForm.RECIVER_AREA3}}{{ruleForm.POST_ADDRESS}}</span>
+          <span class="zoomRight"
+            >{{ ruleForm.RECIVER_AREA1 }}{{ ruleForm.RECIVER_AREA2
+            }}{{ ruleForm.RECIVER_AREA3 }}{{ ruleForm.POST_ADDRESS }}</span
+          >
         </span>
         <span class="zoomLeft">
           订单备注：
-          <span class="zoomRight">{{ruleForm.NOTES}}</span>
+          <span class="zoomRight">{{ ruleForm.NOTES }}</span>
         </span>
         <br />
         <span class="zoomLeft">
           玉兰处理说明：
-          <span class="zoomRight">{{ruleForm.YULAN_NOTES}}</span>
+          <span class="zoomRight">{{ ruleForm.YULAN_NOTES }}</span>
         </span>
       </div>
       <el-table
@@ -58,15 +76,32 @@
         style="width: 100%"
         :row-class-name="tableRowClassName"
       >
-        <el-table-column align="center" prop="ITEM_NO" label="型号" width="140"></el-table-column>
+        <el-table-column
+          align="center"
+          prop="ITEM_NO"
+          label="型号"
+          width="140"
+        ></el-table-column>
         <el-table-column align="center" label="经销单价" width="100">
           <template slot-scope="scope1">
-            <span v-if="isManager === '0' && check_CURTAIN_STATUS_ID !=-1">***</span>
-            <span v-else>{{scope1.row.UNIT_PRICE |priceFilter}}</span>
+            <span v-if="isManager === '0' && check_CURTAIN_STATUS_ID != -1"
+              >***</span
+            >
+            <span v-else>{{ scope1.row.UNIT_PRICE | priceFilter }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="QTY_REQUIRED" label="数量" width="60"></el-table-column>
-        <el-table-column prop="PROMOTION" align="center" label="活动类型" width="90"></el-table-column>
+        <el-table-column
+          align="center"
+          prop="QTY_REQUIRED"
+          label="数量"
+          width="60"
+        ></el-table-column>
+        <el-table-column
+          prop="PROMOTION"
+          align="center"
+          label="活动类型"
+          width="90"
+        ></el-table-column>
         <el-table-column
           prop="PART_SEND_ID"
           align="center"
@@ -74,39 +109,81 @@
           label="发货说明"
           width="90"
         ></el-table-column>
-        <el-table-column prop="PROMOTION_COST" align="center" label="折后金额" width="100">
+        <el-table-column
+          prop="PROMOTION_COST"
+          align="center"
+          label="折后金额"
+          width="100"
+        >
           <template slot-scope="scope1">
-            <span v-if="isManager === '0' && check_CURTAIN_STATUS_ID !=-1">***</span>
-            <span v-else>{{scope1.row.PROMOTION_COST}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="BACK_Y" align="center" label="年返利使用金额" width="100">
-          <template slot-scope="scope1">
-            <span v-if="isManager === '0' && check_CURTAIN_STATUS_ID !=-1">***</span>
-            <span v-else>{{scope1.row.BACK_Y}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="BACK_M" align="center" label="月返利使用金额" width="100">
-          <template slot-scope="scope1">
-            <span v-if="isManager === '0' && check_CURTAIN_STATUS_ID !=-1">***</span>
-            <span v-else>{{scope1.row.BACK_M}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="FINAL_COST" align="center" label="应付金额" width="100">
-          <template slot-scope="scope1">
-            <span v-if="isManager === '0' && check_CURTAIN_STATUS_ID !=-1">***</span>
-            <span v-else>{{scope1.row.FINAL_COST}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="NOTES" label="备注"></el-table-column>
-        <el-table-column v-if="isX" prop="LJ_SUGGESTION" align="center" label="兰居备注"></el-table-column>
-        <el-table-column v-if="isX" align="center" label="窗帘详情" width="100">
-          <template slot-scope="scope">
-            <el-button @click="openDialog(scope.row,scope.$index)" type="primary" size="mini">查看详情</el-button>
+            <span v-if="isManager === '0' && check_CURTAIN_STATUS_ID != -1"
+              >***</span
+            >
+            <span v-else>{{ scope1.row.PROMOTION_COST }}</span>
           </template>
         </el-table-column>
         <el-table-column
-          v-if="check_CURTAIN_STATUS_ID==1 && isX"
+          prop="BACK_Y"
+          align="center"
+          label="年返利使用金额"
+          width="100"
+        >
+          <template slot-scope="scope1">
+            <span v-if="isManager === '0' && check_CURTAIN_STATUS_ID != -1"
+              >***</span
+            >
+            <span v-else>{{ scope1.row.BACK_Y }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="BACK_M"
+          align="center"
+          label="月返利使用金额"
+          width="100"
+        >
+          <template slot-scope="scope1">
+            <span v-if="isManager === '0' && check_CURTAIN_STATUS_ID != -1"
+              >***</span
+            >
+            <span v-else>{{ scope1.row.BACK_M }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="FINAL_COST"
+          align="center"
+          label="应付金额"
+          width="100"
+        >
+          <template slot-scope="scope1">
+            <span v-if="isManager === '0' && check_CURTAIN_STATUS_ID != -1"
+              >***</span
+            >
+            <span v-else>{{ scope1.row.FINAL_COST }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="NOTES"
+          label="备注"
+        ></el-table-column>
+        <el-table-column
+          v-if="isX"
+          prop="LJ_SUGGESTION"
+          align="center"
+          label="兰居备注"
+        ></el-table-column>
+        <el-table-column v-if="isX" align="center" label="窗帘详情" width="100">
+          <template slot-scope="scope">
+            <el-button
+              @click="openDialog(scope.row, scope.$index)"
+              type="primary"
+              size="mini"
+              >查看详情</el-button
+            >
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="check_CURTAIN_STATUS_ID == 1 && isX"
           align="center"
           prop="checkStatus"
           label="是否修改"
@@ -117,82 +194,99 @@
       <div style="float:right;margin-top:20px;margin-right:10px;height:80px;">
         <!-- <p>商品总价格：<span style="color:tomato;font-weight:bold;">{{ruleForm.ALL_SPEND}}</span></p><span> -->
         <el-button
-          v-if="check_CURTAIN_STATUS_ID==2"
+          v-if="check_CURTAIN_STATUS_ID == 2"
           @click="_defeat()"
           size="medium"
           type="warning"
-        >退回兰居修改</el-button>
+          >退回兰居修改</el-button
+        >
         <el-button
-          v-if="check_CURTAIN_STATUS_ID==2"
+          v-if="check_CURTAIN_STATUS_ID == 2"
           @click="_pass()"
           size="medium"
           type="success"
-        >确认兰居修改</el-button>
+          >确认兰居修改</el-button
+        >
         <el-button
           :disabled="exButton"
-          v-if="check_CURTAIN_STATUS_ID==1"
+          v-if="check_CURTAIN_STATUS_ID == 1"
           @click="LjExamine()"
           size="medium"
           type="success"
-        >确认修改</el-button>
+          >确认修改</el-button
+        >
         <el-button
-          v-if="((check_CURTAIN_STATUS_ID==0||check_CURTAIN_STATUS_ID==4)&&check_STATUS_ID==0)"
+          v-if="
+            (check_CURTAIN_STATUS_ID == 0 || check_CURTAIN_STATUS_ID == 4) &&
+              check_STATUS_ID == 0
+          "
           @click="summitCurtain"
           size="medium"
           type="primary"
-        >提交订单</el-button>
+          >提交订单</el-button
+        >
         <el-button
-          v-if="check_STATUS_ID==5||check_STATUS_ID==6"
+          v-if="check_STATUS_ID == 5 || check_STATUS_ID == 6"
           @click="refreshPay()"
           size="medium"
           type="danger"
           plain
-        >提交订单</el-button>
+          >提交订单</el-button
+        >
       </div>
       <div style="padding:10px;">
         <span class="timeLeft">
           创建：
-          <span class="timeRight">{{ruleForm.DATE_CRE}}</span>
+          <span class="timeRight">{{ ruleForm.DATE_CRE }}</span>
         </span>
         <span v-if="ruleForm.WEB_TJ_TIME" class="timeLeft">
           提交：
-          <span class="timeRight">{{ruleForm.WEB_TJ_TIME}}</span>
+          <span class="timeRight">{{ ruleForm.WEB_TJ_TIME }}</span>
         </span>
         <span class="timeLeft">
           更新：
-          <span class="timeRight">{{ruleForm.DATE_UPDATE}}</span>
+          <span class="timeRight">{{ ruleForm.DATE_UPDATE }}</span>
         </span>
         <br />
         <span v-if="ruleForm.DATE_ACCEPT" class="timeLeft">
           接收：
-          <span class="timeRight">{{ruleForm.DATE_ACCEPT}}</span>
+          <span class="timeRight">{{ ruleForm.DATE_ACCEPT }}</span>
         </span>
         <span v-if="ruleForm.DATE_DEAL" class="timeLeft">
           处理：
-          <span class="timeRight">{{ruleForm.DATE_DEAL | datatrans}}</span>
+          <span class="timeRight">{{ ruleForm.DATE_DEAL | datatrans }}</span>
         </span>
         <span v-if="ruleForm.USER_NO" class="timeLeft">
           处理人：
-          <span class="timeRight">{{ruleForm.USER_NO}}</span>
+          <span class="timeRight">{{ ruleForm.USER_NO }}</span>
         </span>
       </div>
       <div style="margin-top:30px;">
         <el-divider></el-divider>
-        <span
-          style="margin-left:10px;color:red;"
-        >订单修改说明：当修改数量不超过200卷时，双方可通过电话在原订单上进行修改，当修改数量超过200卷时，乙方应向甲方提供书面修改说明。</span>
+        <span style="margin-left:10px;color:red;"
+          >订单修改说明：当修改数量不超过200卷时，双方可通过电话在原订单上进行修改，当修改数量超过200卷时，乙方应向甲方提供书面修改说明。</span
+        >
         <br />
-        <span style="margin-left:10px;color:red;">法律效力：本订单是双方合作协议不可分割的一部分，是乙方向甲方订货的凭证，具法力效力。</span>
+        <span style="margin-left:10px;color:red;"
+          >法律效力：本订单是双方合作协议不可分割的一部分，是乙方向甲方订货的凭证，具法力效力。</span
+        >
         <el-divider></el-divider>
       </div>
-      <div v-if="operationRecords.length > 0" style="width:800px;margin-bottom:20px;">
+      <div
+        v-if="operationRecords.length > 0"
+        style="width:800px;margin-bottom:20px;"
+      >
         <h1 style="margin-left:10px;">处理记录：</h1>
         <el-steps
           direction="vertical"
           :active="operationRecords.length"
           style="margin-top:10px;margin-left:20px;"
         >
-          <el-step v-for="item in operationRecords" :key="item.value" style="margin-top:1px;">
+          <el-step
+            v-for="item in operationRecords"
+            :key="item.value"
+            style="margin-top:1px;"
+          >
             <template slot="title">
               <div v-html="item.OPERATION_NOTE"></div>
             </template>
@@ -283,7 +377,7 @@ export default {
       m = m < 10 ? "0" + m : m;
       let s = date.getSeconds();
       s = s < 10 ? "0" + s : s;
-      return y + "-" + MM + "-" + d + " " + h + ':' + m + ':' + s;
+      return y + "-" + MM + "-" + d + " " + h + ":" + m + ":" + s;
     }
   },
   created: function() {
@@ -375,22 +469,29 @@ export default {
         deleteIds: this.deleteIds
       };
       //defeatChange(url,data).then(res =>{
-      updateCurtainOrder(data).then(res => {
-        console.log(res);
-        if (res.code == 0) {
-          this.$alert("操作成功,请提交结算再次审核", "提示", {
-            confirmButtonText: "确定",
-            type: "success"
-          });
-          this.check_CURTAIN_STATUS_ID = "0";
-          this.getDetail();
-        } else {
-          this.$alert("操作失败，请稍后重试", "提示", {
+      updateCurtainOrder(data)
+        .then(res => {
+          console.log(res);
+          if (res.code == 0) {
+            this.$alert("操作成功,请提交结算再次审核", "提示", {
+              confirmButtonText: "确定",
+              type: "success"
+            });
+            this.check_CURTAIN_STATUS_ID = "0";
+            this.getDetail();
+          } else {
+            this.$alert("操作失败，请稍后重试", "提示", {
+              confirmButtonText: "确定",
+              type: "warning"
+            });
+          }
+        })
+        .catch(res => {
+          this.$alert("操作失败:" + res.msg, "提示", {
             confirmButtonText: "确定",
             type: "warning"
           });
-        }
-      });
+        });
     },
     //确认兰居修改，通过订单审核变为可提交状态
     _pass() {
@@ -404,28 +505,35 @@ export default {
         cancelButtonText: "否",
         type: "info"
       }).then(() => {
-        passExamine(url, data).then(res => {
-          console.log(res);
-          if (res.code == 0) {
-            var recordData = {
-              ORDER_NO: this.orderNum,
-              OPERATION_PERSON: Cookies.get("cid"),
-              OPERATION_NAME: "确认兰居修改"
-            };
-            InsertOperationRecord(recordData); //插入操作记录
-            this.$alert("操作成功,该订单已经确认可再次提交", "提示", {
-              confirmButtonText: "确定",
-              type: "success"
-            }).then(() => {
-              this.check_CURTAIN_STATUS_ID = "4";
-            });
-          } else {
+        passExamine(url, data)
+          .then(res => {
+            console.log(res);
+            if (res.code == 0) {
+              var recordData = {
+                ORDER_NO: this.orderNum,
+                OPERATION_PERSON: Cookies.get("cid"),
+                OPERATION_NAME: "确认兰居修改"
+              };
+              InsertOperationRecord(recordData); //插入操作记录
+              this.$alert("操作成功,该订单已经确认可再次提交", "提示", {
+                confirmButtonText: "确定",
+                type: "success"
+              }).then(() => {
+                this.check_CURTAIN_STATUS_ID = "4";
+              });
+            } else {
+              this.$alert("操作失败，请稍后重试", "提示", {
+                confirmButtonText: "确定",
+                type: "warning"
+              });
+            }
+          })
+          .catch(res => {
             this.$alert("操作失败，请稍后重试", "提示", {
               confirmButtonText: "确定",
               type: "warning"
             });
-          }
-        });
+          });
       });
     },
     //退回兰居修改
@@ -440,31 +548,38 @@ export default {
         cancelButtonText: "否",
         type: "info"
       }).then(() => {
-        passExamine(url, data).then(res => {
-          console.log(res);
-          if (res.code == 0) {
-            var recordData = {
-              ORDER_NO: this.orderNum,
-              OPERATION_PERSON: Cookies.get("cid"),
-              OPERATION_NAME: "退回兰居修改"
-            };
-            InsertOperationRecord(recordData); //插入操作记录
-            this.$alert("操作成功,该订单已退回兰居修改", "提示", {
-              confirmButtonText: "确定",
-              type: "success"
-            }).then(() => {
-              this.closeToTab({
-                oldUrl: "order/checkExamine",
-                newUrl: "order/myOrder"
+        passExamine(url, data)
+          .then(res => {
+            console.log(res);
+            if (res.code == 0) {
+              var recordData = {
+                ORDER_NO: this.orderNum,
+                OPERATION_PERSON: Cookies.get("cid"),
+                OPERATION_NAME: "退回兰居修改"
+              };
+              InsertOperationRecord(recordData); //插入操作记录
+              this.$alert("操作成功,该订单已退回兰居修改", "提示", {
+                confirmButtonText: "确定",
+                type: "success"
+              }).then(() => {
+                this.closeToTab({
+                  oldUrl: "order/checkExamine",
+                  newUrl: "order/myOrder"
+                });
               });
-            });
-          } else {
+            } else {
+              this.$alert("操作失败，请稍后重试", "提示", {
+                confirmButtonText: "确定",
+                type: "warning"
+              });
+            }
+          })
+          .catch(res => {
             this.$alert("操作失败，请稍后重试", "提示", {
               confirmButtonText: "确定",
               type: "warning"
             });
-          }
-        });
+          });
       });
     },
     openDialog(tab, index) {
@@ -595,21 +710,28 @@ export default {
             }
           );
         } else {
-          payAgain(url2, data2).then(res => {
-            var recordData = {
-              ORDER_NO: this.orderNum,
-              OPERATION_PERSON: Cookies.get("cid"),
-              OPERATION_NAME: "重新提交"
-            };
-            InsertOperationRecord(recordData); //插入操作记录
-            this.$alert("提交成功", "提示", {
-              confirmButtonText: "确定",
-              type: "success"
+          payAgain(url2, data2)
+            .then(res => {
+              var recordData = {
+                ORDER_NO: this.orderNum,
+                OPERATION_PERSON: Cookies.get("cid"),
+                OPERATION_NAME: "重新提交"
+              };
+              InsertOperationRecord(recordData); //插入操作记录
+              this.$alert("提交成功", "提示", {
+                confirmButtonText: "确定",
+                type: "success"
+              });
+              this.$root.$emit("refreshMoneyEvent"); //触发主页面刷新余额
+              this.addTab("order/myOrder");
+              this.closeTab("order/orderDetail");
+            })
+            .catch(res => {
+              this.$alert("操作失败，请稍后重试", "提示", {
+                confirmButtonText: "确定",
+                type: "warning"
+              });
             });
-            this.$root.$emit("refreshMoneyEvent"); //触发主页面刷新余额
-            this.addTab("order/myOrder");
-            this.closeTab("order/orderDetail");
-          });
         }
       });
     },

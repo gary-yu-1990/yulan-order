@@ -175,14 +175,15 @@
                 </el-table-column>
                 <el-table-column label="用量"
                     width="100"
-                    header-align="center">
+                    header-align="center"
+                    align="center">
                     <template slot-scope="scope">
                         <span v-if="tableStatus === 3">
                             {{scope.row.dosage|dosageFilter}}
                             {{(scope.row.dosage === '')?'':scope.row.unit}}
                         </span>
                         <span v-else-if="customerType === '110'">
-                            <el-input
+                            <el-input v-if ="scope.row.itemType != 'lt'"
                                 style="width: 75%;"
                                 size="mini"
                                 oninput="value=value.replace(/[^\d.]/g,'')
@@ -192,9 +193,19 @@
                                 .slice(0,value.indexOf('.') === -1? value.length: value.indexOf('.') + 2)"
                                 v-model="scope.row.dosage">
                             </el-input>
+                            <el-input v-else
+                                style="width: 75%;"
+                                size="mini"
+                                oninput="value=value.replace(/[^\d.]/g,'')
+                                .replace(/^\./g, '').replace(/\.{2,}/g, '.')
+                                .replace('.', '$#$').replace(/\./g, '')
+                                .replace('$#$', '.')
+                                .slice(0,value.indexOf('.') === -1? value.length: value.indexOf('.') + 3)"
+                                v-model="scope.row.dosage">
+                            </el-input>
                             {{(scope.row.dosage === '')?'':scope.row.unit}}
                         </span>
-                        <span v-else-if="scope.row.itemType === 'lspb'"></span>
+                        <span v-else-if="scope.row.itemType === 'lspb'">--</span>
                         <span v-else-if="scope.row.modifyFlag === 'Y'">
                             <el-input
                                 style="width: 75%;"
@@ -669,6 +680,9 @@ export default {
                 var oldData_temp =[];
                 this.oldData.forEach(item => {
                     item.dosage = Number(item.dosage);
+                    if(item.curtainItemName === null){
+                        item.curtainItemName = this.getTypeName(item.itemType);
+                    }
                     if(item.note === null)  item.note = "";
                     if(item.suggestion === null)    item.suggestion = "";
                     oldData_temp.push(JSON.parse(JSON.stringify(item)));

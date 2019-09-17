@@ -29,6 +29,12 @@ import ExamineDetail from '@/components/order/examineDetail'
 import checkExamine from '@/components/order/checkExamine'
 import myCoupon from '@/components/center/myCoupon'
 import DetailRefund from '@/components/detail/detailRefund'
+import notificationMain from '@/components/notification/notificationMain'
+import SupplyPort from '@/components/supplierModule/supplyPort'
+import Complaint from '@/components/complaint'
+import StockQuery from '@/components/query/stockQuery'
+import AreaQuery from '@/components/query/areaQuery'
+import OrderQuery from '@/components/query/orderQuery'
 
 Vue.use(Router)
 
@@ -52,146 +58,254 @@ const router = new Router({
       name: 'main',
       component: Main,
       redirect: '/shops/wallPaper',
-      children: [{
-        path: '/shops/curtain',
-        name: 'curtain',
-        component: Curtain,
-        meta:{
-          keepAlive: true
+      children: [
+        {
+          path: '/shops/curtain',
+          name: 'curtain',
+          component: Curtain,
+          meta: {
+            keepAlive: true
+          }
+        },
+        {
+          path: '/shops/wallPaper',
+          name: 'wallPaper',
+          component: WallPaper,
+          meta: {
+            keepAlive: true
+          }
+        },
+        {
+          path: '/shops/softSuit',
+          name: 'softSuit',
+          component: SoftSuit,
+          meta: {
+            keepAlive: true
+          }
+        },
+        {
+          path: '/shops/shoppingCurtainDetail',
+          name: 'shoppingCurtainDetail',
+          component: ShoppingCurtainDetail,
+          meta: {
+            returnMain: true//该页面刷新回到主界面
+          }
+        },
+        {
+          path: '/bankProof',
+          name: 'bankProof',
+          component: BankProof
+        },
+        {
+          path: '/painting',
+          name: 'painting',
+          component: painting
+        },
+        {
+          path: '/yulanPainting',
+          name: 'yulanPainting',
+          component: yulanPainting
+        },
+        {
+          path: '/deputeBrush',
+          name: 'deputeBrush',
+          component: DeputeBrush
+        },
+        {
+          path: '/downloadSpace',
+          name: 'downloadSpace',
+          component: DownloadSpace
+        },
+        {
+          path: '/marketInfo',
+          name: 'marketInfo',
+          component: MarketInfo
+        },
+        {
+          path: '/refundCompensation',
+          name: 'refundCompensation',
+          component: RefundCompensation,
+          meta: {
+            keepAlive: true
+          }
+        },
+        {
+          path: '/detail/detailRefund',
+          name: 'detailRefund',
+          component: DetailRefund,
+          meta: {
+            returnMain: true//该页面刷新回到主界面
+          }
+        },
+        {
+          path: '/statement',
+          name: 'statement',
+          component: Statement,
+        },
+        {
+          path: '/shoppingCar/shopping',
+          name: 'shopping',
+          component: Shopping,
+          meta: {
+            returnMain: true//暂时用这个，该了后台再去掉
+          }
+        },
+        {
+          path: '/detail/detailCurtain',
+          name: 'detailCurtain',
+          component: DetailCurtain,
+          meta: {
+            returnMain: true//该页面刷新回到主界面
+          }
+        },
+        {
+          path: '/detail/detailSoftSuit',
+          name: 'detailSoftSuit',
+          component: DetailSoftSuit,
+          meta: {
+            returnMain: true//该页面刷新回到主界面
+          }
+        },
+        {
+          path: '/detail/detailWallPaper',
+          name: 'detailWallPaper',
+          component: DetailWallPaper,
+          meta: {
+            returnMain: true//该页面刷新回到主界面
+          }
+        },
+        {
+          path: '/order/myOrder',
+          name: 'myOrder',
+          component: MyOrder,
+          meta: {
+            keepAlive: true
+          }
+        },
+        {
+          path: '/design/imageShop',
+          name: 'imageShop',
+          component: ImageShop
+        },
+        {
+          path: '/design/lanJu',
+          name: 'lanJu',
+          component: LanJu
+        },
+        {
+          path: '/order/orderDetail',
+          name: 'orderDetail',
+          component: orderDetail,
+          meta: {
+            returnMain: true//该页面刷新回到主界面
+          }
+        },
+        {
+          path: '/order/examine',
+          name: 'examine',
+          component: examine,
+          meta: {
+            keepAlive: true
+          }
+        },
+        {
+          path: '/order/examineDetail',
+          name: 'examineDetail',
+          component: ExamineDetail,
+          meta: {
+            returnMain: true//该页面刷新回到主界面
+          }
+        },
+        {
+          path: '/order/checkExamine',
+          name: 'checkExamine',
+          component: checkExamine,
+          meta: {
+            returnMain: true//该页面刷新回到主界面
+          }
+        },
+        {
+          path: '/order/checkOrder',
+          name: 'checkOrder',
+          component: checkOrder,
+          meta: {
+            returnMain: true//该页面刷新回到主界面
+          }
+        },
+        {
+          path: '/order/shipment',
+          name: 'shipment',
+          component: shipment,
+          meta: {
+            returnMain: true//该页面刷新回到主界面
+          }
+        },
+        {
+          path: '/myZone/myCoupon',
+          name: 'MyCoupon',
+          component: myCoupon
+        },
+        {
+          path: '/notification/notificationMain',
+          name: 'notificationMain',
+          component: notificationMain
+        },
+        {
+          path: '/supplierModule/supplyPort',
+          name: 'supplyPort',
+          component: SupplyPort
+        },{
+          path: '/complaint',
+          name: 'complaint',
+          component: Complaint,
+        },
+        // 查询
+        {
+          path:'/query/stockQuery',
+          name:'stockQuery',
+          component:StockQuery
+        },
+        {
+          path:'/query/areaQuery',
+          name:'areaQuery',
+          component:AreaQuery
+        },
+        {
+          path:'/query/orderQuery',
+          name:'orderQuery',
+          component:OrderQuery
         }
-      },{
-        path: '/shops/wallPaper',
-        name: 'wallPaper',
-        component: WallPaper,
-        meta:{
-          keepAlive: true
-        }
-      },{
-        path: '/shops/softSuit',
-        name: 'softSuit',
-        component: SoftSuit,
-        meta:{
-          keepAlive: true
-        }
-      },{
-        path: '/shops/shoppingCurtainDetail',
-        name: 'shoppingCurtainDetail',
-        component: ShoppingCurtainDetail
-      },{
-        path: '/bankProof',
-        name: 'bankProof',
-        component: BankProof
-      },{
-        path: '/painting',
-        name: 'painting',
-        component: painting
-      },{
-        path: '/yulanPainting',
-        name: 'yulanPainting',
-        component: yulanPainting
-      },{
-        path: '/deputeBrush',
-        name: 'deputeBrush',
-        component: DeputeBrush
-      },{
-        path: '/downloadSpace',
-        name: 'downloadSpace',
-        component: DownloadSpace
-      },{
-        path: '/marketInfo',
-        name: 'marketInfo',
-        component: MarketInfo
-      },{
-        path: '/refundCompensation',
-        name: 'refundCompensation',
-        component: RefundCompensation,
-        meta:{
-          keepAlive: true
-        }
-      },{
-        path: '/detail/detailRefund',
-        name: 'detailRefund',
-        component: DetailRefund
-      },{
-        path: '/statement',
-        name: 'statement',
-        component: Statement,
-      },{
-        path: '/shoppingCar/shopping',
-        name: 'shopping',
-        component: Shopping
-      },{
-        path: '/detail/detailCurtain',
-        name: 'detailCurtain',
-        component: DetailCurtain
-      },{
-        path: '/detail/detailSoftSuit',
-        name: 'detailSoftSuit',
-        component: DetailSoftSuit
-      },{
-        path: '/detail/detailWallPaper',
-        name: 'detailWallPaper',
-        component: DetailWallPaper
-      },{
-        path: '/order/myOrder',
-        name: 'myOrder',
-        component: MyOrder,
-        meta:{
-          keepAlive: true
-        }
-      },{
-        path: '/design/imageShop',
-        name: 'imageShop',
-        component: ImageShop
-      },{
-        path: '/design/lanJu',
-        name: 'lanJu',
-        component: LanJu
-      },{
-        path: '/order/orderDetail',
-        name: 'orderDetail',
-        component: orderDetail
-      },{
-        path: '/order/examine',
-        name: 'examine',
-        component: examine,
-        meta:{
-          keepAlive: true
-        }
-      },{
-        path: '/order/examineDetail',
-        name: 'examineDetail',
-        component: ExamineDetail
-      },{
-        path: '/order/checkExamine',
-        name: 'checkExamine',
-        component: checkExamine
-      },{
-        path: '/order/checkOrder',
-        name: 'checkOrder',
-        component: checkOrder
-      },{
-        path: '/order/shipment',
-        name: 'shipment',
-        component: shipment
-      },{
-        path: '/myZone/myCoupon',
-        name: 'MyCoupon',
-        component: myCoupon
-      }]
+      ]
     }
   ]
 })
+//解决刷新后点击tab报错
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 import Cookies from 'js-cookie'
 //路由守卫
-router.beforeEach( (to, from, next) => {
-  console.log(to.meta.keepAlive)
-  if ( !Cookies.get('cid') && !Cookies.get('customerType') && to.name != 'login') {
+router.beforeEach((to, from, next) => {
+  //console.log(to.meta.keepAlive ? true : false);
+  if (!Cookies.get('cid') && !Cookies.get('customerType') && to.name != 'login') {//判断用户信息，不合法返回登陆界面
     next('/login')
   } else {
-    next();
+    if (from.path == '/' && to.meta.returnMain) {//如果是刷新判断是否需要回到主界面
+      if (to.name == 'login' || to.name == 'main' || to.name == 'wallPaper') {
+        next()
+      }
+      else {
+        next('/main');
+      }
+    }
+    else {//不是刷新
+      next();
+      history.pushState(null, null, location.href);//禁止后退，搭配APP.VUE里面的mounted
+    }
   }
+
 })
 
 export default router;

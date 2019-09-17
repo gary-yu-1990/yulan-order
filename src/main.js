@@ -61,7 +61,7 @@ Object.keys(custom).forEach(key => {
 })
 
 /* eslint-disable no-new */
-var vm = new Vue({
+vm = new Vue({
   el: '#app',
   router,
   store,

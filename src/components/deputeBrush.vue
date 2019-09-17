@@ -6,23 +6,39 @@
       </div>
       <el-dialog
         title="订单详情"
-        :close-on-click-modal="false"
+        :show-close="true"
         :visible.sync="dialogVisible"
         width="95%"
       >
         <dialogOrderDetail :ruleForm="ruleForm"></dialogOrderDetail>
       </el-dialog>
       <div class="block">
+        <span>选择月份：</span>
         <el-date-picker
-          @change="searchByMonth"
-          v-model="date"
+          :picker-options="pickerOptions1"
+          v-model="date1"
+          type="month"
+          placeholder="请选择月份"
+          value-format="yyyy-MM-dd"
+        ></el-date-picker
+        >&nbsp;至
+        <el-date-picker
+          :picker-options="pickerOptions2"
+          v-model="date2"
           type="month"
           placeholder="请选择月份"
           value-format="yyyy-MM-dd"
         ></el-date-picker>
+        <el-button
+          @click="searchByMonth()"
+          slot="append"
+          type="success"
+          icon="el-icon-search"
+          >搜索</el-button
+        >
       </div>
       <div>
-        <p class="fstrong f16" style="margin-top:10px;">我的订单(已提交)信息汇总表:</p>
+        <p class="fstrong f16" style="margin-top:10px;">订单信息汇总表:</p>
       </div>
       <el-table
         :data="tableData"
@@ -33,37 +49,51 @@
         style="width: 100%; margin-top:10px"
       >
         <el-table-column>
-          <el-table-column prop="DATE_CRE" width="160" label="时间"></el-table-column>
+          <el-table-column
+            prop="WEB_TJ_TIME"
+            width="160"
+            label="提交时间"
+          ></el-table-column>
         </el-table-column>
         <el-table-column :label="tableHead1">
           <el-table-column label="订单号">
             <template slot-scope="scope1">
               <!-- <el-button @click="toOrderDetail(scope1.row.ORDER_NO,scope1.row.STATUS_ID)" type="text">{{scope1.row.ORDER_NO}}</el-button> -->
               <el-button
-                @click="openDialog(scope1.row.ORDER_NO,scope1.row.STATUS_ID)"
+                @click="openDialog(scope1.row.ORDER_NO, scope1.row.STATUS_ID)"
                 type="text"
-              >{{scope1.row.ORDER_NO}}</el-button>
+                >{{ scope1.row.ORDER_NO }}</el-button
+              >
             </template>
           </el-table-column>
           <el-table-column label="订单状态">
             <template slot-scope="scope">
-              <span>{{scope.row.STATUS_ID|transStatus}}</span>
+              <span>{{ scope.row.STATUS_ID | transStatus }}</span>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column :label="tableHead2">
           <el-table-column prop="sumMoney" label="订单金额"></el-table-column>
-          <el-table-column prop="ALLBACK_Y" label="年返利使用金额"></el-table-column>
+          <el-table-column
+            prop="ALLBACK_Y"
+            label="年返利使用金额"
+          ></el-table-column>
         </el-table-column>
         <el-table-column :label="tableHead3">
-          <el-table-column prop="ALLBACK_M" label="月返利使用金额"></el-table-column>
+          <el-table-column
+            prop="ALLBACK_M"
+            label="月返利使用金额"
+          ></el-table-column>
           <el-table-column prop="ALL_SPEND" label="实付金额"></el-table-column>
         </el-table-column>
         <el-table-column>
-          <el-table-column prop="REBATE_MONEY" label="返利金额"></el-table-column>
+          <el-table-column
+            prop="REBATE_MONEY"
+            label="返利金额"
+          ></el-table-column>
           <el-table-column label="备注">
             <template slot-scope="scope1">
-              <span>{{scope1.row.REBATE_NOTES}}</span>
+              <span>{{ scope1.row.REBATE_NOTES }}</span>
             </template>
           </el-table-column>
         </el-table-column>
@@ -76,6 +106,7 @@ import Axios from "axios";
 import Cookies from "js-cookie";
 import dialogOrderDetail from "../components/order/dialogOrderDetail";
 import { searchAssignments, orderDetail } from "@/api/orderList";
+import { GetTaskProgress } from "@/api/orderListASP";
 import { mapMutations, mapActions } from "vuex";
 import { mapState } from "vuex";
 export default {
@@ -85,14 +116,29 @@ export default {
       order_no: "",
       ruleForm: {},
       dialogVisible: false,
-      date: "",
+      date1: "",
+      date2: "",
       tableData: [],
       assignments: "",
       assignmentsTarget: "",
       assignmentsReduce: "",
       tableHead1: "",
       tableHead2: "",
-      tableHead3: ""
+      tableHead3: "",
+      pickerOptions1: {
+        disabledDate: date1 => {
+          if (this.date2) {
+            return date1.getTime() >= new Date(this.date2).getTime();
+          }
+        }
+      },
+      pickerOptions2: {
+        disabledDate: date2 => {
+          if (this.date1) {
+            return date2.getTime() <= new Date(this.date1).getTime();
+          }
+        }
+      }
     };
   },
   created: function() {
@@ -105,9 +151,7 @@ export default {
     openDialog(val, status) {
       this.cid = Cookies.get("cid");
       this.order_no = val;
-      console.log(this.cid, this.order_no);
       this.getDetail();
-      this.dialogVisible = true;
     },
     //获取当前月份
     initMonth() {
@@ -117,12 +161,11 @@ export default {
       if (month < 10) {
         month = `0${month}`;
       }
-      this.date = `${year}-${month}-01`;
-      console.log(this.date);
+      this.date1 = `${year}-${month}-01`;
+      this.date2 = this.date1;
       this.searchByMonth();
     },
     toOrderDetail(val, status) {
-      console.log(val, status);
       Cookies.set("ORDER_NO", val);
       Cookies.set("status_ID", status);
       this.addTab("order/orderDetail");
@@ -159,45 +202,51 @@ export default {
     getDetail() {
       let url = "/order/getOrderContent.do";
       let data = {
-        cid: this.cid, //Cookies.get('cid'),'C01613',
-        order_no: this.order_no //Cookies.get('ORDER_NO'),'W1906060010b'
+        cid: this.cid,
+        order_no: this.order_no
       };
       orderDetail(url, data).then(res => {
-        console.log(res);
-        console.log(res.data.data[0]);
         this.ruleForm = res.data.data[0];
+        this.dialogVisible = true;
       });
     },
     //按月搜索
     searchByMonth() {
-      console.log(this.date);
       this.tableData = [];
-      let year = this.date.slice(0, 4);
-      let month = this.date.slice(5, 7);
-      console.log(year);
-      console.log(month);
+      if (!this.date1 && !this.date2) return;
+      else {
+        if (!this.date1) this.date1 = this.date2;
+        if (!this.date2) this.date2 = this.date1;
+      }
+      let year = this.date1.slice(0, 4);
+      let month = this.date1.slice(5, 7);
+      let endMonth = this.date2.slice(5, 7);
       let url = "/assignments/getAssignments.do";
       let data = {
         year: year,
         month: month,
+        endMonth: endMonth,
         cid: Cookies.get("cid"),
         companyId: Cookies.get("companyId")
       };
-      searchAssignments(url, data).then(res => {
-        console.log(res);
-        let zoom = res.data.orders;
+      //searchAssignments(url, data)
+      GetTaskProgress(data).then(res => {
+        let zoom = res.data[0].orders;
         let reduce = 0;
         for (let i = 0; i < zoom.length; i++) {
           zoom[i].sumMoney =
             zoom[i].ALL_SPEND + zoom[i].ALLBACK_Y + zoom[i].ALLBACK_M;
           reduce += zoom[i].ALL_SPEND;
         }
-        console.log(zoom);
         this.tableData = zoom;
-        this.assignments = res.data.assignments.assignments;
-        this.assignmentsTarget = res.data.assignments.assignmentsTarget;
-        this.assignmentsReduce = (this.assignmentsTarget - reduce).toFixed(2);
-        this.tHead();
+        if (res.data[0].assignments) {
+          this.assignments = res.data[0].assignments.ASSIGNMENTS;
+          this.assignmentsTarget = res.data[0].assignments.ASSIGNMENTS_TARGET;
+          this.assignmentsReduce = (this.assignmentsTarget - reduce).toFixed(2);
+          this.tHead();
+        } else {
+          this.tableHead1 = "本月无任务";
+        }
       });
     },
     //隔行变色
@@ -211,9 +260,12 @@ export default {
     ...mapActions("navTabs", ["closeTab", "closeToTab"]),
     //表头
     tHead() {
-      //this.tableHead = `协议月任务：${this.assignments}\xa0\xa0\xa0\xa0\xa0\xa0\xa0本月促销目标任务：${this.assignmentsTarget}\xa0\xa0\xa0\xa0\xa0\xa0\xa0任务完成差额：${this.assignmentsReduce}`;
-      this.tableHead1 = `协议月任务：${this.assignments}`;
-      this.tableHead2 = `本月促销目标任务：${this.assignmentsTarget}`;
+      var selectMonth =
+        this.date1 == this.date2
+          ? this.date1.slice(5, 7) + "月"
+          : this.date1.slice(5, 7) + "-" + this.date2.slice(5, 7) + "月总";
+      this.tableHead1 = `${selectMonth}协议月任务：${this.assignments}`;
+      this.tableHead2 = `${selectMonth}促销目标任务：${this.assignmentsTarget}`;
       this.tableHead3 = `任务完成差额：${this.assignmentsReduce}`;
     }
   },

@@ -6,17 +6,28 @@
       v-model="condition"
       style="width:300px;margin-bottom:10px;"
     >
-      <el-button @click="search()" slot="append" icon="el-icon-search">搜索</el-button>
+      <el-button @click="search()" slot="append" icon="el-icon-search"
+        >搜索</el-button
+      >
     </el-input>
-    <el-table style="width: 90%" :data="notiData" :row-class-name="tableRowClassName">
-      <el-table-column label="主题">
+    <el-table
+      style="width: 90%"
+      :data="notiData"
+      :row-class-name="tableRowClassName"
+    >
+      <el-table-column label="主题" header-align="center">
         <template slot-scope="scope">
-          <a class="link" @click="showDetail(scope.row)">{{scope.row.TITLE}}</a>
+          <a class="link" @click="showDetail(scope.row)">{{
+            scope.row.TITLE
+          }}</a>
+          <span v-if="dateIsValid(scope.row.ENDDATE)" class="newTooltip"
+            >新</span
+          >
         </template>
       </el-table-column>
       <el-table-column label="发布时间" width="120">
         <template slot-scope="scope">
-          <span>{{scope.row.PUBLISHTS | datatrans}}</span>
+          <span>{{ scope.row.PUBLISHTS | datatrans }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -31,8 +42,13 @@
         :total="count"
       ></el-pagination>
     </div>
-    <el-dialog :show-close="true" :visible.sync="detailVisible" width="1000px" top="5vh" >
-        <div v-html="detailData"></div>
+    <el-dialog
+      :show-close="true"
+      :visible.sync="detailVisible"
+      width="1000px"
+      top="5vh"
+    >
+      <div v-html="detailData"></div>
     </el-dialog>
   </el-card>
 </template>
@@ -48,8 +64,8 @@ export default {
       limit: 20,
       count: 1,
       currentPage: 1,
-      detailVisible :false,
-      detailData :'',
+      detailVisible: false,
+      detailData: "",
       notiData: [
         {
           TITLE: "关于XXXX2",
@@ -69,7 +85,7 @@ export default {
   filters: {
     datatrans(value) {
       //时间戳转化大法
-      if(value == '9999/12/31 00:00:00') return '';
+      if (value == "9999/12/31 00:00:00") return "";
       let date = new Date(value);
       let y = date.getFullYear();
       let MM = date.getMonth() + 1;
@@ -86,6 +102,11 @@ export default {
     }
   },
   methods: {
+    dateIsValid(date) {
+      var endDate = new Date(date);//失效时间
+      endDate.setTime(endDate.getTime()+24*60*60*1000);
+      return endDate - new Date() > 0;
+    },
     search() {
       this.currentPage = 1;
       this.getDetail();
@@ -101,9 +122,9 @@ export default {
         this.count = res.count;
       });
     },
-    showDetail(item){
-        this.detailData = item.CONTENT;
-        this.detailVisible = true;
+    showDetail(item) {
+      this.detailData = item.CONTENT;
+      this.detailVisible = true;
     },
     handleSizeChange(val) {
       this.limit = val;
@@ -143,5 +164,14 @@ export default {
 }
 .link:hover {
   color: #fc5121;
+}
+.newTooltip {
+  background-color: #f13f40;
+  padding: 2px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 100%;
+  color: #fff;
+  margin-left: 5px;
 }
 </style>

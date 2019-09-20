@@ -32,7 +32,7 @@
                         </div>
                         <div>
                             <label>帘头外包盒单边宽度:</label>
-                            <div v-if="headerData.outsourcingBoxExist === 1" class="messageInput">
+                            <div v-if="headerData.outsourcingBoxExist === 1 && headerData.outsourcingBoxWidth!=0" class="messageInput">
                                 {{headerData.outsourcingBoxWidth}}
                             </div>
                             <div v-else class="messageInput">无</div>m
@@ -899,11 +899,14 @@ export default {
                     if(_data.productType === 'XHB'){
                         let keys = Object.values(res)[0];
                         if(isNaN(Number(keys))){
+                            keys = Object.values(res)[1];
+                            if(isNaN(Number(keys))){
                             this.$alert('用量获取失败', '提示', {
                                 confirmButtonText: '好的',
                                 type: 'warning'
                             });
                             return;
+                            }
                         }
                         this.data[this.chooseIndex].dosage = keys;
                     }

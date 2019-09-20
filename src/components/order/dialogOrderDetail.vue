@@ -4,74 +4,113 @@
       <div slot="header">
         <span class="zoomLeft">
           订单号：
-          <span class="zoomRight">{{ruleForm.ORDER_NO}}</span>
+          <span class="zoomRight">{{ ruleForm.ORDER_NO }}</span>
         </span>
         <span class="zoomLeft">
           经办人：
-          <span class="zoomRight">{{ruleForm.LINKPERSON}}</span>
+          <span class="zoomRight">{{ ruleForm.LINKPERSON }}</span>
         </span>
         <span class="zoomLeft">
           收货人：
-          <span class="zoomRight">{{ruleForm.WL_CONTACTS}}({{ruleForm.WL_TEL}})</span>
+          <span class="zoomRight"
+            >{{ ruleForm.WL_CONTACTS }}({{ ruleForm.WL_TEL }})</span
+          >
         </span>
         <br />
         <span class="zoomLeft">
           收货地址：
-          <span
-            class="zoomRight"
-          >{{ruleForm.RECIVER_AREA1}}{{ruleForm.RECIVER_AREA2}}{{ruleForm.RECIVER_AREA3}}{{ruleForm.POST_ADDRESS}}</span>
+          <span class="zoomRight"
+            >{{ ruleForm.RECIVER_AREA1 }}{{ ruleForm.RECIVER_AREA2
+            }}{{ ruleForm.RECIVER_AREA3 }}{{ ruleForm.POST_ADDRESS }}</span
+          >
         </span>
         <br />
         <span class="zoomLeft">
           备注：
-          <span class="zoomRight">{{ruleForm.NOTES}}</span>
+          <span class="zoomRight">{{ ruleForm.NOTES }}</span>
         </span>
       </div>
-      <el-table :data="ruleForm.ORDERBODY" style="width: 100%" :row-class-name="tableRowClassName">
-        <el-table-column align="center" prop="ITEM_NO" label="型号"></el-table-column>
-        <el-table-column prop="ITEM_NO_SAMPLE" align="center" label="样本型号"></el-table-column>
-        <el-table-column align="center" prop="NOTE" label="类型"></el-table-column>
-        <el-table-column align="center" prop="QTY_REQUIRED" label="数量"></el-table-column>
-        <el-table-column prop="PROMOTION" align="center" label="活动类型"></el-table-column>
-        <el-table-column prop="PART_SEND_ID" align="center" :formatter="formatRole" label="发货说明"></el-table-column>
+      <el-table
+        :data="ruleForm.ORDERBODY"
+        style="width: 100%"
+        :row-class-name="tableRowClassName"
+      >
+        <el-table-column
+          align="center"
+          prop="ITEM_NO"
+          label="型号"
+        ></el-table-column>
+        <el-table-column
+          prop="ITEM_NO_SAMPLE"
+          align="center"
+          label="样本型号"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="NOTE"
+          label="类型"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="QTY_REQUIRED"
+          label="数量"
+        ></el-table-column>
+        <el-table-column
+          prop="PROMOTION"
+          align="center"
+          label="活动类型"
+        ></el-table-column>
+        <el-table-column
+          prop="PART_SEND_ID"
+          align="center"
+          :formatter="formatRole"
+          label="发货说明"
+        ></el-table-column>
         <el-table-column align="center" label="年返利">
           <template slot-scope="scope1">
             <span v-if="isManager === '0'">***</span>
-            <span v-else>{{scope1.row.BACK_Y}}</span>
+            <span v-else>{{ scope1.row.BACK_Y }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="BACK_M" align="center" label="月返利">
           <template slot-scope="scope1">
             <span v-if="isManager === '0'">***</span>
-            <span v-else>{{scope1.row.BACK_M}}</span>
+            <span v-else>{{ scope1.row.BACK_M }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="经销单价">
           <template slot-scope="scope1">
             <span v-if="isManager === '0'">***</span>
-            <span v-else>{{scope1.row.UNIT_PRICE}}</span>
+            <span v-else>{{ scope1.row.UNIT_PRICE }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="实际单价">
           <template slot-scope="scope1">
             <span v-if="isManager === '0'">***</span>
-            <span v-else>{{scope1.row.PROMOTION_COST/scope1.row.QTY_REQUIRED}}</span>
+            <span v-else>{{
+              (scope1.row.PROMOTION_COST / scope1.row.QTY_REQUIRED)
+                | priceFilter
+            }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="实际总价">
           <template slot-scope="scope1">
             <span v-if="isManager === '0'">***</span>
-            <span v-else>{{scope1.row.PROMOTION_COST}}</span>
+            <span v-else>{{ scope1.row.PROMOTION_COST }}</span>
           </template>
         </el-table-column>
         <el-table-column label="应付金额" align="center">
-              <template slot-scope="scope1">
-                <span v-if="isManager === '0'">***</span>
-                <span v-else>{{scope1.row.FINAL_COST}}</span>
-                <!-- <span v-else>{{scope1.row.UNIT_PRICE*scope1.row.QTY_REQUIRED | priceFilter}}</span> -->
-              </template>
-            </el-table-column>
-        <el-table-column align="center" prop="NOTES" label="备注"></el-table-column>
+          <template slot-scope="scope1">
+            <span v-if="isManager === '0'">***</span>
+            <span v-else>{{ scope1.row.FINAL_COST }}</span>
+            <!-- <span v-else>{{scope1.row.UNIT_PRICE*scope1.row.QTY_REQUIRED | priceFilter}}</span> -->
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="NOTES"
+          label="备注"
+        ></el-table-column>
       </el-table>
 
       <div style="float:right; margin-right:10.4%;height:100px;">
@@ -81,7 +120,9 @@
         </p>
         <p v-else>
           商品总价格：
-          <span style="color:tomato;font-weight:bold;">{{ruleForm.ALL_SPEND}}</span>
+          <span style="color:tomato;font-weight:bold;">{{
+            ruleForm.ALL_SPEND
+          }}</span>
         </p>
       </div>
     </el-card>
@@ -102,6 +143,17 @@ export default {
   },
   created: function() {},
   props: ["ruleForm"],
+  filters: {
+    priceFilter(value) {
+      //四舍五入过滤大法
+      let realVal = parseFloat(value).toFixed(2);
+      //防止出现-0.00；
+      if (realVal <= 0) {
+        realVal = 0.0;
+      }
+      return realVal;
+    }
+  },
   methods: {
     formatRole: function(row, column) {
       if (row.PART_SEND_ID == 0) {

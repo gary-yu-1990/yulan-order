@@ -771,11 +771,14 @@ export default {
                     if(_data.productType === 'XHB'){
                         let keys = Object.values(res)[0];
                         if(isNaN(Number(keys))){
+                            keys = Object.values(res)[1];
+                            if(isNaN(Number(keys))){
                             this.$alert('用量获取失败', '提示', {
                                 confirmButtonText: '好的',
                                 type: 'warning'
                             });
                             return;
+                            }
                         }
                         this.curtainData[this.chooseIndex].dosage = keys;
                     }

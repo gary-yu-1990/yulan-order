@@ -1,20 +1,31 @@
 <template>
-<!-- 有子节点，用el-menu-item-group -->
+  <!-- 有子节点，用el-menu-item-group -->
   <el-submenu
-    v-if="menuTreeItem.children && menuTreeItem.children.length >= 1 && menuTreeItem.MENU_TYPE == 'menu'"
+    v-if="
+      menuTreeItem.children &&
+        menuTreeItem.children.length >= 1 &&
+        menuTreeItem.MENU_TYPE == 'menu'
+    "
     :index="menuTreeItem.MENU_LINK"
   >
     <template slot="title">
       <i
-        v-if="menuTreeItem.ICON_CLASS!='' && menuTreeItem.ICON_CLASS.indexOf('&')>-1"
+        v-if="
+          menuTreeItem.ICON_CLASS != '' &&
+            menuTreeItem.ICON_CLASS.indexOf('&') > -1
+        "
         class="iconfont icon-color"
         v-html="menuTreeItem.ICON_CLASS"
-      >{{menuTreeItem.ICON_CLASS}}</i>
+        >{{ menuTreeItem.ICON_CLASS }}</i
+      >
       <i
-        v-else-if="menuTreeItem.ICON_CLASS!='' && menuTreeItem.ICON_CLASS.indexOf('&')==-1"
+        v-else-if="
+          menuTreeItem.ICON_CLASS != '' &&
+            menuTreeItem.ICON_CLASS.indexOf('&') == -1
+        "
         :class="menuTreeItem.ICON_CLASS"
       ></i>
-      <span>{{menuTreeItem.MENU_NAME}}</span>
+      <span>{{ menuTreeItem.MENU_NAME }}</span>
     </template>
     <el-menu-item-group>
       <menuTree
@@ -25,18 +36,35 @@
     </el-menu-item-group>
   </el-submenu>
   <!-- 没有子节点，直接el-menu-item -->
-  <router-link v-else-if ="menuTreeItem.MENU_TYPE == 'menu'" :to="'/' + menuTreeItem.MENU_LINK" tag="div">
-    <el-menu-item :index="menuTreeItem.MENU_LINK">
+  <router-link
+    v-else-if="menuTreeItem.MENU_TYPE == 'menu'"
+    :to="'/' + menuTreeItem.MENU_LINK"
+    tag="div"
+  >
+    <el-menu-item
+      :index="menuTreeItem.MENU_LINK"
+      v-if="
+        menuTreeItem.MENU_LINK != 'painting' &&
+          menuTreeItem.MENU_LINK != 'refundCompensation'
+      "
+    >
       <i
-        v-if="menuTreeItem.ICON_CLASS!='' && menuTreeItem.ICON_CLASS.indexOf('&')>-1"
+        v-if="
+          menuTreeItem.ICON_CLASS != '' &&
+            menuTreeItem.ICON_CLASS.indexOf('&') > -1
+        "
         class="iconfont icon-color"
         v-html="menuTreeItem.ICON_CLASS"
-      >{{menuTreeItem.ICON_CLASS}}</i>
+        >{{ menuTreeItem.ICON_CLASS }}</i
+      >
       <i
-        v-else-if="menuTreeItem.ICON_CLASS!='' && menuTreeItem.ICON_CLASS.indexOf('&')==-1"
+        v-else-if="
+          menuTreeItem.ICON_CLASS != '' &&
+            menuTreeItem.ICON_CLASS.indexOf('&') == -1
+        "
         :class="menuTreeItem.ICON_CLASS"
       ></i>
-      <span>{{menuTreeItem.MENU_NAME}}</span>
+      <span>{{ menuTreeItem.MENU_NAME }}</span>
     </el-menu-item>
   </router-link>
 </template>
@@ -55,8 +83,8 @@ export default {
 
 <style scoped>
 .el-menu i {
-  font-size: 20px;
-  margin: 0 20px;
+  font-size: 18px;
+  margin: 0 10px;
 }
 .icon-color {
   color: #303133;

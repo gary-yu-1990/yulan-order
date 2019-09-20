@@ -8,116 +8,12 @@ const state = {
     activeTabName: 'home',  //当前页面(去参)
     activeUrlName: 'home',  //当前页面(带参)
     parameterArray: ['shoppingCar/shopping'],     //含参数的路径名组成的数组
-    closeToArray: [],       //不可直接关闭的特殊路径组成的数组
+    closeToArray: ['main'],       //不可直接关闭的特殊路径组成的数组
     //标签数组
     tabList: [],
     //导航数组，等权限控制做好通过后台读取
     menuTreeListFlatten: [],
-    menuTreeList: [
-        {
-            SYSTEMMENU_ID: 1,
-            PSYSTEMMENU_ID: 0,
-            MENU_NAME: '产品',
-            MENU_TEXT: '产品',
-            MENU_LINK: 'shops',
-            ICON_CLASS: '&#xe624;',
-            MENU_TYPE: 'menu',
-            children: [
-                {
-                    SYSTEMMENU_ID: 101,
-                    PSYSTEMMENU_ID: 1,
-                    MENU_NAME: '墙纸配套类',
-                    MENU_TEXT: '墙纸',
-                    MENU_LINK: 'shops/wallPaper',
-                    ICON_CLASS: '',
-                    MENU_TYPE: 'menu',
-                },
-                {
-                    SYSTEMMENU_ID: 102,
-                    PSYSTEMMENU_ID: 1,
-                    MENU_NAME: '窗帘',
-                    MENU_TEXT: '窗帘',
-                    MENU_LINK: 'shops/curtain',
-                    ICON_CLASS: '',
-                    MENU_TYPE: 'menu',
-                },
-                {
-                    SYSTEMMENU_ID: 103,
-                    PSYSTEMMENU_ID: 1,
-                    MENU_NAME: '软装',
-                    MENU_TEXT: '软装',
-                    MENU_LINK: 'shops/softSuit',
-                    ICON_CLASS: '',
-                    MENU_TYPE: 'menu',
-                },
-            ]
-        },
-        {
-            SYSTEMMENU_ID: 2,
-            PSYSTEMMENU_ID: 0,
-            MENU_NAME: '购物车',
-            MENU_TEXT: '购物车',
-            MENU_LINK: 'shoppingCar',
-            ICON_CLASS: '&#xf0179;',
-            MENU_TYPE: 'menu',
-            children: [
-                {
-                    SYSTEMMENU_ID: 201,
-                    PSYSTEMMENU_ID: 2,
-                    MENU_NAME: '墙纸配套类',
-                    MENU_TEXT: '购物车',
-                    MENU_LINK: 'shoppingCar/shopping?wallPaper',
-                    ICON_CLASS: '',
-                    MENU_TYPE: 'menu',
-                },
-                {
-                    SYSTEMMENU_ID: 202,
-                    PSYSTEMMENU_ID: 2,
-                    MENU_NAME: '窗帘',
-                    MENU_TEXT: '购物车',
-                    MENU_LINK: 'shoppingCar/shopping?curtain',
-                    ICON_CLASS: '',
-                    MENU_TYPE: 'menu',
-                },
-                {
-                    SYSTEMMENU_ID: 203,
-                    PSYSTEMMENU_ID: 2,
-                    MENU_NAME: '软装',
-                    MENU_TEXT: '购物车',
-                    MENU_LINK: 'shoppingCar/shopping?softSuit',
-                    ICON_CLASS: '',
-                    MENU_TYPE: 'menu',
-                },
-            ]
-        },
-        {
-            SYSTEMMENU_ID: 3,
-            PSYSTEMMENU_ID: 0,
-            MENU_NAME: '我的订单',
-            MENU_TEXT: '我的订单',
-            MENU_LINK: 'order/myOrder',
-            ICON_CLASS: '&#xe62b;',
-            MENU_TYPE: 'menu',
-        },
-        {
-            SYSTEMMENU_ID: 4,
-            PSYSTEMMENU_ID: 0,
-            MENU_NAME: '对账单',
-            MENU_TEXT: '对账单',
-            MENU_LINK: 'statement',
-            ICON_CLASS: 'el-icon-goods',
-            MENU_TYPE: 'menu',
-        },
-        {
-            SYSTEMMENU_ID: 5,
-            PSYSTEMMENU_ID: 0,
-            MENU_NAME: '我的优惠券',
-            MENU_TEXT: '我的优惠券',
-            MENU_LINK: 'myZone/myCoupon',
-            ICON_CLASS: '',
-            MENU_TYPE: 'function',
-        }
-    ]
+    menuTreeList: []
 }
 
 const mutations = {
@@ -148,13 +44,14 @@ const mutations = {
             if (state.closeToArray.includes(index)) isClose = false;
             else isClose = true;
             let tabName = '';
-            // var mapTab = state.menuTreeListFlatten.filter(item => item.MENU_LINK == oldIndex);
-            // if (mapTab.length > 0)
-            //     tabName = mapTab[0].MENU_TEXT;
-            // else
-            //     tabName = tabsName(index);
+            var mapTab = state.menuTreeListFlatten.filter(item => item.MENU_LINK == oldIndex);
+            if (mapTab.length > 0)
+                tabName = mapTab[0].MENU_TEXT;
+            else
+                tabName = tabsName(index);
             state.tabList.push({
-                label: tabsName(index),     //选项卡标题
+                //label: tabsName(index),     //选项卡标题
+                label: tabName,     //选项卡标题
                 name: index,                //唯一标识id，指向组件
                 disabled: false,            //是否禁用  （默认false）
                 closable: isClose,          //标签是否可关闭  （默认true，除了主页）
@@ -217,9 +114,16 @@ const mutations = {
     emptyTabList(state) {
         state.tabList = [];
     },
+    /*
+    *设置菜单树
+    */
     setMenuTreeList(state, data) {
-        //data菜单树
+        state.menuTreeList = data;
         state.menuTreeListFlatten = arrayChildrenFlatten(state.menuTreeList, []);
+    },
+    emptyMenuTreeList(state) {
+        state.menuTreeList = [];
+        state.menuTreeListFlatten = [];
     }
 };
 /*

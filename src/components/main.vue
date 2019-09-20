@@ -14,8 +14,37 @@
             @select="addTab"
             :collapse="asideStatus"
           >
-            <!-- <menuTree v-for="item in menuTreeList" :key="item.SystemMenuID" :menuTreeItem="item"/> -->
-            <el-submenu index="shops">
+            <menuTree
+              v-for="item in menuTreeList"
+              :key="item.SystemMenuID"
+              :menuTreeItem="item"
+            />
+            <router-link to="/painting" tag="div">
+              <el-menu-item v-if="isContainAttr('painting')" index="painting">
+                <i class="iconfont icon-color">&#xe7fb;</i>
+                <span slot="title">委托喷绘书</span>
+                <el-badge
+                  v-if="getPainting > 0"
+                  class="mark r"
+                  :value="getPainting"
+                />
+              </el-menu-item>
+            </router-link>
+            <router-link to="/refundCompensation" tag="div">
+              <el-menu-item
+                v-if="isContainAttr('refundCompensation')"
+                index="refundCompensation"
+              >
+                <i class="iconfont icon-color">&#xe6ee;</i>
+                <span slot="title">退货赔偿</span>
+                <el-badge
+                  v-if="getRefund > 0 && identity === 'ECWEB'"
+                  class="mark r"
+                  :value="getRefund"
+                />
+              </el-menu-item>
+            </router-link>
+            <!-- <el-submenu index="shops">
               <template slot="title">
                 <i class="iconfont icon-color">&#xe624;</i>
                 <span>产品</span>
@@ -122,12 +151,17 @@
                 />
               </el-menu-item>
             </router-link>
+            <router-link to="/marketInfo" tag="div">
+              <el-menu-item index="marketInfo">
+                <i class="iconfont icon-color">&#xe627;</i>
+                <span slot="title">调查表</span>
+              </el-menu-item>
+            </router-link>
             <router-link to="/complaint" tag="div">
               <el-menu-item
                 v-if="identity === 'ECWEB' || identity === 'USER'"
                 index="complaint"
               >
-                <!-- <i class="iconfont icon-color">&#xe612;</i> -->
                 <i class="el-icon-s-custom"></i>
                 <span slot="title">投诉反馈</span>
               </el-menu-item>
@@ -150,12 +184,6 @@
                 </router-link>
               </el-menu-item-group>
             </el-submenu>
-            <router-link to="/marketInfo" tag="div">
-              <el-menu-item index="marketInfo">
-                <i class="iconfont icon-color">&#xe627;</i>
-                <span slot="title">市场信息</span>
-              </el-menu-item>
-            </router-link>
             <router-link to="/supplierModule/supplyPort" tag="div">
               <el-menu-item index="supplierModule/supplyPort">
                 <i class="el-icon-s-home"></i>
@@ -190,7 +218,7 @@
                   </el-menu-item>
                 </router-link>
               </el-menu-item-group>
-            </el-submenu>
+            </el-submenu> -->
           </el-menu>
         </el-scrollbar>
       </el-aside>
@@ -214,9 +242,9 @@
             </router-link>
           </ul>
           <ul class="r">
-            <li style="height:50px;">
-              <!-- v-if = "isContainAttr('shoppingCar')"  -->
-              <el-dropdown trigger="hover" style="margin:0;">
+            <!-- <li style="height:50px;"> -->
+            <!-- v-if = "isContainAttr('shoppingCar')"  -->
+            <!-- <el-dropdown trigger="hover" style="margin:0;">
                 <span class="el-dropdown-link mr10">
                   <i class="iconfont ml10" style="margin-right:3px;"
                     >&#xf0179;</i
@@ -224,25 +252,25 @@
                   购物车
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
-                <el-dropdown-menu slot="dropdown" style="min-width: 120px;">
-                  <!-- v-if = "isContainAttr('shoppingCar/shopping?wallPaper')"   -->
-                  <router-link to="/shoppingCar/shopping?wallPaper" tag="li">
+                <el-dropdown-menu slot="dropdown" style="min-width: 120px;"> -->
+            <!-- v-if = "isContainAttr('shoppingCar/shopping?wallPaper')"   -->
+            <!-- <router-link to="/shoppingCar/shopping?wallPaper" tag="li">
                     <el-dropdown-item
                       @click.native="addTab('shoppingCar/shopping?wallPaper')"
                     >
                       <span>墙纸配套类</span>
                     </el-dropdown-item>
-                  </router-link>
-                  <!-- v-if = "isContainAttr('shoppingCar/shopping?curtain')"   -->
-                  <router-link to="/shoppingCar/shopping?curtain" tag="li">
+                  </router-link> -->
+            <!-- v-if = "isContainAttr('shoppingCar/shopping?curtain')"   -->
+            <!-- <router-link to="/shoppingCar/shopping?curtain" tag="li">
                     <el-dropdown-item
                       @click.native="addTab('shoppingCar/shopping?curtain')"
                     >
                       <span>窗帘</span>
                     </el-dropdown-item>
-                  </router-link>
-                  <!--v-if = "isContainAttr('shoppingCar/shopping?softSuit')"   -->
-                  <router-link to="/shoppingCar/shopping?softSuit" tag="li">
+                  </router-link> -->
+            <!--v-if = "isContainAttr('shoppingCar/shopping?softSuit')"   -->
+            <!-- <router-link to="/shoppingCar/shopping?softSuit" tag="li">
                     <el-dropdown-item
                       @click.native="addTab('shoppingCar/shopping?softSuit')"
                     >
@@ -251,13 +279,13 @@
                   </router-link>
                 </el-dropdown-menu>
               </el-dropdown>
-            </li>
+            </li> -->
             <!--v-if = "isContainAttr('order/myOrder')"  -->
-            <router-link to="/order/myOrder" tag="li">
+            <!-- <router-link to="/order/myOrder" tag="li">
               <li @click="addTab('order/myOrder')">
                 <span class="ml10 mr10">我的订单</span>
               </li>
-            </router-link>
+            </router-link> -->
             <li>
               <el-dropdown trigger="hover">
                 <span class="el-dropdown-link">
@@ -269,7 +297,11 @@
                   <el-dropdown-item>修改登录密码</el-dropdown-item>
                   <el-dropdown-item>修改对账密码</el-dropdown-item>-->
                   <!--v-if = "isContainAttr('myZone/myCoupon')"  -->
-                  <router-link to="/myZone/myCoupon" tag="li">
+                  <router-link
+                    v-if="isContainAttr('myZone/myCoupon')"
+                    to="/myZone/myCoupon"
+                    tag="li"
+                  >
                     <el-dropdown-item @click.native="addTab('myZone/myCoupon')"
                       >我的优惠券</el-dropdown-item
                     >
@@ -280,7 +312,7 @@
                 </el-dropdown-menu>
               </el-dropdown>
             </li>
-            <li @click="screenfull">
+            <li style="margin-right:20px;" @click="screenfull">
               <i class="iconfont ml10 mr10">&#xe663;</i>
             </li>
           </ul>
@@ -371,6 +403,7 @@ import { getUserMoney } from "@/api/user";
 import { getAllRefund } from "@/api/refund";
 import { getIconNumber } from "@/api/painting";
 import { GetNewNotification, InserFlag } from "@/api/notificationASP";
+import { QueryWebMenuByUserId } from "@/api/webMenuASP";
 import screenfull from "screenfull";
 import { mapMutations, mapActions } from "vuex";
 import { mapState } from "vuex";
@@ -559,9 +592,21 @@ export default {
         path: "/login"
       });
     },
-    //获得菜单数组并传入store
-    getMenuTree() {
-      this.setMenuTreeList();
+    //获得菜单数组并传入store ,await并不会阻塞主线程，这里并不起作用
+    async getMenuTree() {
+      this.$store.commit("navTabs/emptyMenuTreeList");
+      await QueryWebMenuByUserId({
+        userid: JSON.parse(Cookies.get("userInfo")).userId
+      }).then(res => {
+        if (res.data.children.length > 0) {
+          this.setMenuTreeList(res.data.children);
+        } else {
+          this.$alert("没有菜单权限，请联系管理员配置", "提示", {
+            confirmButtonText: "确定",
+            type: "success"
+          });
+        }
+      });
     },
     isContainAttr(attr) {
       return (
@@ -682,16 +727,16 @@ export default {
     }
   },
   created() {
+    this.getMenuTree();
     this.userMoney();
     this.getPath();
-    this.getMenuTree();
+    this.addTab("main");
     this.addTab(this.defaultUrl);
     this.addBadgeIcon();
     this.PaintingIcon();
     document.onkeydown = function(event) {
       var key = window.event.keyCode;
       if (key == 27) {
-        // alert(1);
         if (this.fullscreen == true) {
           this.handleFullScreen();
         }

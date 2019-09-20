@@ -53,10 +53,7 @@
         <br />
         <span class="zoomLeft">
           收货地址：
-          <span class="zoomRight"
-            >{{ ruleForm.RECIVER_AREA1 }}{{ ruleForm.RECIVER_AREA2
-            }}{{ ruleForm.RECIVER_AREA3 }}{{ ruleForm.POST_ADDRESS }}</span
-          >
+          <span class="zoomRight">{{ ruleForm.ALL_ADDRESS }}</span>
         </span>
         <span class="zoomLeft">
           订单备注：

@@ -1191,6 +1191,9 @@ export default {
         this.array2[i].curtainSizeTimes = getPush2[i].drape
           ? getPush2[i].drape
           : 0;
+          this.array2[i].curtainWbhSize = getPush2[i].outsourcingBoxWidth
+          ? getPush2[i].outsourcingBoxWidth
+          : 0;
         this.array2[i].curtainRoomName = getPush2[i].location
           ? getPush2[i].location
           : "";
@@ -1355,7 +1358,7 @@ export default {
             });
           })
           .catch(res => {
-            this.$alert("提交失败:" + res.msg, "提示", {
+            this.$alert("提交失败，请联系管理员", "提示", {
               confirmButtonText: "确定",
               type: "warning"
             });
@@ -1435,7 +1438,7 @@ export default {
             });
           })
           .catch(res => {
-            this.$alert("提交失败:" + res.msg, "提示", {
+            this.$alert("提交失败，请联系管理员", "提示", {
               confirmButtonText: "确定",
               type: "warning"
             });

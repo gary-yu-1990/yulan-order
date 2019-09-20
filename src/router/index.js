@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from '../store/index';
 import Router from 'vue-router'
 import Login from '@/components/login'
 import Main from '@/components/main'
@@ -57,7 +58,7 @@ const router = new Router({
       path: '/main',
       name: 'main',
       component: Main,
-      redirect: '/shops/wallPaper',
+      //redirect: '/shops/wallPaper',
       children: [
         {
           path: '/shops/curtain',

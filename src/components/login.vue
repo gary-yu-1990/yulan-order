@@ -3,7 +3,12 @@
     <div class="loginMain">
       <!-- 登录框头部--图标 -->
       <div class="mainLogoWrap">
-        <img class="mainLogo" width="100%" src="../assets/img/loginLogo.png" alt />
+        <img
+          class="mainLogo"
+          width="100%"
+          src="../assets/img/loginLogo.png"
+          alt
+        />
       </div>
       <div class="mainInfo">
         <h1>玉兰B2B订单管理系统</h1>
@@ -16,8 +21,18 @@
         </div>
         <div class="info">
           <p>密码:</p>
-          <el-input type="password" style="width:327px;" placeholder="请输入密码" v-model="password">
-            <img slot="prefix" src="../assets/img/password.png" width="22" alt />
+          <el-input
+            type="password"
+            style="width:327px;"
+            placeholder="请输入密码"
+            v-model="password"
+          >
+            <img
+              slot="prefix"
+              src="../assets/img/password.png"
+              width="22"
+              alt
+            />
           </el-input>
         </div>
         <div class="submit" @click="loginSubmit">登录</div>
@@ -74,7 +89,13 @@ export default {
       Cookies.remove("customerType");
       userLogin(obj)
         .then(res => {
-          console.log(res);
+          if (res.data.stopped == 1) {
+            this.$alert("账号被禁用，无法登录", "提示", {
+              type: "warning",
+              confirmButtonText: "好的"
+            });
+            return;
+          }
           let companyId;
           Cookies.set("cid", cid);
           sessionStorage.setItem("_userId", cid);

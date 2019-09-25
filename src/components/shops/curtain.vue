@@ -1,9 +1,6 @@
 <template>
   <div id="curtain">
     <el-card shadow="hover">
-      <div slot="header" class="clearfix">
-        <span class="fstrong f16">窗帘</span>
-      </div>
       <div id="shopsCon">
         <p class="f12 tl" style="color: red;">（带*号表示可选择帘头外包盒）</p>
         <div id="shopSearchBox" class="mt10">

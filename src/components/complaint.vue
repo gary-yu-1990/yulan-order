@@ -34,27 +34,26 @@
         <el-button style="float:right" size="medium" @click="newOne" type="primary">新增投诉单</el-button>
       </div>
       <el-table border :data="bankData" style="width: 100%" :row-class-name="tableRowClassName">
-        <el-table-column width="130" prop="id" label="投诉单号" align="center"></el-table-column>
-        <el-table-column label="投诉时间" align="center">
+        <el-table-column width="170" prop="id" label="投诉单号" align="center"></el-table-column>
+        <el-table-column width="150"  label="投诉时间" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.createTs | datatrans}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="yulanBank" width="160" label="投诉类型" align="center"></el-table-column>
         <el-table-column prop="payerName" label="投诉人" align="center"></el-table-column>
-        <el-table-column prop="payerAccount" width="160" label="投诉内容" align="center"></el-table-column>
         <el-table-column prop="payAmount" label="处理人" width="100" align="center"></el-table-column>
-        <el-table-column label="处理时间" align="center">
+        <el-table-column width="150" label="处理时间" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.payDate | datatrans}}</span>
           </template>
         </el-table-column>
-        <el-table-column width="80" label="状态" align="center">
+        <el-table-column width="100" label="状态" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.state | transStatus}}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" width="200" label="操作">
+        <el-table-column align="center" width="150" label="操作">
           <template slot-scope="scope">
             <el-button
               v-if="scope.row.state =='SUBMITED'"
@@ -91,7 +90,7 @@
       </div>
     </el-card>
 
-    <el-dialog title="投诉登记表" :visible.sync="bankDetail" :close-on-click-modal="false" width="75%">
+    <el-dialog title="投诉登记表" :visible.sync="bankDetail" :close-on-click-modal="false" width="40%">
       <!-- 查看区 -->
       <div v-show="EDITorCHECK" class="table-c">
         
@@ -102,89 +101,129 @@
         <h3 v-show="isChuli">处理人：{{tableData.erpProcessOp}}&nbsp;&nbsp;&nbsp;&nbsp;处理时间：{{tableData.erpProcessTs | datatrans}}</h3>
 
         <table width="100%" border="0px" cellspacing="0px" cellpadding="0">
-          <tr>
-            <td class="grayTD">投诉单号</td>
-            <td>{{tableData.id}}</td>
-            <td class="grayTD">客户代码</td>
-            <td>{{tableData.cid}}</td>
-            <td class="grayTD">客户名称</td>
-            <td>{{tableData.cname}}</td>
+           <tr>
+            <td class="grayTD" style="width:16%;height:12px">投诉单号</td>
+            <td style="width:34%;height:12px">{{tableData.id}}</td>
+
+            <td class="grayTD" style="width:16%;height:12px">客户代码</td>
+            <td style="width:34%;height:12px">{{tableData.cid}}</td>
           </tr>
+
           <tr>
-            <td class="grayTD">联系方式</td>
-            <td>{{sumbit.cname}}</td>
-            <td  colspan="4"></td>
+            <td class="grayTD" style="height:12px">客户名称</td>
+            <td style="height:12px">{{tableData.cname}}</td>
+            <td class="grayTD" style="height:12px">联系方式</td>
+            <td style="height:12px">13908722631</td>
           </tr>
+
           <tr>
-            <td class="tableCol" style="font-size:20px;" colspan="6">投诉信息</td>
+            <td class="grayTD" style="font-size:15px;height:20px" colspan="4">投诉信息</td>
           </tr>
+
           <tr>
-            <td class="grayTD" colspan="1">投诉类型</td>
-            <td colspan="2">{{tableData.yulanBank}}</td>
-            <td class="grayTD" colspan="1" rowspan="6" border="0px" >附件</td>
-            <td colspan="2" rowspan="6">
+            <td class="grayTD" colspan="1" style="height:12px">投诉类型</td>
+            <td colspan="1" style="height:12px">产品质量</td>
+            <td class="grayTD" colspan="1" rowspan="4" border="0px" style="height:12px">附件</td>
+            <td colspan="1" rowspan="4" style="height:12px">
               <el-tooltip class="item" effect="dark" content="点击放大图片" placement="top">
                 <img @click="BIG" class="ISimg" :src="tableData.imgUrl" />
               </el-tooltip>
             </td>
           </tr>
+
           <tr>
-            <td class="grayTD" colspan="1">投诉内容</td>
-            <td colspan="2">{{tableData.payerName}}</td>
+            <td class="grayTD" colspan="1" style="height:30px;">投诉内容</td>
+            <td colspan="1" style="height:30px;">
+              刚购置一月，窗帘滑动滚轮处
+              就出现裂痕迹
+              </td>
           </tr>
-          <tr>
-            <td class="grayTD" colspan="1" border="0px">投诉要求</td>
-            <td colspan="2">{{tableData.payerAccount}}</td>
+
+          <tr >
+            <td class="grayTD" colspan="1" border="0px" style="height:30px;">投诉要求</td>
+            <td colspan="1">换货</td>
+          </tr>    
+
+          <tr >
+            <td class="grayTD" colspan="1" border="0px" style="height:30px;">回复内容</td>
+            <td colspan="1">
+            非常抱歉出现了这样的问题，我们会
+            尽快联系您并做好处理
+              </td>
           </tr>
+
         </table>
       </div>
 
       <!-- 编辑区 -->
       <div v-show="!EDITorCHECK" class="table-c">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr class="tableCol" style="height:55px;">
-            <td style="font-size:20px;" colspan="6">投诉登记表</td>
+          <tr class="grayTD">
+            <td style="font-size:20px;height:20px;" colspan="4">投诉登记表</td>
           </tr>
 
           <tr>
-            <td class="grayTD">投诉单号</td>
-            <td v-if="newORedit">{{sumbit.id}}</td>
-            <td v-else>(提交后自动生成)</td>
-
-            <td class="grayTD">客户代码</td>
-            <td>{{sumbit.cid}}</td>
-
-            <td class="grayTD">客户名称</td>
-            <td>{{sumbit.cname}}</td>
+            <td class="grayTD" style="width:16%;height:12px">投诉单号</td>
+            <td v-if="newORedit" style="width:34%;height:12px">{{sumbit.id}}</td>
+            <td v-else style="width:34%;height:12px">(提交后自动生成)</td>
+            <td class="grayTD" style="width:16%;height:12px">客户代码</td>
+            <td style="width:34%;height:12px">{{sumbit.cid}}</td>
           </tr>
 
           <tr>
-            <td class="grayTD" >联系方式</td>
-            <td>{{sumbit.cname}}</td>
-            <td colspan="4"></td>
+            <td class="grayTD" style="height:12px">客户名称</td>
+            <td style="height:12px">{{sumbit.cname}}</td>
+            <td class="grayTD" style="height:12px">联系方式</td>
+            <td style="height:12px">13908722631</td>
           </tr>
 
           <tr>
-            <td class="tableCol" style="font-size:20px;" colspan="6">投诉信息</td>
+            <td class="grayTD" style="font-size:15px;height:20px" colspan="4">投诉信息</td>
           </tr>
 
           <tr>
-            <td class="grayTD" colspan="1">投诉类型</td>
-
-            <td colspan="2">
-              <el-select v-model="sumbit.yulanBank" placeholder="选择相应类型" style="float:left">
-                <el-option
+            <td class="grayTD" colspan="1" style="height:12px">投诉类型</td>
+            <td colspan="1" style="height:12px">
+              <select v-model="sumbit.yulanBank" placeholder="选择相应类型" style="float:center;height:100%;width:100%">
+                <option
                   v-for="item in bankArray"
                   :key="item.label"
                   :label="item.label"
                   :value="item.value"
-                ></el-option>
-              </el-select>
+                ></option>
+              </select>
             </td>
+              
+            <td class="grayTD" colspan="1" border="0px" style="height:12px">服务评价</td>
+            <td colspan="1" style="height:12px"> 
+               <input
+                  placeholder="（请您对服务做出评价）"
+                  clearable
+                  class="inputStyle">
+            </td>
+          </tr>
 
-            <td class="grayTD" colspan="1" :rowspan="ROWSPAN" border="0px" >附件</td>
+          <tr >
+            <td class="grayTD" style="height:50px;" >投诉内容</td>
+            <td style="height:50px;">
+                <input
+                  placeholder="（请输入您的投诉内容）"
+                  clearable
+                  class="inputStyle">
+            </td>
+            <td class="grayTD" style="height:50px;">投诉要求</td>
+            <td style="height:50px;">
+                <input
+                  placeholder="（请输入您的投诉要求）"
+                  clearable
+                  class="inputStyle">
+            </td>
+          </tr>
 
-            <td colspan="2" :rowspan="ROWSPAN">
+           <tr>
+            <td class="grayTD" colspan="1" style="height:12px;">附件</td>
+
+            <td colspan="1" style="height:12px;">
               <el-upload
                 class="avatar-uploader"
                 accept="image/png, image/jpg, image/jpeg"
@@ -197,45 +236,9 @@
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </td>
-          </tr>
 
-          <tr style="height:130px;">
-            <td class="grayTD" colspan="1">投诉内容</td>
-            <td colspan="2">
-              <el-input
-                type="textarea"
-                maxlength="200"
-                :autosize="{ minRows:8, maxRow:12}"
-                resize="none"
-                v-model="sumbit.memo"
-                placeholder="请输入您的投诉内容"
-              ></el-input>
-            </td>
-          </tr>
-
-          <tr style="height:130px;">
-            <td class="grayTD" colspan="1">投诉要求</td>
-            <td colspan="2">
-              <el-input
-                type="textarea"
-                maxlength="200"
-                :autosize="{ minRows:8, maxRow:12}"
-                resize="none"
-                v-model="sumbit.memo"
-                placeholder="请输入您的投诉要求"
-              ></el-input>
-            </td>
-          </tr>
-
-          <tr>
-            <td class="grayTD" colspan="1" border="0px" >服务评价</td>
-            <td colspan="2"> <el-input
-                type="textarea"
-                resize="none"
-                v-model="sumbit.memo"
-                placeholder="请对我们的服务进行评价"
-              ></el-input>
-            </td>
+            <td colspan="2" style="font-size:10px;color:gray;height:12px;" >(请上传jpg、dwg、pdf等格式的图片，
+              图片关键部位应清晰呈现)</td>
           </tr>
 
         </table>
@@ -261,11 +264,6 @@
 
 <script>
 import {
-  getBankList,
-  getPayBillContent,
-  changeStatus,
-  sumbitForm,
-  getHistory
 } from "@/api/bank";
 import Cookies from "js-cookie";
 const Head = "http://14.29.223.114:10250/upload";
@@ -274,23 +272,7 @@ export default {
   name: "Complaint",
   data() {
     return {
-      ROWSPAN: 6,
       BigPic: false,
-      showtheHistory: false,
-      historyList: [
-        {
-          PAYER_NAME: "测试", //汇款人名
-          PAYER_ACCOUNT: "45544521112565445" //汇款账号
-        },
-        {
-          PAYER_NAME: "测试3",
-          PAYER_ACCOUNT: "121212121"
-        },
-        {
-          PAYER_NAME: "测试4",
-          PAYER_ACCOUNT: "1212121"
-        }
-      ],
       sqlpath: "", //保存图片相对路径
       newORedit: false, //决定显示新建或者编辑
       EDITorCHECK: false, //决定显示编辑或者查看
@@ -389,8 +371,6 @@ export default {
     };
   },
   created: function() {
-    this._getBankList();
-    this._getHistory();
   },
   filters: {
     transStatus(value) {
@@ -429,124 +409,8 @@ export default {
       return y + "-" + MM + "-" + d + " "; /* + h + ':' + m + ':' + s; */
     }
   },
-  watch: {
-    showtheHistory(val) {
-      if (val) {
-        this.ROWSPAN = 7;
-      } else {
-        this.ROWSPAN = 6;
-      }
-    }
-  },
   methods: {
-    //焦点显示历史记录
-    showHistory() {
-      this.showtheHistory = true;
-    },
-    //填充历史记录
-    writeHistory(payerName, payerAccount) {
-      this.sumbit.payerName = payerName;
-      this.sumbit.payerAccount = payerAccount;
-      this.showtheHistory = false;
-    },
-    //确定新建
-    sumbitNEW() {
-      let url = Quest + "/PaymentBill/insertPaymentBill.do";
-      let data = this.sumbit;
-      this.sumbit.cid = Cookies.get("companyId");
-      //判断是否填完所有信息
-      if (
-        this.sumbit.yulanBank == "" ||
-        this.sumbit.payerName == "" ||
-        this.sumbit.payAmount == "" ||
-        this.sumbit.payerAccount == "" ||
-        this.sumbit.payDate == "" ||
-        this.sumbit.payDate == null
-      ) {
-        this.$alert("请完善信息", "提示", {
-          confirmButtonText: "确定",
-          type: "warning"
-        });
-        return;
-      }
-      //判断是否上传图片
-      if (this.sumbit.imgFileName == "") {
-        this.$alert("请上传凭证", "提示", {
-          confirmButtonText: "确定",
-          type: "warning"
-        });
-        return;
-      }
-      this.sumbit.imgUrl = this.sqlpath; //转换为相对地址
-      sumbitForm(url, data).then(res => {
-        console.log(res);
-        if (res.code == 0) {
-          this.$alert("提交成功", "提示", {
-            confirmButtonText: "确定",
-            type: "success"
-          });
-          this.currentPage = 1;
-          this._getBankList();
-          this.bankDetail = false;
-        } else {
-          this.$alert("提交失败，请稍后重试", "提示", {
-            confirmButtonText: "确定",
-            type: "warning"
-          });
-        }
-      });
-    },
-    //编辑修改
-    submitEDIT() {
-      let url = Quest + "/PaymentBill/updatePayBill.do"; //创建
-      let data = this.sumbit;
-      this.sumbit.cid = Cookies.get("companyId");
-      //判断是否填完所有信息
-      if (
-        this.sumbit.yulanBank == "" ||
-        this.sumbit.payerName == "" ||
-        this.sumbit.payAmount == "" ||
-        this.sumbit.payerAccount == "" ||
-        this.sumbit.payDate == "" ||
-        this.sumbit.payDate == null
-      ) {
-        this.$alert("请完善信息", "提示", {
-          confirmButtonText: "确定",
-          type: "warning"
-        });
-        return;
-      }
-      //判断是否上传图片
-      if (this.sumbit.imgFileName == "") {
-        this.$alert("请上传凭证", "提示", {
-          confirmButtonText: "确定",
-          type: "warning"
-        });
-        return;
-      }
-      this.sumbit.imgUrl = this.sqlpath;
-      this.sumbit.submitTs = null;
-      this.sumbit.cancelTs = null;
-      this.sumbit.createTs = null;
-      sumbitForm(url, data).then(res => {
-        console.log(res.data);
-        if (res.code == 0) {
-          this.$alert("修改成功", "提示", {
-            confirmButtonText: "确定",
-            type: "success"
-          });
-          this.currentPage = 1;
-          this._getBankList();
-          this.bankDetail = false;
-        } else {
-          this.$alert("修改失败，请稍后重试", "提示", {
-            confirmButtonText: "确定",
-            type: "warning"
-          });
-        }
-      });
-    },
-    //新建
+     //新建
     newOne() {
       this.EDITorCHECK = false;
       this.bankDetail = true;
@@ -564,160 +428,6 @@ export default {
         imgUrl: "" //相对路径
       };
     },
-    //编辑列表详情
-    editIt(tab) {
-      console.log(tab.id);
-      let url = Quest + "/PaymentBill/getPayBillContent.do";
-      let data = {
-        id: tab.id
-      };
-      getPayBillContent(url, data).then(res => {
-        console.log(res);
-        console.log(this.sumbit);
-        this.sqlpath = res.data.imgUrl; //先保存一个
-        res.data.imgUrl = Head + res.data.imgUrl;
-        this.sumbit = res.data;
-        this.EDITorCHECK = false;
-        this.newORedit = true; //显示流水号 等编辑一类
-        this.bankDetail = true;
-      });
-    },
-    //查看列表详情
-    checkDetail(tab) {
-      //判断是否为作废
-      if (tab.state == "CANCELED") {
-        this.isDelete = true;
-      } else {
-        this.isDelete = false;
-      }
-
-      if (tab.state == "PROCESED") {
-        this.isChuli = true;
-      } else {
-        this.isChuli = false;
-      }
-
-      if (tab.state == "SENDBACK") {
-        this.isBack = true;
-      } else {
-        this.isBack = false;
-      }
-      console.log(tab.id);
-      let url = Quest + "/PaymentBill/getPayBillContent.do";
-      let data = {
-        id: tab.id
-      };
-      getPayBillContent(url, data).then(res => {
-        console.log(res.data);
-        res.data.imgUrl = Head + res.data.imgUrl;
-        this.tableData = res.data;
-        this.EDITorCHECK = true;
-        this.bankDetail = true;
-      });
-    },
-    //作废列表详情
-    deleteDetail(tab) {
-      console.log(tab.id);
-      let url = Quest + "/PaymentBill/updatePayBillState.do";
-      let data = {
-        id: tab.id,
-        state: "CANCELED"
-      };
-      this.$confirm("确定作废该汇款凭证?", "提示", {
-        confirmButtonText: "是",
-        cancelButtonText: "否",
-        type: "warning"
-      })
-        .then(() => {
-          changeStatus(url, data).then(res => {
-            console.log(res);
-            this._getBankList();
-            this.$alert("删除成功", "提示", {
-              confirmButtonText: "确定",
-              type: "success"
-            });
-          });
-        })
-        .catch(() => {
-          console.log("还没删");
-        });
-    },
-    //搜索
-    searchBankList() {
-      this.currentPage = 1;
-      this.bankData = [];
-      this._getBankList();
-    },
-    //获取银行列表
-    _getBankList() {
-      let url = Quest + "/PaymentBill/getPayBills.do";
-      if (this.beginTime == null) this.beginTime = "";
-      if (this.finishTime == null) this.finishTime = "";
-      let data = {
-        cid: Cookies.get("companyId"), //公司id
-        state: this.status, //状态状态(SUBMITED（已提交）,PROCESED（已处理）,SENDBACK（退回）,CANCELED（作废）)
-        beginTime: this.beginTime, //起始时间
-        finishTime: this.finishTime, //结束时间
-        limit: this.limit, //限制数
-        page: this.currentPage //页数
-      };
-      if (this.beginTime != "" || this.finishTime != "") {
-        data.beginTime = this.beginTime + "00:00:00";
-        data.finishTime = this.finishTime + "23:59:59";
-      }
-      console.log(data);
-      getBankList(url, data).then(res => {
-        console.log(res.data);
-        this.count = res.count;
-        this.bankData = res.data;
-      });
-    },
-    //隔行变色
-    tableRowClassName({ row, rowIndex }) {
-      if (rowIndex % 2 == 0) {
-        return "success-row";
-      }
-      return "";
-    },
-    //获取历史记录
-    _getHistory() {
-      let url = Quest + "/PaymentBill/getPayNameAndAccount.do";
-      let data = {
-        companyId: Cookies.get("companyId")
-      };
-      getHistory(url, data).then(res => {
-        console.log(res.data);
-        this.historyList = res.data;
-      });
-    },
-    //放大图片
-    BIG() {
-      this.BigPic = true;
-    },
-    //翻页获取订单
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      this.bankData = [];
-      this._getBankList();
-    },
-    handleAvatarSuccess(res, file) {
-      this.sumbit.imgUrl = URL.createObjectURL(file.raw);
-      console.log(res);
-      if (res.code == 0) {
-        this.sqlpath = res.sqlpath;
-        this.sumbit.imgUrl = Head + res.sqlpath;
-        this.sumbit.imgFileName = res.fileName;
-      }
-      console.log(this.sumbit);
-    },
-    beforeAvatarUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isLt2M) {
-        this.$message.error("上传图片大小不能超过 2MB!");
-      }
-      return isLt2M;
-    }
   }
 };
 </script>
@@ -740,14 +450,20 @@ export default {
 .grayTD {
   background: rgb(241, 242, 243);
 }
+.inputStyle{
+     border: none;
+     overflow: hidden;
+     height: 100%;
+     width: 100%;
+}
 .ISimg {
-  width: 300px;
-  height: 300px;
+  width: 100px;
+  height:100px;
   cursor: pointer;
 }
 .BIGimg {
-  width: 666px;
-  height:666px;
+  width: 333px;
+  height:333px;
 }
 .inputWidth {
   width: 220px;
@@ -778,14 +494,21 @@ export default {
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 300px;
-  height: 300px;
-  line-height: 300px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
   text-align: center;
 }
 .avatar {
-  width: 300px;
-  height: 300px;
+  width: 30px;
+  height: 30px;
   display: block;
+}
+.inputStyle{
+     border:0;
+     height:100%;
+     width:100%;
+     font-size:16px;
+     text-align:center;
 }
 </style>

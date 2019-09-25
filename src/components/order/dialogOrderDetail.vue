@@ -20,8 +20,7 @@
         <span class="zoomLeft">
           收货地址：
           <span class="zoomRight"
-            >{{ ruleForm.RECIVER_AREA1 }}{{ ruleForm.RECIVER_AREA2
-            }}{{ ruleForm.RECIVER_AREA3 }}{{ ruleForm.POST_ADDRESS }}</span
+            >{{ ruleForm.ALL_ADDRESS }}</span
           >
         </span>
         <br />

@@ -2,8 +2,8 @@ import Axios from 'axios'
 import Cookies from "js-cookie";
 
 const CODE_OK = 0;
-Axios.defaults.baseURL = 'http://14.29.223.114:10250/yulan-order';//正式
-//Axios.defaults.baseURL = 'http://120.79.140.75:567/yulan-order';//测试
+//Axios.defaults.baseURL = 'http://14.29.223.114:10250/yulan-order';//正式
+Axios.defaults.baseURL = 'http://120.79.140.75:567/yulan-order';//测试
 Axios.defaults.withCredentials = true;
 // Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //Axios.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';

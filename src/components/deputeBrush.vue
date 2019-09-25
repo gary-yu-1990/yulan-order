@@ -1,9 +1,6 @@
 <template>
   <div>
     <el-card shadow="hover">
-      <div slot="header">
-        <span class="headSpan">任务查询</span>
-      </div>
       <el-dialog
         title="订单详情"
         :show-close="true"

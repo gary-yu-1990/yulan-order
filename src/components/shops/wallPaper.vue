@@ -1,9 +1,6 @@
 <template>
   <div id="wallPaperCon">
     <el-card shadow="hover">
-      <div slot="header" class="clearfix">
-        <span class="fstrong f16">墙纸</span>
-      </div>
       <div id="shopsCon">
         <div id="searchBoxW" class="tl">
           <el-input

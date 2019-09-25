@@ -1,18 +1,7 @@
 <template>
   <div>
     <el-card shadow="hover" class="clearfix">
-      <div slot="header">
-        <span class="fstrong f16">购物车：</span>
-      </div>
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <!-- <div id="shopSearchBox" class="mt10">
-                    <el-input
-                        v-model="searchKey" 
-                        placeholder="输入商品型号查找商品"
-                        style="width:25%; min-width:250px;">
-                        <div id="searchBtn" slot="append">搜索</div>
-                    </el-input>
-        </div>-->
         <el-tab-pane label="墙纸" name="wallPaper">
           <ShoppingWallPaper :wallpaperData="wallpaperData"></ShoppingWallPaper>
         </el-tab-pane>

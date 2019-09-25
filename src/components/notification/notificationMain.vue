@@ -55,6 +55,7 @@
 
 <script>
 import { GetNotificationAll } from "@/api/notificationASP";
+import Cookies from "js-cookie";
 
 export default {
   name: "notificationMain",
@@ -113,6 +114,7 @@ export default {
     },
     getDetail() {
       var data = {
+        cid:Cookies.get('cid'),
         condition: this.condition,
         page: this.currentPage,
         limit: this.limit

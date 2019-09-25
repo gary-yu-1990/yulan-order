@@ -1,15 +1,12 @@
 <template>
   <div id="stockQuery">
     <el-card shadow="hover">
-      <div slot="header" class="clearfix">
-        <span class="KCCX">库存查询</span>
-      </div>
       <div class="dormitory">
         <table class="header">
           <tr class="searchWord">
             <td class="cplx">产品类型</td>
             <td class="xuanze">
-              <el-select v-model= "productType" placeholder="全部">
+              <el-select v-model="productType" placeholder="全部">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -20,178 +17,213 @@
             </td>
             <td>产品型号</td>
             <td>
-              <el-input size="10" v-model="search" placeholder="请输入内容"></el-input>
+              <el-input
+                size="10"
+                v-model="search"
+                placeholder="请输入内容"
+              ></el-input>
             </td>
-            
+
             <td>
               <el-button
-               @keyup.enter.native="search()"
+                @keyup.enter.native="search()"
                 class="NEWUI_BUTTON_1"
                 type="primary"
                 icon="el-icon-search"
-                @click= "StockQuery"
-              >查询</el-button>
-            </td>        
+                @click="StockQuery"
+                >查询</el-button
+              >
+            </td>
             <td>
-              <el-button class="NEWUI_BUTTON_1" type="primary" icon="el-icon-back" @click= "clear">清空</el-button>
-            </td>    
+              <el-button
+                class="NEWUI_BUTTON_1"
+                type="primary"
+                icon="el-icon-back"
+                @click="clear"
+                >清空</el-button
+              >
+            </td>
           </tr>
         </table>
 
         <!--  遍历表格 -->
-        <table >
-          <td class="dormitoryData" style="width:40%">
+        <table>
+          <td class="dormitoryData" style="width:40%;min-width:510px">
             <div class="BK_1">
-            <el-table
-              ref="dormitoryTable"
-              :data="tables"
-              tooltip-effect="dark"
-              stripe
-             class="table_2"
-              max-height="500"           
-              @row-click= "KC_CP_SC"
-              border
-            >
-              <el-table-column prop="ITEM_NO" label="型号" width="250" align="center"></el-table-column>
-              <el-table-column prop="OLD_ITEM_NO" label="版样型号" width="250" align="center"></el-table-column>              
-            </el-table>
+              <el-table
+                ref="dormitoryTable"
+                :data="tables"
+                tooltip-effect="dark"
+                stripe
+                class="table_2"
+                max-height="500"
+                @row-click="KC_CP_SC"
+                border
+              >
+                <el-table-column
+                  prop="ITEM_NO"
+                  label="型号"
+                  width="250"
+                  align="center"
+                ></el-table-column>
+                <el-table-column
+                  prop="OLD_ITEM_NO"
+                  label="版样型号"
+                  width="250"
+                  align="center"
+                ></el-table-column>
+              </el-table>
             </div>
             <!-- 分页 -->
-            <div style="margin:0 25%;" class="block">
-        <el-pagination
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-size="limit"
-          layout="prev, pager, next, jumper"
-          :total="count"
-        ></el-pagination>
-      </div>
-          </td>       
+            <div style="margin:0 25% 0 0;" class="block">
+              <el-pagination
+              :page-count="page_count"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-size="limit"
+                layout="prev, pager, next, jumper"
+                :total="count"
+              ></el-pagination>
+            </div>
+          </td>
           <td>
             <div class="BK_2" style="width:100%">
-            <el-card class="DETAIL_1">
-              <div slot="header" class="clearfix">
+              <el-card class="DETAIL_1">
+                <div slot="header" class="clearfix">
                   <span class="CARD">库存信息：</span>
-              </div>
-              <div style="height:182px;"  >
-                <h1 v-show= "stockInfo">
-                  <table width="100%">
-                    <tr >
-                      <td colspan="2">{{dormitory.PRODUCT_TYPE|transType}} :  {{dormitory.ITEM_NO}}/{{dormitory.OLD_ITEM_NO}}</td>
-                      <td colspan="2">版本：{{dormitory.PRODUCTVERSION_NAME}}</td>
-                      <td colspan="2">品牌：{{dormitory.PRODUCT_BRAND}}</td>
-                    </tr>
-                  
-                  </table>  
-                  <hr>
-                  <TR>
-                  <TD colspan="6">库存数据</TD>
-                  </TR>
-                  <TR>
-                    <td colspan="6">
-                  <el-table 
-                 width="100%"
-                  :data="stockInfo_1"
-                  max-height="150"
-                   >
-                    <el-table-column prop="BATCH_NO" label="批号" align="center" width="300"></el-table-column>
-                    <el-table-column prop="AREA" label="区" align="center" width="80"></el-table-column>
-                    <el-table-column prop="SEAT" label="位" align="center" width="80"></el-table-column>
-                    <el-table-column prop="BOX" label="箱" align="center" width="80"></el-table-column>
-                    <el-table-column prop="QTY" label="可分配量" align="center" width="150"></el-table-column>
+                </div>
+                <div style="height:182px;">
+                  <h1 v-show="stockInfo">
+                    <TR>
+                      <td colspan="6">
+                        <el-table
+                          width="100%"
+                          :data="stockInfo_1"
+                          max-height="200"
+                        >
+                        <el-table-column
+                            prop="NOTE"
+                            label="仓库名称"
+                            align="center"
+                            width="300"
+                          ></el-table-column>
+                          <el-table-column
+                            prop="BATCH_NO"
+                            label="批号"
+                            align="center"
+                            width="200"
+                          ></el-table-column>
+                          <el-table-column
+                            prop="AREA"
+                            label="区"
+                            align="center"
+                            width="50"
+                          ></el-table-column>
+                          <el-table-column
+                            prop="SEAT"
+                            label="位"
+                            align="center"
+                            width="50"
+                          ></el-table-column>
+                          <el-table-column
+                            prop="BOX"
+                            label="箱"
+                            align="center"
+                            width="50"
+                          ></el-table-column>
+                          <el-table-column
+                            prop="QTY"
+                            label="可分配量"
+                            align="center"
+                            width="100"
+                          ></el-table-column>
+                        </el-table>
+                      </td>
+                    </TR>
+                  </h1>
+                  <span v-show="empty"> </span>
+                </div>
+              </el-card>
 
-                  </el-table>
-                  </td>
-                  </TR>
-                </h1>
-                <span v-show= "empty">
-                </span>
-              </div>
-            
-            </el-card>
-                      
-            <el-card class="DETAIL_2">
-              <div slot="header" class="clearfix">
-                  <span class="CARD">产品信息：</span>   
-              </div>
-             <div style="height:200px;"  >
-                <h1 v-show= "stockInfo">
-                  <table 
-                  width="100%" 
-                  border="1"
-                  cellspacing="0"
-                  >
-                    <tr >
-                    <td class="CPXXBJYS">型号</td>
-                    <td style="width:100px">{{dormitory.ITEM_NO}}</td>
-                    <td rowspan="7" width="30px"></td>
-                    <td class="CPXXBJYS">墙纸规格</td>
-                    <td width="50px">{{ dormitory.FIX_GRADE}}</td>
-                    <td class="CPXXBJYS">毛重（kg）</td>
-                    <td width="50px">{{ }}</td>
-                    </tr>
-                  <tr>
-                    <td class="CPXXBJYS">样版型号</td>
-                    <td>{{dormitory.OLD_ITEM_NO}}</td>
-                    <td class="CPXXBJYS">墙纸基材</td>
-                    <td width="50px">{{ }}</td>
-                    <td class="CPXXBJYS">净重（kg）</td>
-                    <td width="50px">{{ }}</td>
-                  </tr>
-                  <tr>
-                    <td class="CPXXBJYS">产品类别</td>
-                    <td width="50px">{{dormitory.PRODUCT_TYPE|transType}}</td>
-                    <td class="CPXXBJYS">墙纸功能</td>
-                    <td width="50px">{{ }}</td>
-                    <td class="CPXXBJYS">拼花</td>
-                    <td width="50px">{{ }}</td>
-                  </tr>
-                  <tr>
-                    <td class="CPXXBJYS">品牌</td>
-                    <td width="50px">{{dormitory.PRODUCT_BRAND}}</td>
-                    <td class="CPXXBJYS">长度（mm）</td>
-                    <td width="50px"></td>
-                    <td class="CPXXBJYS">拼花尺寸</td>
-                    <td width="50px"></td>
-                  </tr>
-                  <tr>
-                    <td class="CPXXBJYS">最新版本号</td>
-                    <td width="50px"></td>
-                    <td class="CPXXBJYS">宽度（mm）</td>
-                    <td width="50px"></td>
-                    <td class="CPXXBJYS">图案</td>
-                    <td width="50px"></td>
-                  </tr>
-                  <tr>
-                    <td class="CPXXBJYS">自产代理</td>
-                    <td width="50px"></td>
-                    <td class="CPXXBJYS">规格</td>
-                    <td width="50px"></td>
-                    <td class="CPXXBJYS">颜色</td>
-                    <td width="50px"></td>
-                  </tr>
-                  <tr>
-                    <td class="CPXXBJYS">计量单位</td>
-                    <td width="50px"></td>
-                    <td class="CPXXBJYS">纸箱规格</td>
-                    <td width="50px">{{dormitory.RZ_GRADE}}</td>
-                    <td class="CPXXBJYS">风格</td>
-                    <td width="50px">{{dormitory.RZ_STYLE}}</td>
-                  </tr>
-                  <tr>
-                    <td>备注</td>
-                    <td colspan="6"></td>
-                  </tr>
-                  </table>               
-                </h1>
-                <span v-show= "empty">
-                </span>
-              </div>
-              
-            </el-card>
+              <el-card class="DETAIL_2" style="min-height:300px">
+                <div slot="header" class="clearfix">
+                  <span class="CARD">产品信息：</span>
+                </div>
+                <div style="max-height:300px;">
+                  <h1 v-show="stockInfo">
+                    <table width="100%" class="table_1" border="1" style="border-collapse:collapse;">
+                      <tr>
+                        <td class="CPXXBJYS">型号</td>
+                        <td style="width:100px">{{ dormitory.ITEM_NO }}</td>
+                        <td rowspan="7" width="30px"></td>
+                        <td class="CPXXBJYS">墙纸规格</td>
+                        <td width="50px">{{ dormitory.PRODUCT_PAPER_ID }}</td>
+                        <td class="CPXXBJYS">毛重（kg）</td>
+                        <td width="50px">{{ dormitory.GROSS }}</td>
+                      </tr>
+                      <tr>
+                        <td class="CPXXBJYS">样版型号</td>
+                        <td>{{ dormitory.OLD_ITEM_NO }}</td>
+                        <td class="CPXXBJYS">墙纸基材</td>
+                        <td width="50px">{{ dormitory.TONGMO_TYPE }}</td>
+                        <td class="CPXXBJYS">净重（kg）</td>
+                        <td width="50px">{{ dormitory.NET_WEIGHT }}</td>
+                      </tr>
+                      <tr>
+                        <td class="CPXXBJYS">产品类别</td>
+                        <td width="50px">
+                          {{ dormitory.ITEM_TYPE_1}}
+                        </td>
+                        <td class="CPXXBJYS">墙纸功能</td>
+                        <td width="50px">{{ dormitory.MARK_TYPE }}</td>
+                        <td class="CPXXBJYS">拼花</td>
+                        <td width="50px">{{ dormitory.DUIPIN_NOTE_1 }}</td>
+                      </tr>
+                      <tr>
+                        <td class="CPXXBJYS">品牌</td>
+                        <td width="50px">{{ dormitory.BRAND_NAME }}</td>
+                        <td class="CPXXBJYS">长度（mm）</td>
+                        <td width="50px">{{ dormitory.LENGTH }}</td>
+                        <td class="CPXXBJYS">拼花尺寸</td>
+                        <td width="50px">{{ dormitory.DUIPIN_SIZE }}</td>
+                      </tr>
+                      <tr>
+                        <td class="CPXXBJYS">最新版本号</td>
+                        <td width="50px">
+                          {{ dormitory.PRODUCTVERSION_NAME }}
+                        </td>
+                        <td class="CPXXBJYS">宽度（mm）</td>
+                        <td width="50px">{{ dormitory.WIDTH }}</td>
+                        <td class="CPXXBJYS">图案</td>
+                        <td width="50px">{{ dormitory.PATTERN|transPattern }}</td>
+                      </tr>
+                      <tr>
+                        <td class="CPXXBJYS">自产代理</td>
+                        <td width="50px">代理</td>
+                        <td class="CPXXBJYS">规格</td>
+                        <td width="50px">{{ dormitory.GRADE }}</td>
+                        <td class="CPXXBJYS">颜色</td>
+                        <td width="50px">{{ dormitory.COLOUR|transColour }}</td>
+                      </tr>
+                      <tr>
+                        <td class="CPXXBJYS">计量单位</td>
+                        <td width="50px">{{ dormitory.UNIT_NOTE_1 }}</td>
+                        <td class="CPXXBJYS">纸箱规格</td>
+                        <td width="50px">{{ dormitory.BOX_TYPE }}</td>
+                        <td class="CPXXBJYS">风格</td>
+                        <td width="50px">{{ dormitory.STYLE|transStyle }}</td>
+                      </tr>
+                      <tr>
+                        <td class="CPXXBJYS">备注</td>
+                        <td colspan="6"></td>
+                      </tr>
+                    </table>
+                  </h1>
+                  <span v-show="empty"> </span>
+                </div>
+              </el-card>
             </div>
-           </td>
-           
+          </td>
         </table>
       </div>
     </el-card>
@@ -204,15 +236,13 @@ import { mapState } from "vuex";
 import {
   GetItemByProductType,
   GetStockByUser,
-  GetStockByItemNo,
+  GetStockByItemNo
 } from "@/api/itemInfoASP";
 import Cookies from "js-cookie";
 const Head = "http://14.29.223.114:10250/upload";
 const Quest = "http://14.29.223.114:10250/yulan-capital";
 export default {
-  name:"StockQuery",
-  // name:ItemKey,
-  // text1:'',
+  name: "StockQuery",
   data() {
     return {
       //产品类型
@@ -282,22 +312,22 @@ export default {
           label: "广告产品"
         }
       ],
-
-      stockInfo_1:[],//库存信息
+      page_count:3,
+      stockInfo_1: [], //库存信息
       stockIds: "",
-      productType: "",//产品类型查询初始值
-      dormitory: [],//查询到的数据
-      search: "",//搜索产品型号
-      tables: [],//初始表格为空
-      stockInfo:false,//库存信息显示
-      empty:true,//库存信息为空
-       limit: 15,
-      count: 18,
+      productType: "", //产品类型查询初始值
+      dormitory: [], //查询到的数据
+      search: "", //搜索产品型号
+      tables: [], //初始表格为空
+      stockInfo: false, //库存信息显示
+      empty: true, //库存信息为空
+      limit: 15,
+      count: 0,
       currentPage: 1,
-      
+      displayStsates: "none"
     };
   },
-   //生命周期
+  //生命周期
   created() {
     this._GetStockByUser();
   },
@@ -314,147 +344,237 @@ export default {
           return "墙纸/布胶";
         case "P":
           return "墙纸粉";
-           case "T":
+        case "T":
           return "其他";
-           case "C":
+        case "C":
           return "代理墙布";
-           case "V":
+        case "V":
           return "版本";
-           case "BY":
+        case "BY":
           return "布艺";
-           case "H":
+        case "H":
           return "代理墙纸";
-           case "DY":
+        case "DY":
           return "打样";
-           case "F":
+        case "F":
           return "宽幅墙布";
-           case "J":
+        case "J":
           return "基膜";
-           case "A":
+        case "A":
           return "宽幅墙纸";
-           case "E":
+        case "E":
           return "无纺墙布";
-           case "AV":
+        case "AV":
           return "宽幅无纺墙纸";
-           case "K":
+        case "K":
           return "广告商品";
           break;
       }
-    }
+    },
+    transPattern(value){
+        switch(value){
+          case "01":
+            return "大马士革";
+          case "02":
+            return "花草";
+          case "03":
+            return "条纹几何";
+          case "04":
+            return "抽象";
+          case "05":
+            return "迪士尼";
+          case "06":
+            return "另类";
+          case "07":
+            return "欧式卷草纹";
+            break;  
+        }
+    },
+    transColour(value){
+        switch(value){
+          case "01":
+            return "灰白";
+          case "02":
+            return "青色";
+          case "03":
+            return "棕色";
+          case "04":
+            return "金色";
+          case "05":
+            return "银色";
+          case "06":
+            return "红色";
+          case "07":
+            return "粉色";
+          case "08":
+            return "黄色";
+          case "09":
+            return "绿色";
+          case "10":
+            return "蓝色";
+          case "11":
+            return "紫色"; 
+          case "12":
+            return "橙色"; 
+            break;    
+        }
+    },
+    transStyle(value){
+        switch(value){
+          case "01":
+            return "欧式风格";
+          case "02":
+            return "田园风格";
+          case "03":
+            return "迪士尼";
+          case "04":
+            return "现代简约";
+          case "05":
+            return "另类风格";
+          case "06":
+            return "新东方风格";
+          case "07":
+            return "新古典风格";
+          case "08":
+            return "青少年风格";
+          case "09":
+            return "美式风格";
+            break;  
+        }
+    },
   },
   methods: {
     //用户权限
-    _GetStockByUser(){
-      this.stockIds= [];
+    _GetStockByUser() {
+      this.stockIds = [];
       var userInfo = JSON.parse(Cookies.get("userInfo"));
       var data = {
-        userid:userInfo.userId
-      }
+        userid: userInfo.userId
+      };
       GetStockByUser(data).then(res => {
-        
-        for(var i = 0; i<res.data.length;i++)
-        {
+        for (var i = 0; i < res.data.length; i++) {
           this.stockIds.push(res.data[i].STOCK_NO);
         }
-        console.log(this.stockIds)
-      })
+        console.log(this.stockIds);
+      });
+
     },
 
     //查询
     StockQuery() {
+      this.tables = []
       var data = {
-        productType:this.productType,//产品类型
+        productType: this.productType, //产品类型
         //itemNo:this.search.toUpperCase(),//产品型号
         limit: this.limit, //限制数
         page: this.currentPage, //页数
-        stockIds:this.stockIds,//仓库号
-        find:this.search,
+        stockIds: this.stockIds, //仓库号
+        find: this.search
       };
-      
-      GetItemByProductType(data).then(res => {
-        
-        this.tables = res.data
-        // this.tables.itemNo = res.data.itemNo;
-        // this.tables.OLD_ITEM_NO = res.data.OLD_ITEM_NO;
-      }).catch((res)=>{
-              console.log(res)
-      })
-        // this.tables = this.dormitory.filter(tables => {
-        //   return tables.XH.match(this.search);
-        // });
+      if(data.stockIds == ""){
+ <el-alert
+    title="未获取到仓库权限，请重试！"
+    type="error"
+    center
+    show-icon>
+  </el-alert>
 
+      }else{
+        GetItemByProductType(data)
+        .then(res => {
+          this.count = res.count;
+          this.tables = res.data;
+          // this.tables.itemNo = res.data.itemNo;
+          // this.tables.OLD_ITEM_NO = res.data.OLD_ITEM_NO;
+        })
+        .catch(res => {
+          console.log(res);
+        });
+        }
+      
+      // this.tables = this.dormitory.filter(tables => {
+      //   return tables.XH.match(this.search);
+      // });
     },
     //清空
-    clear(){
-      this.value = "0"
-      this.search = ""
-      this.tables= []
-      this.dormitory = []
-      this.stockInfo=false//库存信息显示
-      this.empty=true//库存信息为空
+    clear() {
+      this.value = "";
+      this.search = "";
+      this.tables = [];
+      this.dormitory = [];
+      this.stockInfo = false; //库存信息显示
+      this.empty = true; //库存信息为空
+      this._GetStockByUser();
     },
-//点击行的事件
-    KC_CP_SC(val){
-      
-        this.stockInfo=true//库存信息显示
-      this.empty=false//库存信息为空
+    //点击行的事件
+    KC_CP_SC(val) {
+      this.stockInfo = true; //库存信息显示
+      this.empty = false; //库存信息为空
       var data_1 = {
-        itemNo:val.ITEM_NO,
-        stock_no:this.stockIds
-      }
-    //按行查询库存
-    GetStockByItemNo(data_1,{loading:false}).then(res => {
-      this.stockInfo_1 = res.data
-    }).catch((res)=>{
-              console.log(res)
-      })
+        itemNo: val.ITEM_NO,
+        stock_no: this.stockIds
+      };
+      //按行查询库存
+      GetStockByItemNo(data_1, { loading: false })
+        .then(res => {
+          this.stockInfo_1 = res.data;
+        })
+        .catch(res => {
+          console.log(res);
+        });
 
-       //获取数据
-       let data = {
-         ITEM_NO:val.ITEM_NO,//型号
-         OLD_ITEM_NO:val.OLD_ITEM_NO,//样本型号
-         PRODUCTVERSION_NAME:val.PRODUCTVERSION_NAME,//版本号
-         PRODUCT_TYPE:val.PRODUCT_TYPE,//产品类别
-         NOTE:val.NOTE,//名称
-         SALE_ID:val.SALE_ID,//销售状态:A销售,B待淘,C淘汰,D内留,E外留,F永远淘汰  生产状态:在用,试验,淘汰
-          UNIT:val.UNIT,//单位
-          USE_ID:val.USE_ID,//启用标志
-          PRODUCT_BRAND:val.PRODUCT_BRAND,//品牌
-          ITEM_DZ:val.ITEM_DZ,//电子型号
-          FIX_TYPE:val.FIX_TYPE,//定宽/高类型 01--定宽，02--定高
-          FIX_GRADE:val.FIX_GRADE,//定宽/高规格
-          RZ_STYLE:val.RZ_STYLE,//软装风格
-          RZ_GRADE:val.RZ_GRADE,//软装产品尺寸( cm )
-          HIGH_JIA:val.HIGH_JIA,//窗帘假帘高（mm）
-          WBH_FLAG:val.WBH_FLAG,//窗帘外包盒需要标志
-
-       }
-       this.dormitory = data//数据集合
- 
-      
-    }, 
+      //获取数据
+      let data = {
+        ITEM_NO: val.ITEM_NO, //型号
+        OLD_ITEM_NO: val.OLD_ITEM_NO, //样本型号
+        PRODUCTVERSION_NAME: val.PRODUCTVERSION_NAME, //版本号
+        ITEM_TYPE_1: val.ITEM_TYPE_1, //产品类别
+        BOX_TYPE: val.BOX_TYPE, //纸箱规格
+        GRADE: val.GRADE, //规格
+        DUIPIN_SIZE: val.DUIPIN_SIZE, //拼花尺寸
+        LENGTH: val.LENGTH, //长度
+        WIDTH: val.WIDTH, //宽度
+        GROSS: val.GROSS, //毛重
+        BRAND_NAME: val.BRAND_NAME, //品牌
+        PRODUCT_PAPER_ID: val.PRODUCT_PAPER_ID, //墙纸规格
+        TONGMO_TYPE: val.TONGMO_TYPE, //墙纸基材
+        NET_WEIGHT: val.NET_WEIGHT, //净重
+        MARK_TYPE: val.MARK_TYPE, //墙纸功能
+        DUIPIN_NOTE_1: val.DUIPIN_NOTE_1, //拼花类型
+        PATTERN: val.PATTERN, //图案
+        COLOUR: val.COLOUR, //颜色
+        UNIT: val.UNIT, //单位
+        STYLE: val.STYLE, //风格
+        UNIT_NOTE_1:val.UNIT_NOTE_1,//计量单位
+      };
+      this.dormitory = data; //数据集合
+    },
     //翻页获取订单
     handleCurrentChange(val) {
       this.currentPage = val;
       this.bankData = [];
       this.StockQuery();
-    },  
-  },
-  
+    }
+  }
 };
 </script>
 
 <style scoped>
-
-.BK_1{
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  padding:1px 5px 5px;
-  
+.table_1{
+  border-collapse:collapse;
+  border: 1px solid black;
 }
-.BK_2{
-  
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  padding:2px 1px ;
+.CPXXBJYS {
+  background: #d5ecb8;
+  width: 65px
+}
+.BK_1 {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  padding: 1px 5px 5px;
+}
+.BK_2 {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  padding: 2px 1px;
 }
 
 /* .STOCKSET{
@@ -464,10 +584,8 @@ export default {
   margin-top: 3px;
 } */
 
-
 .clearfix {
   height: 13px;
-
 }
 .NEWUI_BUTTON_1 {
   width: 90px;
@@ -498,7 +616,7 @@ export default {
   margin-right: 30px;
 }
 
-td{
-  text-align: center
+td {
+  text-align: center;
 }
 </style>

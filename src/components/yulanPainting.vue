@@ -1,9 +1,6 @@
 <template>
   <div>
     <el-card shadow="hover">
-      <div slot="header">
-        <span class="fstrong f16">委托喷绘</span>
-      </div>
       <div>
         <el-date-picker
           type="date"

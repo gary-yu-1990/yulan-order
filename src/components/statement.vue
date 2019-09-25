@@ -1,10 +1,6 @@
 <template>
   <div>
     <el-card shadow="hover">
-      <div slot="header">
-        <span class="headSpan">对账单</span>
-        <el-button @click="showMoney()" style="float:right;" size="small" type="warning">查询余额</el-button>
-      </div>
       <div>
         <el-table
           :data="tableData"
@@ -13,19 +9,45 @@
           style="width: 100%; margin-top:10px"
         >
           <el-table-column label="广东玉兰集团股份有限公司对账单">
-            <el-table-column prop="dateStart" width="200" label="起始日期"></el-table-column>
+            <el-table-column
+              prop="dateStart"
+              width="200"
+              label="起始日期"
+            ></el-table-column>
             <el-table-column prop="dateEnd" label="结束日期"></el-table-column>
-            <el-table-column prop="fhjeMonth" label="本期发货总额"></el-table-column>
-            <el-table-column prop="czskMonth" label="本期收款总额"></el-table-column>
-            <el-table-column prop="qcczysk" label="上期应收款"></el-table-column>
-            <el-table-column prop="czysk" label="应收款(合计)"></el-table-column>
-            <el-table-column prop="customerCheckState" label="客户确认状态"></el-table-column>
+            <el-table-column
+              prop="fhjeMonth"
+              label="本期发货总额"
+            ></el-table-column>
+            <el-table-column
+              prop="czskMonth"
+              label="本期收款总额"
+            ></el-table-column>
+            <el-table-column
+              prop="qcczysk"
+              label="上期应收款"
+            ></el-table-column>
+            <el-table-column
+              prop="czysk"
+              label="应收款(合计)"
+            ></el-table-column>
+            <el-table-column
+              prop="customerCheckState"
+              label="客户确认状态"
+            ></el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope1">
                 <el-button
-                  @click="openDia(scope1.row.dateStart,scope1.row.dateEnd,scope1.row)"
+                  @click="
+                    openDia(
+                      scope1.row.dateStart,
+                      scope1.row.dateEnd,
+                      scope1.row
+                    )
+                  "
                   type="text"
-                >明细</el-button>
+                  >明细</el-button
+                >
               </template>
             </el-table-column>
           </el-table-column>
@@ -48,48 +70,61 @@
         width="60%"
       >
         <div style="width:90% ;margin:0 auto;">
-          <div style="margin:0 auto; height:50px; width:100%;text-align:center;">
+          <div
+            style="margin:0 auto; height:50px; width:100%;text-align:center;"
+          >
             <h2>广东玉兰集团股份有限公司对账单</h2>
           </div>
           <div style="margin:0 auto; width:100%;">
-            <h4 style="display:inline;">统计日期：{{startDate|cutdate}}~{{endDate|cutdate}}</h4>
+            <h4 style="display:inline;">
+              统计日期：{{ startDate | cutdate }}~{{ endDate | cutdate }}
+            </h4>
             <el-button
               v-show="showButton"
               style="float:right; margin-left:10px;"
               type="primary"
               @click="changeStatus(0)"
-            >客户确认</el-button>
+              >客户确认</el-button
+            >
             <el-button
               v-show="showButton"
               style="float:right;"
               type="danger"
               @click="dialogFormVisible = true"
-            >客户反馈</el-button>
+              >客户反馈</el-button
+            >
           </div>
-          <table border="1" width="100%" cellpadding="10" style="margin:0 auto;">
+          <table
+            border="1"
+            width="100%"
+            cellpadding="10"
+            style="margin:0 auto;"
+          >
             <tr>
               <th class="grayTD">客户名称</th>
-              <th colspan="2">{{theHead.customerName}}</th>
+              <th colspan="2">{{ theHead.customerName }}</th>
               <th class="grayTD">联系人</th>
-              <th colspan="2">{{theHead.customerAgent}}</th>
+              <th colspan="2">{{ theHead.customerAgent }}</th>
             </tr>
             <tr>
               <th class="grayTD">电话</th>
-              <th colspan="2">{{theHead.officeTel}}</th>
+              <th colspan="2">{{ theHead.officeTel }}</th>
               <th class="grayTD">传真</th>
-              <th colspan="2">{{theHead.fax}}</th>
+              <th colspan="2">{{ theHead.fax }}</th>
             </tr>
             <tr>
               <td colspan="2" align="center" class="grayTD">版本销售前5名</td>
-              <td colspan="4" align="center">{{theBody.verTop}}</td>
+              <td colspan="4" align="center">{{ theBody.verTop }}</td>
             </tr>
             <tr>
-              <td colspan="2" align="center" class="grayTD">本客户版本销售前5名</td>
-              <td colspan="4" align="center">{{theBody.ctmVerTop}}</td>
+              <td colspan="2" align="center" class="grayTD">
+                本客户版本销售前5名
+              </td>
+              <td colspan="4" align="center">{{ theBody.ctmVerTop }}</td>
             </tr>
             <tr>
               <td colspan="1" align="center" class="grayTD">备货单据号</td>
-              <td colspan="5" align="center">{{theBody.ctmBhBill}}</td>
+              <td colspan="5" align="center">{{ theBody.ctmBhBill }}</td>
             </tr>
             <tr>
               <td colspan="1"></td>
@@ -101,33 +136,33 @@
             </tr>
             <tr>
               <td class="grayTD">实际发货总金额</td>
-              <td>{{theBody.fhjeMonth}}</td>
-              <td>{{theBody.consignmentMoney}}</td>
+              <td>{{ theBody.fhjeMonth }}</td>
+              <td>{{ theBody.consignmentMoney }}</td>
               <td class="grayTD">实际收款金额</td>
-              <td>{{theBody.czskMonth}}</td>
-              <td>{{theBody.gatherMoneyFax}}</td>
+              <td>{{ theBody.czskMonth }}</td>
+              <td>{{ theBody.gatherMoneyFax }}</td>
             </tr>
             <tr>
               <td class="grayTD">返利发货总金额</td>
-              <td>{{theBody.moneyFl}}</td>
-              <td>{{theBody.moneyFlTotal}}</td>
+              <td>{{ theBody.moneyFl }}</td>
+              <td>{{ theBody.moneyFlTotal }}</td>
               <td class="grayTD">本期剩余返利</td>
-              <td>{{theBody.moneyFl}}</td>
+              <td>{{ theBody.moneyFl }}</td>
               <td></td>
             </tr>
             <tr>
               <td class="grayTD">备货总金额</td>
-              <td>{{theBody.moneyBh}}</td>
-              <td>{{theBody.moneyBhTotal}}</td>
+              <td>{{ theBody.moneyBh }}</td>
+              <td>{{ theBody.moneyBhTotal }}</td>
               <td class="grayTD">运费总金额</td>
-              <td>{{theBody.freightMonth}}</td>
-              <td>{{theBody.freight}}</td>
+              <td>{{ theBody.freightMonth }}</td>
+              <td>{{ theBody.freight }}</td>
             </tr>
             <tr>
               <td class="grayTD">期初应收款</td>
-              <td colspan="2">{{theBody.qcczysk}}</td>
+              <td colspan="2">{{ theBody.qcczysk }}</td>
               <td class="grayTD">期末应收款</td>
-              <td colspan="2">{{theBody.czysk}}</td>
+              <td colspan="2">{{ theBody.czysk }}</td>
             </tr>
           </table>
 
@@ -142,43 +177,52 @@
           >
             <el-table-column width="130" label="日期">
               <template slot-scope="scope1">
-                <span>{{scope1.row.dateOutStock | datatrans}}</span>
+                <span>{{ scope1.row.dateOutStock | datatrans }}</span>
               </template>
             </el-table-column>
             <el-table-column label="单据号" width="130">
               <template slot-scope="scope1">
                 <!-- <span>{{scope1.row.saleNo}}</span> -->
-                <el-button @click="openTHdia(scope1.row)" type="text">{{scope1.row.saleNo}}</el-button>
+                <el-button @click="openTHdia(scope1.row)" type="text">{{
+                  scope1.row.saleNo
+                }}</el-button>
               </template>
             </el-table-column>
             <el-table-column label="类别">
               <template slot-scope="scope1">
-                <span>{{scope1.row.billNo}}</span>
+                <span>{{ scope1.row.billNo }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="money" label="发货总额"></el-table-column>
             <el-table-column prop="qty" label="发货数量"></el-table-column>
             <el-table-column prop="freight" label="运费"></el-table-column>
-            <el-table-column prop="gatherMoneyFax" label="收款金额"></el-table-column>
+            <el-table-column
+              prop="gatherMoneyFax"
+              label="收款金额"
+            ></el-table-column>
             <el-table-column label="加收物流费">
               <template slot-scope="scope1">
-                <span>{{scope1.row.transFlag | NYchange}}</span>
+                <span>{{ scope1.row.transFlag | NYchange }}</span>
               </template>
             </el-table-column>
           </el-table>
         </div>
       </el-dialog>
 
-      <el-dialog title="客户反馈" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+      <el-dialog
+        title="客户反馈"
+        :visible.sync="dialogFormVisible"
+        :close-on-click-modal="false"
+      >
         <el-input
           type="textarea"
           maxlength="200"
-          :autosize="{ minRows:4, maxRow:6}"
+          :autosize="{ minRows: 4, maxRow: 6 }"
           resize="none"
           v-model="customerCheckComment"
           placeholder="请输入反馈内容(200字以内)"
         ></el-input>
-        <span style="color:#ccc">{{customerCheckComment.length}}/200</span>
+        <span style="color:#ccc">{{ customerCheckComment.length }}/200</span>
         <br />
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -188,7 +232,7 @@
 
       <el-dialog :title="THtitle" :visible.sync="THdetail" :width="THwidth">
         <div style="margin:0 auto;width:20%;" v-show="whatType">
-          <span style="font-weight:600">{{THhead}}明细表</span>
+          <span style="font-weight:600">{{ THhead }}明细表</span>
         </div>
         <el-table
           v-show="whatType"
@@ -199,44 +243,48 @@
           show-summary
           style="width: 100%; margin-top:10px"
         >
-          <el-table-column prop="itemNo" width="160" label="版本型号"></el-table-column>
+          <el-table-column
+            prop="itemNo"
+            width="160"
+            label="版本型号"
+          ></el-table-column>
           <el-table-column width="150" label="名称">
             <template slot-scope="scope1">
-              <el-button type="text">{{scope1.row.itemNote}}</el-button>
+              <el-button type="text">{{ scope1.row.itemNote }}</el-button>
             </template>
           </el-table-column>
           <el-table-column width="150" label="版本名称">
             <template slot-scope="scope">
-              <span>{{scope.row.itemVersion}}</span>
+              <span>{{ scope.row.itemVersion }}</span>
             </template>
           </el-table-column>
           <el-table-column width="150" label="批号">
             <template slot-scope="scope">
-              <span>{{scope.row.batchNo}}</span>
+              <span>{{ scope.row.batchNo }}</span>
             </template>
           </el-table-column>
           <el-table-column label="单价">
             <template slot-scope="scope">
-              <span>{{scope.row.salePrice}}</span>
+              <span>{{ scope.row.salePrice }}</span>
             </template>
           </el-table-column>
           <el-table-column label="物流单价">
             <template slot-scope="scope">
-              <span>{{scope.row.transPrice}}</span>
+              <span>{{ scope.row.transPrice }}</span>
             </template>
           </el-table-column>
           <el-table-column label="数量">
             <template slot-scope="scope">
-              <span>{{scope.row.qtyDeliver}}</span>
+              <span>{{ scope.row.qtyDeliver }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="money" label="金额"></el-table-column>
         </el-table>
         <div class="TH" v-show="!whatType">
-          <p>日期：{{CZSK.dateOutStock | datatrans}}</p>
-          <p>单据号：{{THhead}}</p>
-          <p>收款金额：{{CZSK.gatherMoneyFax}}</p>
-          <p>备注：{{CZSK.notes}}</p>
+          <p>日期：{{ CZSK.dateOutStock | datatrans }}</p>
+          <p>单据号：{{ THhead }}</p>
+          <p>收款金额：{{ CZSK.gatherMoneyFax }}</p>
+          <p>备注：{{ CZSK.notes }}</p>
         </div>
       </el-dialog>
     </el-card>

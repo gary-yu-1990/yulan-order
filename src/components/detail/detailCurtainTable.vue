@@ -32,7 +32,7 @@
                         </div>
                         <div>
                             <label>帘头外包盒单边宽度:</label>
-                            <div v-if="headerData.outsourcingBoxExist === 1 && headerData.outsourcingBoxWidth!=0" class="messageInput">
+                            <div v-if="headerData.outsourcingBoxExist === 1 && headerData.outsourcingBoxWidth!=0"  class="messageInput">
                                 {{headerData.outsourcingBoxWidth}}
                             </div>
                             <div v-else class="messageInput">无</div>m

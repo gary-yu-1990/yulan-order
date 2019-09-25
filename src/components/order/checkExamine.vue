@@ -29,6 +29,7 @@
         size="small"
         type="success"
         plain
+        v-if="button_1"
         >返回</el-button
       >
     </div>
@@ -315,8 +316,10 @@ import Cookies from "js-cookie";
 import DetailCurtainTable from "../detail/detailCurtainTable";
 export default {
   name: "examineDatail",
+  props:['isShowButton'],
   data() {
     return {
+      button_1:true,
       deleteIds: [],
       defeatButton: false,
       exButton: true,
@@ -384,6 +387,13 @@ export default {
     this.check_CURTAIN_STATUS_ID = Cookies.get("CURTAIN_STATUS_ID");
     this.check_STATUS_ID = Cookies.get("status_ID");
     this.getDetail();
+    if(this.isShowButton != undefined )
+    {
+      this.button_1 = this.isShowButton
+    }
+  },
+  activated(){
+    
   },
   methods: {
     formatRole: function(row, column) {

@@ -1,9 +1,6 @@
 <template>
   <div>
     <el-card shadow="hover">
-      <div slot="header">
-        <span class="fstrong f16">银行汇款凭证</span>
-      </div>
       <div>
         <el-date-picker
           type="date"

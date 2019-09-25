@@ -1,9 +1,6 @@
 <template>
   <div>
     <el-card shadow="hover">
-      <div slot="header">
-        <span class="fstrong f16">软装</span>
-      </div>
       <div id="shopsCon">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <div id="shopSearchBox" class="mt10">

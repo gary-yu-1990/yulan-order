@@ -855,7 +855,6 @@ export default {
 }
 .el-header li {
   float: left;
-  list-style-type:none;
 }
 .el-header li:hover {
   cursor: pointer;

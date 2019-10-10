@@ -3,64 +3,69 @@
     <el-card shadow="hover">
       <div id="trans">
         <div class="block">
+          <div class="first_1">
           <span class="demonstration"></span>
           <el-date-picker
              v-model="date1"
             align="right"
             type="date"
+             format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
             placeholder="选择日期"
           >
           </el-date-picker>
           <span class="demonstration">至</span>
           <el-date-picker
-            v-model="date1"
+            v-model="date2"
             align="right"
             type="date"
+             format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
             placeholder="选择日期"
           ></el-date-picker>
-          <el-button :id="'test111'" @click="autoSearch()"  type="primary"
-                    size="small" icon="el-icon-search">搜索</el-button>
-          <el-button :id="'test111'"   type="primary"
-                    size="small">导出Excel</el-button>
+          <el-button :id="'test111'" @click="autoSearch()"  icon="el-icon-search" style="margin-left:8px" class="button_1">搜索</el-button>
+         
+            </div>
+            <hr>
           <el-table
             :data="tableData"
-            
+       :span-method="arraySpanMethod"
             style="width: 100%"
           >
             <el-table-column
               prop="TRANS_NO"
               label="单据号"
-              width="120"
+              
               align="center"
             ></el-table-column>
             <el-table-column
               prop="BILL_NO"
               label="原始单号"
-              width="180"
+             
               align="center"
             ></el-table-column>
             <el-table-column
               prop="ITEM_NO"
               label="型号"
-              width="120"
+              
               align="center"
             ></el-table-column>
             <el-table-column
               prop="BATCH_NO"
               label="批号"
-              width="120"
+              
               align="center"
             ></el-table-column>
             <el-table-column
               prop="QTY_TRANS"
               label="实际数量"
-              width="120"
+              
               align="center"
             ></el-table-column>
             <el-table-column
               prop="UNIT_PRICE"
               label="含税单价"
-              width="120"
+              
               align="center"
             >
            <template slot-scope="scope">
@@ -70,13 +75,13 @@
             <el-table-column
               prop="SUM_PRICE_TAX"
               label="含税总价"
-              width="120"
+              
               align="center"
             ></el-table-column>
             <el-table-column
               
               label="开单日期"
-              width="120"
+              
               align="center"
             >
              <template slot-scope="scope">
@@ -127,7 +132,7 @@ export default {
 
   created() {
     this.autoSearch();
-    // this.mergeColumnIndex();
+
   },
   methods: {
      //页面条数
@@ -141,46 +146,46 @@ export default {
       this.currentPage = val;
       this.autoSearch();
     },
-    //计算合并行的index和需合并的行数，太慢拖累加载速度 在表个后加 :span-method="arraySpanMethod"
-    // mergeColumnIndex() {
-    //   //遍历表格需要合并的列
-    //   var arr = this.tableData;
-    //   var intSpan=1;
-    //   var intIndex=0;
-    //   var len = 0;
-    //   for (var i = 1, len = arr.length; i < len; i++) {//从第二行开始与前一行比较
-    //     if (arr[i].TRANS_NO == arr[i - 1].TRANS_NO ) {
-    //       intSpan = intSpan + 1;//如果相同,该合并的rowSpan+1
-    //       intIndex = i +1- intSpan;//row
-    //       console.log("相同则累加合并项");
-    //       console.log(intSpan);
-    //       console.log(intIndex);
-    //     } 
-    //     else if (arr[i].TRANS_NO != arr[i - 1].TRANS_NO  ) {
-    //       this.arr_index.push(intIndex);
-    //       this.arr_span.push(intSpan);
-    //       console.log("不相同则追加数组");
-    //       console.log(this.arr_index);
-    //       console.log( this.arr_span);
-    //       intSpan = 1;
-    //       intIndex = i; 
-    //     }
-    //      if (i==len -1){
-    //       //  intSpan = 1;
-    //       // intIndex = i-1; 
-    //       this.arr_index.push(intIndex);
-    //       this.arr_span.push(intSpan);
-    //       console.log("末尾则追加数组");
-    //       console.log(this.arr_index);
-    //       console.log( this.arr_span);
-    //     }
-    //   }
 
-   
-      
-    // },
+    //计算合并行的index和需合并的行数，太慢拖累加载速度 在表个后加 :span-method="arraySpanMethod" 原32
+    mergeColumnIndex() {
+      this.arr_index.splice(0,this.arr_index.length);
+       this.arr_span.splice(0,this.arr_span.length);
+      //遍历表格需要合并的列
+      var arr = this.tableData;
+      var intSpan=1;
+      var intIndex=0;
+      var len = 0;
+      for (var i = 1, len = arr.length; i < len; i++) {//从第二行开始与前一行比较
+        if (arr[i].TRANS_NO === arr[i - 1].TRANS_NO ) {
+          intSpan = intSpan + 1;//如果相同,该合并的rowSpan+1
+          intIndex = i +1- intSpan;//row
+          console.log("相同则累加合并项");
+          console.log(intSpan);
+          console.log(intIndex);
+        } 
+        else if (arr[i].TRANS_NO != arr[i - 1].TRANS_NO  ) {
+          this.arr_index.push(intIndex);
+          this.arr_span.push(intSpan);
+          console.log("不相同则追加数组");
+          console.log(this.arr_index);
+          console.log( this.arr_span);
+          intSpan = 1;
+          intIndex = i; 
+        }
+         if (i==len -1){
+          //  intSpan = 1;
+          // intIndex = i-1; 
+          this.arr_index.push(intIndex);
+          this.arr_span.push(intSpan);
+          console.log("末尾则追加数组");
+          console.log(this.arr_index);
+          console.log( this.arr_span);
+        }
+      }
+    },
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 1) {//查询出那列就合并那列，index别写成别的列
+      if (columnIndex === 0) {//特别注意：查询出那列就合并那列，index别写成别的列
       if(this.arr_index.indexOf(rowIndex)>-1){
         var i=this.arr_index.indexOf(rowIndex);
          return [this.arr_span[i], 1];
@@ -218,7 +223,7 @@ export default {
         finishTime: this.date2,
         limit: this.limit,
         page: this.currentPage,
-        current_id: "I0002",
+        current_id: Cookies.get("companyId"),
         supply_type: "",
         po_type: this.po_type //  status状态   cancel    efficient 生效（新采购单）   enforce 已执行（已确认）   fulfill 已完成
       };
@@ -233,7 +238,10 @@ export default {
       GetTransDetail(data).then(res => {
         this.count = res.count;
         this.tableData = res.data;
+           this.mergeColumnIndex();
+           this.arraySpanMethod();
       });
+   
     },
   },
    filters: {
@@ -287,4 +295,14 @@ export default {
 </script>
 
 <style scoped>
+.first_1{
+  margin-bottom: 5px;
+}
+.button_1{
+  width: 100px;
+  background: #8bc34a;
+  margin-left: 10px;
+  color: rgb(255, 255, 255);
+  text-align: center
+}
 </style>

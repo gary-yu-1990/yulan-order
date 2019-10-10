@@ -32,11 +32,14 @@ import myCoupon from '@/components/center/myCoupon'
 import DetailRefund from '@/components/detail/detailRefund'
 import notificationMain from '@/components/notification/notificationMain'
 import Complaint from '@/components/complaint'
+import ComplaintReply from '@/components/complaintReply'
 import StockQuery from '@/components/query/stockQuery'
 import AreaQuery from '@/components/query/areaQuery'
 import OrderQuery from '@/components/query/orderQuery'
 import SupplyPort from '@/components/supplierModule/supplyPort'
 import Trans from '@/components/supplierModule/trans'
+import ISExamineMarket from '@/components/design/ISExamineMarket'
+import ISExamineGM from '@/components/design/ISExamineGM'
 
 Vue.use(Router)
 
@@ -257,6 +260,11 @@ const router = new Router({
           name: 'complaint',
           component: Complaint,
         },
+        {
+          path: '/complaintReply',
+          name: 'complaintReply',
+          component: ComplaintReply,
+        },
         // 查询
         {
           path: '/query/stockQuery',
@@ -291,6 +299,16 @@ const router = new Router({
           path: '/supplierModule/supplyPort',
           name: 'supplyPort',
           component: SupplyPort
+        },
+        {
+          path: '/design/ISExamineMarket',
+          name: 'ISExamineMarket',
+          component: ISExamineMarket
+        },
+        {
+          path: '/design/ISExamineGM',
+          name: 'ISExamineGM',
+          component: ISExamineGM
         },
       ]
     }

@@ -6,60 +6,104 @@
     </div>
     <div>
       <div
-        v-for="(item,index) of couponData"
+        v-for="(item, index) of couponData"
         :key="index"
-        :class="item.dateId!=1||item.rebateMoneyOver<=0?switchClass.cctvF:switchClass.cctvT"
+        :class="
+          item.dateId != 1 || item.rebateMoneyOver <= 0
+            ? switchClass.cctvF
+            : switchClass.cctvT
+        "
       >
         <!--v-if="item.dateId!='0'" @click="useCoupon(item.id,item.rebateType)"-->
         <div class="couponHead">
-          <div :class="item.dateId!=1||item.rebateMoneyOver<=0?switchClass.logoF:switchClass.logoT"></div>
+          <div
+            :class="
+              item.dateId != 1 || item.rebateMoneyOver <= 0
+                ? switchClass.logoF
+                : switchClass.logoT
+            "
+          ></div>
           <div class="logoTxt">
             <p
               style="color:white; font-size:15px; padding-top:5px; font-weight:bold; letter-spacing:2px;"
-            >{{item.notes}}</p>
-            <span>总返利&nbsp;{{item.rebateMoney}}元</span>
-            <span class="rightCoupon">券号：{{item.id}}</span>
+            >
+              {{ item.notes }}
+            </p>
+            <span>总返利&nbsp;{{ item.rebateMoney }}元</span>
+            <span class="rightCoupon">券号：{{ item.id }}</span>
           </div>
         </div>
 
         <div class="couponBody">
           <p
-            :class="item.dateId!=1||item.rebateMoneyOver<=0?switchClass.transTxtF:switchClass.transTxtT"
+            :class="
+              item.dateId != 1 || item.rebateMoneyOver <= 0
+                ? switchClass.transTxtF
+                : switchClass.transTxtT
+            "
             style="text-align:center"
           >
             <span style="font-size:18px;">余额￥</span>
             <span v-if="isManager === '0'">***</span>
-            <span v-else>{{item.rebateMoneyOver}}</span>
+            <span v-else>{{ item.rebateMoneyOver }}</span>
           </p>
           <div style="margin:0 auto; width:245px;">
             <div
-              :class="item.dateId!=1||item.rebateMoneyOver<=0?switchClass.roundedRectangleF:switchClass.roundedRectangleT"
+              :class="
+                item.dateId != 1 || item.rebateMoneyOver <= 0
+                  ? switchClass.roundedRectangleF
+                  : switchClass.roundedRectangleT
+              "
             >
-              <p>&nbsp;&nbsp;&nbsp;有效期：{{item.dateStart |datatrans}}至&nbsp;&nbsp;{{item.dateEnd |datatrans}}</p>
+              <p>
+                &nbsp;&nbsp;&nbsp;有效期：{{
+                  item.dateStart | datatrans
+                }}至&nbsp;&nbsp;{{ item.dateEnd | datatrans }}
+              </p>
             </div>
           </div>
           <br />
-          <p style="text-align:center;">适用：{{item.application}}</p>
+          <p style="text-align:center;">适用：{{ item.application }}</p>
           <div class="Record" style="text-align:center">
-            <span @click="RecordUse(item.id)" style="cursor: pointer;">查看使用记录>>&nbsp;&nbsp;&nbsp;</span>
-            <span @click="RecordBack(item.id)" style="cursor: pointer;">查看返利记录>></span>
+            <span @click="RecordUse(item.id)" style="cursor: pointer;"
+              >查看使用记录>>&nbsp;&nbsp;&nbsp;</span
+            >
+            <span @click="RecordBack(item.id)" style="cursor: pointer;"
+              >查看返利记录>></span
+            >
           </div>
         </div>
       </div>
     </div>
     <!-- 查看使用记录 -->
-    <el-dialog :title="'优惠券使用记录[券号:'+useTable.couponId+']'" :visible.sync="dialogUse" width="60%" top="5vh">
+    <el-dialog
+      :title="'优惠券使用记录[券号:' + useTable.couponId + ']'"
+      :visible.sync="dialogUse"
+      width="60%"
+      top="5vh"
+    >
       <keep-alive>
-      <useRecordDetail v-if="dialogUse" :useTable="useTable"></useRecordDetail>
+        <useRecordDetail
+          v-if="dialogUse"
+          :useTable="useTable"
+        ></useRecordDetail>
       </keep-alive>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogUse = false">关闭</el-button>
       </span>
     </el-dialog>
     <!-- 查看返利记录 -->
-    <el-dialog :title="'优惠券返利记录[券号:'+backTable.couponId+']'" :visible.sync="dialogBack" width="60%" top="5vh">
+    <el-dialog
+      :title="'优惠券返利记录[券号:' + backTable.couponId + ']'"
+      :visible.sync="dialogBack"
+      width="60%"
+      top="5vh"
+    >
       <keep-alive>
-      <couponRecordDetail v-if="dialogBack" :backTable="backTable"></couponRecordDetail>
+        <couponRecordDetail
+          v-if="dialogBack"
+          :backTable="backTable"
+        ></couponRecordDetail>
       </keep-alive>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogBack = false">关闭</el-button>
@@ -76,7 +120,7 @@ import { CouponbackRecord } from "@/api/orderList";
 import Cookies from "js-cookie";
 import useRecordDetail from "./useRecordDetail";
 import couponRecordDetail from "./couponRecordDetail";
-import {getUseRecord} from "@/api/orderListASP";
+import { getUseRecord } from "@/api/orderListASP";
 
 export default {
   name: "MyCoupon",

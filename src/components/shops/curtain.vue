@@ -284,6 +284,7 @@ export default {
         .then(res => {
           //赋值给表格
           this.curtainData = res.data;
+          this.curtainData = this.curtainData.filter(item => item.saleId != 'C'&& item.saleId!= 'F')
           this.createCurtainMsg(this.curtainData);
           //获取总条数
           if (this.totalNumber !== this.curtainData[0].total) {
@@ -310,6 +311,7 @@ export default {
         .then(res => {
           //赋值给表格
           this.curtainData = res.data;
+          this.curtainData = this.curtainData.filter(item => item.saleId != 'C'&& item.saleId!= 'F')
           this.createCurtainMsg(this.curtainData);
           if (this.totalNumber !== this.curtainData[0].total) {
             this.totalNumber = this.curtainData[0].total;

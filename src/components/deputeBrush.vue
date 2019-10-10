@@ -216,11 +216,13 @@ export default {
         if (!this.date2) this.date2 = this.date1;
       }
       let year = this.date1.slice(0, 4);
+      let endYear = this.date2.slice(0, 4);
       let month = this.date1.slice(5, 7);
       let endMonth = this.date2.slice(5, 7);
       let url = "/assignments/getAssignments.do";
       let data = {
         year: year,
+        endYear: endYear,
         month: month,
         endMonth: endMonth,
         cid: Cookies.get("cid"),
@@ -242,7 +244,7 @@ export default {
           this.assignmentsReduce = (this.assignmentsTarget - reduce).toFixed(2);
           this.tHead();
         } else {
-          this.tableHead1 = "本月无任务";
+          this.tableHead1 = "所选月无任务";
         }
       });
     },
@@ -257,10 +259,26 @@ export default {
     ...mapActions("navTabs", ["closeTab", "closeToTab"]),
     //表头
     tHead() {
-      var selectMonth =
-        this.date1 == this.date2
-          ? this.date1.slice(5, 7) + "月"
-          : this.date1.slice(5, 7) + "-" + this.date2.slice(5, 7) + "月总";
+      var selectMonth = "";
+      if (this.date1 == this.date2) {
+        selectMonth = this.date1.slice(5, 7) + "月";
+      } else if (this.date1.slice(0, 4) == this.date2.slice(0, 4)) {
+        selectMonth =
+          this.date1.slice(5, 7) + "-" + this.date2.slice(5, 7) + "月总";
+      } else {
+        selectMonth =
+          this.date1.slice(0, 4) +
+          "." +
+          this.date1.slice(5, 7) +
+          "-" +
+          this.date2.slice(0, 4) +
+          "." +
+          this.date2.slice(5, 7) +
+          "月总";
+      }
+      this.date1 == this.date2
+        ? this.date1.slice(5, 7) + "月"
+        : this.date1.slice(5, 7) + "-" + this.date2.slice(5, 7) + "月总";
       this.tableHead1 = `${selectMonth}协议月任务：${this.assignments}`;
       this.tableHead2 = `${selectMonth}促销目标任务：${this.assignmentsTarget}`;
       this.tableHead3 = `任务完成差额：${this.assignmentsReduce}`;

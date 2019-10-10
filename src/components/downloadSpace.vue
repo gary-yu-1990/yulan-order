@@ -292,7 +292,7 @@ export default {
       return result;
     },
     downLoad(id) {
-      downLoadFile(this.downLoadUrl + `FILE_CENTERAPI/DownloadFile?FILE_ID=${id}`);
+      downLoadFile(this.Global.fileCenterUrl + `FILE_CENTERAPI/DownloadFile?FILE_ID=${id}`);
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;

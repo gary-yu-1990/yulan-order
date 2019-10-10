@@ -1134,7 +1134,6 @@ export default {
           this.ctm_order.allAddress = this.data[0].postAddress;
         } else {
           this.ctm_order.postAddressModified = "1";
-          console.log("这不是默认地址");
         }
       }
     },
@@ -1388,7 +1387,7 @@ export default {
         var deleteArray = [];
         var getPush3 = JSON.parse(sessionStorage.getItem("shopping"));
         for (var i = 0; i < getPush3.length; i++) {
-          deleteArray[i] = getPush3[i].cartItemId; //使用cartItemId更合理，防止类似窗帘出现打包卖
+          deleteArray[i] = getPush3[i].id;//不像窗帘，这里一个cart_item_id可能对应多个
         }
         var data2 = {
           product_group_tpye: this.product_group_tpye, //产品类别，从购物车出获取

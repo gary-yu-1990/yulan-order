@@ -14,6 +14,7 @@
             @select="addTab"
             :collapse="asideStatus"
           >
+            <!-- 权限树加载 -->
             <menuTree
               v-for="item in menuTreeList"
               :key="item.SystemMenuID"
@@ -44,186 +45,11 @@
                 />
               </el-menu-item>
             </router-link>
-            <!-- <el-submenu index="shops">
-              <template slot="title">
-                <i class="iconfont icon-color">&#xe624;</i>
-                <span>产品</span>
-              </template>
-              <el-menu-item-group>
-                <router-link to="/shops/wallPaper" tag="div">
-                  <el-menu-item index="shops/wallPaper">
-                    <span>墙纸配套类</span>
-                  </el-menu-item>
-                </router-link>
-                <router-link to="/shops/curtain" tag="div">
-                  <el-menu-item index="shops/curtain">
-                    <span>窗帘</span>
-                  </el-menu-item>
-                </router-link>
-                <router-link to="/shops/softSuit" tag="div">
-                  <el-menu-item index="shops/softSuit">
-                    <span>软装</span>
-                  </el-menu-item>
-                </router-link>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="shoppingCar">
-              <template slot="title">
-                <i class="iconfont icon-color">&#xf0179;</i>
-                <span>购物车</span>
-              </template>
-              <el-menu-item-group>
-                <router-link to="/shoppingCar/shopping?wallPaper" tag="div">
-                  <el-menu-item index="shoppingCar/shopping?wallPaper">
-                    <span>墙纸配套类</span>
-                  </el-menu-item>
-                </router-link>
-                <router-link to="/shoppingCar/shopping?curtain" tag="div">
-                  <el-menu-item index="shoppingCar/shopping?curtain">
-                    <span>窗帘</span>
-                  </el-menu-item>
-                </router-link>
-                <router-link to="/shoppingCar/shopping?softSuit" tag="div">
-                  <el-menu-item index="shoppingCar/shopping?softSuit">
-                    <span>软装</span>
-                  </el-menu-item>
-                </router-link>
-              </el-menu-item-group>
-            </el-submenu>
-            <router-link to="/order/myOrder" tag="div">
-              <el-menu-item v-if="customerType !== '110'" index="order/myOrder">
-                <i class="iconfont icon-color">&#xe62b;</i>
-                <span slot="title">我的订单</span>
-              </el-menu-item>
-            </router-link>
-            <router-link to="/order/examine" tag="div">
-              <el-menu-item v-if="customerType === '110'" index="order/examine">
-                <i class="iconfont icon-color">&#xe62b;</i>
-                <span slot="title">审核订单</span>
-              </el-menu-item>
-            </router-link>
-            <router-link to="/statement" tag="div">
-              <el-menu-item v-if="isManager === '1'" index="statement">
-                <i class="el-icon-goods"></i>
-                <span slot="title">对账单</span>
-              </el-menu-item>
-            </router-link>
-            <router-link to="/bankProof" tag="div">
-              <el-menu-item index="bankProof">
-                <i class="iconfont icon-color">&#xe612;</i>
-                <span slot="title">银行汇款凭证</span>
-              </el-menu-item>
-            </router-link>
-            <router-link to="/painting" tag="div">
-              <el-menu-item v-if="customerType !== '110'" index="painting">
-                <i class="iconfont icon-color">&#xe7fb;</i>
-                <span slot="title">委托喷绘书</span>
-                <el-badge
-                  v-if="getPainting > 0"
-                  class="mark r"
-                  :value="getPainting"
-                />
-              </el-menu-item>
-            </router-link>
-            <router-link to="/yulanPainting" tag="div">
-              <el-menu-item v-if="customerType === '110'" index="yulanPainting">
-                <i class="iconfont icon-color">&#xe7fb;</i>
-                <span slot="title">委托喷绘书</span>
-              </el-menu-item>
-            </router-link>
-            <router-link to="/deputeBrush" tag="div">
-              <el-menu-item v-if="isManager === '1'" index="deputeBrush">
-                <i class="iconfont icon-color">&#xe617;</i>
-                <span slot="title">任务查询</span>
-              </el-menu-item>
-            </router-link>
-            <router-link to="/refundCompensation" tag="div">
-              <el-menu-item
-                v-if="identity === 'ECWEB' || identity === 'USER'"
-                index="refundCompensation"
-              >
-                <i class="iconfont icon-color">&#xe6ee;</i>
-                <span slot="title">退货赔偿</span>
-                <el-badge
-                  v-if="getRefund > 0 && identity === 'ECWEB'"
-                  class="mark r"
-                  :value="getRefund"
-                />
-              </el-menu-item>
-            </router-link>
-            <router-link to="/marketInfo" tag="div">
-              <el-menu-item index="marketInfo">
-                <i class="iconfont icon-color">&#xe627;</i>
-                <span slot="title">调查表</span>
-              </el-menu-item>
-            </router-link>
-            <router-link to="/complaint" tag="div">
-              <el-menu-item
-                v-if="identity === 'ECWEB' || identity === 'USER'"
-                index="complaint"
-              >
-                <i class="el-icon-s-custom"></i>
-                <span slot="title">投诉反馈</span>
-              </el-menu-item>
-            </router-link>
-            <el-submenu index="design">
-              <template slot="title">
-                <i class="iconfont icon-color">&#xe7fb;</i>
-                <span>设计</span>
-              </template>
-              <el-menu-item-group>
-                <router-link to="/design/imageShop" tag="div">
-                  <el-menu-item index="design/imageShop">
-                    <span>形象店设计</span>
-                  </el-menu-item>
-                </router-link>
-                <router-link to="/design/lanJu" tag="div">
-                  <el-menu-item index="design/lanJu">
-                    <span>兰居设计</span>
-                  </el-menu-item>
-                </router-link>
-              </el-menu-item-group>
-            </el-submenu>
-            <router-link to="/supplierModule/supplyPort" tag="div">
-              <el-menu-item index="supplierModule/supplyPort">
-                <i class="el-icon-s-home"></i>
-                <span slot="title">供应商门户</span>
-              </el-menu-item>
-            </router-link>
-            <router-link to="/downloadSpace" tag="div">
-              <el-menu-item index="downloadSpace">
-                <i class="iconfont icon-color">&#xe614;</i>
-                <span slot="title">下载专区</span>
-              </el-menu-item>
-            </router-link>
-            <el-submenu index="query" v-if="customerType !== '110'">
-              <template slot="title">
-                <i class="el-icon-search"></i>
-                <span>查询</span>
-              </template>
-              <el-menu-item-group>
-                <router-link to="/query/stockQuery" tag="div">
-                  <el-menu-item index="query/stockQuery">
-                    <span>库存查询</span>
-                  </el-menu-item>
-                </router-link>
-                <router-link to="/query/areaQuery" tag="div">
-                  <el-menu-item index="query/areaQuery">
-                    <span>区域订单查询</span>
-                  </el-menu-item>
-                </router-link>
-                <router-link to="/query/orderQuery" tag="div">
-                  <el-menu-item index="query/orderQuery">
-                    <span>订单查询</span>
-                  </el-menu-item>
-                </router-link>
-              </el-menu-item-group>
-            </el-submenu> -->
           </el-menu>
         </el-scrollbar>
       </el-aside>
       <el-container style="width:85%; min-width:1050px;">
-        <el-header height="50px">
+        <el-header height="45px">
           <ul class="l">
             <li
               :title="asideStatus == true ? '菜单展开' : '菜单收起'"
@@ -242,50 +68,6 @@
             </router-link>
           </ul>
           <ul class="r">
-            <!-- <li style="height:50px;"> -->
-            <!-- v-if = "isContainAttr('shoppingCar')"  -->
-            <!-- <el-dropdown trigger="hover" style="margin:0;">
-                <span class="el-dropdown-link mr10">
-                  <i class="iconfont ml10" style="margin-right:3px;"
-                    >&#xf0179;</i
-                  >
-                  购物车
-                  <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown" style="min-width: 120px;"> -->
-            <!-- v-if = "isContainAttr('shoppingCar/shopping?wallPaper')"   -->
-            <!-- <router-link to="/shoppingCar/shopping?wallPaper" tag="li">
-                    <el-dropdown-item
-                      @click.native="addTab('shoppingCar/shopping?wallPaper')"
-                    >
-                      <span>墙纸配套类</span>
-                    </el-dropdown-item>
-                  </router-link> -->
-            <!-- v-if = "isContainAttr('shoppingCar/shopping?curtain')"   -->
-            <!-- <router-link to="/shoppingCar/shopping?curtain" tag="li">
-                    <el-dropdown-item
-                      @click.native="addTab('shoppingCar/shopping?curtain')"
-                    >
-                      <span>窗帘</span>
-                    </el-dropdown-item>
-                  </router-link> -->
-            <!--v-if = "isContainAttr('shoppingCar/shopping?softSuit')"   -->
-            <!-- <router-link to="/shoppingCar/shopping?softSuit" tag="li">
-                    <el-dropdown-item
-                      @click.native="addTab('shoppingCar/shopping?softSuit')"
-                    >
-                      <span>软装</span>
-                    </el-dropdown-item>
-                  </router-link>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </li> -->
-            <!--v-if = "isContainAttr('order/myOrder')"  -->
-            <!-- <router-link to="/order/myOrder" tag="li">
-              <li @click="addTab('order/myOrder')">
-                <span class="ml10 mr10">我的订单</span>
-              </li>
-            </router-link> -->
             <li>
               <el-dropdown trigger="hover">
                 <span class="el-dropdown-link">
@@ -349,7 +131,7 @@
                   <a
                     style="cursor:pointer;text-decoration:underline"
                     :key="newsTextArr[newsIndex].ID"
-                    @click="showDetail(newsTextArr[newsIndex])"
+                    @click="showNotification(newsTextArr[newsIndex])"
                     >{{ newsTextArr[newsIndex].TITLE }}</a
                   >
                 </transition>
@@ -368,15 +150,39 @@
             </div>
             <el-dialog
               :show-close="true"
-              :visible.sync="detailVisible"
+              :visible.sync="notificationVisible"
               width="1000px"
               top="5vh"
               center
             >
-              <div v-html="detailData"></div>
+              <div v-html="newsHtmlData"></div>
               <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="detailVisible = false"
+                <el-button type="primary" @click="notificationVisible = false"
                   >确 定</el-button
+                >
+              </span>
+            </el-dialog>
+            <el-dialog
+              title="请填写完此调查表，才能继续操作！"
+              :show-close="false"
+              :close-on-click-modal="false"
+              :close-on-press-escape="false"
+              :visible.sync="studyVisible"
+              width="900px"
+              top="5vh"
+              center
+            >
+              <keep-alive>
+                <studyContextDetail
+                  ref="studyContextDetail"
+                  v-if="studyVisible"
+                  :selectData="studySelectData"
+                  @refresh="refreshStudy"
+                ></studyContextDetail>
+              </keep-alive>
+              <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitStudy"
+                  >提交调查表</el-button
                 >
               </span>
             </el-dialog>
@@ -403,6 +209,7 @@ import { getUserMoney } from "@/api/user";
 import { getAllRefund } from "@/api/refund";
 import { getIconNumber } from "@/api/painting";
 import { GetNewNotification, InserFlag } from "@/api/notificationASP";
+import { GetCustomerMustWriteStudy } from "@/api/studyASP";
 import { QueryWebMenuByUserId } from "@/api/webMenuASP";
 import screenfull from "screenfull";
 import { mapMutations, mapActions } from "vuex";
@@ -410,11 +217,13 @@ import { mapState } from "vuex";
 import Vue from "vue";
 import Cookies from "js-cookie";
 import menuTree from "./menuTree";
+import studyContextDetail from "./studyContext/studyContextDetail";
 
 export default {
   name: "Main",
   components: {
-    menuTree
+    menuTree,
+    studyContextDetail
   },
   data() {
     return {
@@ -423,58 +232,27 @@ export default {
       customerType: Cookies.get("customerType"),
       realName: Cookies.get("realName"),
       identity: Cookies.get("identity"),
-      newsIndex: 0,
-      newsTextArr: [], //公告
+      newsIndex: 0, //当前滚动的公告
+      newsTextArr: [], //最新公告集合
+      newsHtmlData: "", //所有需要显示的公告拼接
+      notificationVisible: false,
+      studySelectData: [],
+      studyVisible: false,
       asideStatus: false, //false:菜单栏处于展开状态； true：菜单栏处于收起状态
-      asideWidth: "180px",
+      asideWidth: "190px",
       defaultUrl: "",
       isFullscreen: false,
-      detailVisible: false,
-      detailData: [],
       adminText: "无新公告发布!",
       moneySituation: "",
       Initial_balance: 0,
       getTheTab: "",
       refreshMoneyClass: "el-icon-refresh-left"
-      // dialogFormVisible: false,       //伪登录
-      // formLabelWidth: '120px'
     };
   },
   methods: {
     ...mapMutations("navTabs", ["addTab", "setMenuTreeList"]),
     ...mapMutations("badge", ["changeBadge"]),
     ...mapActions("navTabs", ["closeTab", "closeToTab"]),
-    /*
-            // 切换账号
-            // changeId(){
-            //     if(this.inputId === ''){
-            //         this.$alert('请输入用户id', '提示', {
-            //             type: 'warning',
-            //             confirmButtonText: '确定'
-            //         });
-            //         return;
-            //     }
-            //     if(this.inputCtype === ''){
-            //         this.$alert('请输入用户类型', '提示', {
-            //             type: 'warning',
-            //             confirmButtonText: '确定'
-            //         });
-            //         return;
-            //     }
-            //     Cookies.set('cid',this.inputId);
-            //     Cookies.set('customerType',this.inputCtype);
-            //     console.log(Cookies.get('cid'));
-            //     this.userMoney();
-            //     this.dialogFormVisible = false;
-            //     location.reload();
-            // },
-            // //取消切换
-            // quitId(){
-            //     this.inputId = '';
-            //     this.inputCtype = '';
-            //     this.dialogFormVisible = false;
-            // },
-        */
     //获取角标情况【退货】
     async addBadgeIcon() {
       if (Cookies.get("identity") === "ECWEB") {
@@ -539,7 +317,7 @@ export default {
     changeAside() {
       this.asideStatus = !this.asideStatus;
       if (this.asideStatus == false) {
-        this.asideWidth = "180px";
+        this.asideWidth = "190px";
         document.getElementById("aside-logo").style.display = "block";
         document.getElementById("asideControll").innerHTML = "&#xe61e;";
       } else {
@@ -567,7 +345,6 @@ export default {
         window.fullScreen ||
         document.webkitIsFullScreen ||
         document.msFullscreenEnabled;
-      // to fix : false || undefined == undefined
       if (isFull === undefined) {
         isFull = false;
       }
@@ -610,12 +387,14 @@ export default {
       });
     },
     isContainAttr(attr) {
+      //是否包含权限
       return (
         this.menuTreeListFlatten.filter(item => item.MENU_LINK == attr).length >
         0
       );
     },
     startMove() {
+      //设置定时器滚动公告
       this.newsTimer = setInterval(() => {
         if (this.newsIndex === this.newsTextArr.length - 1) {
           this.newsIndex = 0;
@@ -625,7 +404,7 @@ export default {
       }, 3000);
     },
     getNews() {
-      //获得最新的3条公告
+      //获得最新的生效公告
       GetNewNotification({ cid: this.cid }).then(res => {
         this.newsTextArr = res.data;
         if (this.newsTextArr.length > 0) {
@@ -633,8 +412,11 @@ export default {
           for (var i = 0; i < this.newsTextArr.length; i++) {
             if (this.newsTextArr[i].showFlag == 1) {
               //将所有需要显示的公告拼接
-              this.detailData += this.newsTextArr[i].CONTENT + "<br><br>";
-              this.detailVisible = true;
+              this.newsHtmlData += this.newsTextArr[i].CONTENT + "<br /><br />";
+              if (i != this.newsTextArr.length - 1)
+                this.newsHtmlData +=
+                  "<div style='border-bottom:0.2rem solid #ccc;'></div><br />";
+              this.notificationVisible = true;
               if (this.newsTextArr[i].POPUPTYPE == "FIRSTOFDAY")
                 InserFlag({ nid: this.newsTextArr[i].ID, cid: this.cid }); //标记为已显示
             }
@@ -642,9 +424,24 @@ export default {
         }
       });
     },
-    showDetail(item) {
-      this.detailData = item.CONTENT;
-      this.detailVisible = true;
+    showNotification(item) {
+      this.newsHtmlData = item.CONTENT;
+      this.notificationVisible = true;
+    },
+    getStudy() {
+      GetCustomerMustWriteStudy({ cid: this.cid }).then(res => {
+        if (res.data.length > 0){
+          this.studySelectData = res.data[0];
+          this.studyVisible = true;
+        }
+      });
+    },
+    submitStudy() {
+      this.$refs.studyContextDetail.submitStudy(); //调用子组件方法
+    },
+    refreshStudy() {
+      this.studyVisible = false;
+      this.getStudy();
     }
   },
   computed: {
@@ -682,7 +479,6 @@ export default {
     },
     activeTabName: {
       get() {
-        //console.log(this.$store.state.navTabs.activeTabName);
         return this.$store.state.navTabs.activeTabName;
       },
       set(value) {
@@ -690,18 +486,6 @@ export default {
         this.$router.push({
           path: "/" + this.$store.state.navTabs.activeUrlName
         });
-        // if(value === 'shoppingCar/shopping'){
-        //     if(this.$store.state.navTabs.activeParam !== undefined){
-        //         this.$router.push({
-        //             path: '/'+value+'?'+this.$store.state.navTabs.activeParam,
-        //         });
-        //     }
-        // }
-        // else{
-        //     this.$router.push({
-        //         path: '/'+value
-        //     });
-        // }
         this.defaultUrl = "";
         this.getPath;
       }
@@ -728,8 +512,8 @@ export default {
     }
   },
   created() {
-    this.getMenuTree();
-    this.userMoney();
+    this.getMenuTree(); //获得菜单权限树
+    this.userMoney(); //获得用户余额
     this.getPath();
     this.addTab("main");
     this.addTab(this.defaultUrl);
@@ -747,8 +531,9 @@ export default {
     this.$root.$on("refreshMoneyEvent", () => {
       this.userMoney();
     });
-    //获得公告
+    //获得最新公告
     if (this.customerType != "110") this.getNews();
+    this.getStudy();
   },
   beforeDestroy() {
     clearInterval(this.newsTimer);
@@ -760,19 +545,19 @@ export default {
 <style scoped>
 @media (min-width: 1920px) {
   .center {
-    width: 1600px;
+    width: 1650px;
     margin: 0 auto;
   }
 }
 @media (max-width: 1920px) {
   .center {
-    width: 1600px;
+    width: 1650px;
     margin: 0 auto;
   }
 }
 @media (max-width: 1680px) {
   .center {
-    width: 1500px;
+    width: 1525px;
     margin: 0 auto;
   }
 }
@@ -839,7 +624,7 @@ export default {
   color: #303133;
 }
 .el-menu-item-group span {
-  margin-left: 25px;
+  margin-left: 20px;
 }
 .el-icon-goods {
   color: #303133;

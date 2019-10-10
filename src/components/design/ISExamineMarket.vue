@@ -38,13 +38,6 @@
           @click="search()"
           >查询</el-button
         >
-        <el-button
-          style="float:right;margin-right:20px;"
-          size="medium"
-          @click="newOne()"
-          type="primary"
-          >新增申请单</el-button
-        >
       </div>
       <el-table
         border
@@ -78,7 +71,7 @@
           prop="STORE_AREA"
           label="店面面积(m2)"
           align="center"
-          width="80"
+          width="110"
         ></el-table-column>
         <el-table-column
           prop="STORE_PLIE"
@@ -129,45 +122,12 @@
             <span v-else>0个</span>
           </template>
         </el-table-column>
-        <el-table-column width="60" label="设计结果" align="center">
-          <template slot-scope="scope">
-            <a
-              v-if="scope.row.GM_FILE != ''"
-              title="点击下载压缩包"
-              class="attachLink"
-              @click="downLoadCompress(scope.row.GM_FILE_FOLDER)"
-              >{{ scope.row.GM_FILE.split(";").length - 1 }}个</a
-            >
-            <span v-else>暂无</span>
-          </template>
-        </el-table-column>
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
             <el-button
-              v-if="
-                scope.row.STATUS == 1 ||
-                  scope.row.STATUS == 2 ||
-                  scope.row.STATUS == 3
-              "
               @click="checkDetail(scope.row)"
               type="success"
               icon="el-icon-search"
-              size="small"
-              circle
-            ></el-button>
-            <el-button
-              v-if="scope.row.STATUS == 4 || scope.row.STATUS == 5"
-              @click="editIt(scope.row)"
-              type="primary"
-              icon="el-icon-edit"
-              size="small"
-              circle
-            ></el-button>
-            <el-button
-              v-if="scope.row.STATUS == 4 || scope.row.STATUS == 5"
-              @click="deleteDetail(scope.row)"
-              type="danger"
-              icon="el-icon-delete"
               size="small"
               circle
             ></el-button>
@@ -198,7 +158,7 @@
         <h2 style="text-align:center;margin-bottom:10px;">
           形象店建设申请表
         </h2>
-        <h3 v-if="EDITorCHECK || newORedit">
+        <h3 v-if="EDITorCHECK">
           提交时间：{{ tableData.DATE_CRE | datatrans }}
         </h3>
         <h3
@@ -245,14 +205,7 @@
 
             <td class="grayTD" colspan="1" style="height:28px;">年销售任务</td>
             <td style="height:28px;">
-              <el-input
-                :disabled="EDITorCHECK"
-                placeholder="（客户填写）"
-                clearable
-                class="inputStyle"
-                size="mini"
-                v-model="tableData.SALE_TARGET"
-              ></el-input>
+              {{ tableData.SALE_TARGET }}
             </td>
           </tr>
 
@@ -261,14 +214,7 @@
               店面地址<span style="color:red;">*</span>
             </td>
             <td colspan="3" style="height:28px;">
-              <el-input
-                :disabled="EDITorCHECK"
-                placeholder="（客户必填）"
-                clearable
-                class="inputStyle"
-                size="mini"
-                v-model="tableData.STORE_ADDRESS"
-              ></el-input>
+              {{ tableData.STORE_ADDRESS }}
             </td>
           </tr>
 
@@ -301,15 +247,8 @@
             <td class="grayTD" colspan="1" style="height:28px;">
               店面形式<span style="color:red;">*</span>
             </td>
-            <td colspan="3" style="text-align:left;height:28px;">
-              <el-radio-group
-                :disabled="EDITorCHECK"
-                style="margin-left:50px;"
-                v-model="tableData.STORE_FORM"
-              >
-                <el-radio label="street">街边店</el-radio>
-                <el-radio label="market">商城店</el-radio>
-              </el-radio-group>
+            <td colspan="3" style="height:28px;">
+              {{ tableData.STORE_FORM | formTrans }}
             </td>
           </tr>
 
@@ -318,40 +257,14 @@
               店面面积<span style="color:red;">*</span>
             </td>
             <td colspan="1" style="height:28px;">
-              <el-input
-                :disabled="EDITorCHECK"
-                style="width:65%"
-                placeholder="（客户必填）"
-                clearable
-                class="inputStyle"
-                size="mini"
-                oninput="value=value.replace(/[^\d.]/g,'')
-                                .replace(/^\./g, '').replace(/\.{2,}/g, '.')
-                                .replace('.', '$#$').replace(/\./g, '')
-                                .replace('$#$', '.')
-                                .slice(0,value.indexOf('.') === -1? value.length: value.indexOf('.') + 3)"
-                v-model="tableData.STORE_AREA"
-              ></el-input>
-              <span>平方米</span>
+              {{ tableData.STORE_AREA }}平方米
             </td>
 
             <td class="grayTD" colspan="1" style="height:28px;">
               层数<span style="color:red;">*</span>
             </td>
             <td colspan="1" style="height:28px;">
-              <el-input
-                :disabled="EDITorCHECK"
-                placeholder="（客户必填）"
-                clearable
-                class="inputStyle"
-                size="mini"
-                oninput="value=value.replace(/[^\d.]/g,'')
-                                .replace(/^\./g, '').replace(/\.{2,}/g, '.')
-                                .replace('.', '$#$').replace(/\./g, '')
-                                .replace('$#$', '.')
-                                .slice(0,value.indexOf('.') === -1? value.length: value.indexOf('.') + 3)"
-                v-model="tableData.STORE_PLIE"
-              ></el-input>
+              {{ tableData.STORE_PLIE }}
             </td>
           </tr>
 
@@ -368,16 +281,8 @@
             <td class="grayTD" colspan="1" style="height:28px;">
               计划动工时间<span style="color:red;">*</span>
             </td>
-            <td colspan="3" rowspan="1" style="text-align:left;height:28px;">
-              <el-date-picker
-                :disabled="EDITorCHECK"
-                type="date"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-                placeholder="选择计划动工时间"
-                v-model="tableData.PLAN_DATE"
-                style="width:35%;margin-left:10px;"
-              ></el-date-picker>
+            <td colspan="3" rowspan="1" style="height:28px;">
+              {{ tableData.PLAN_DATE | datatrans }}
             </td>
           </tr>
 
@@ -385,19 +290,11 @@
             <td class="grayTD" colspan="1" style="height:30px;">
               实施形式<span style="color:red;">*</span>
             </td>
-            <td colspan="3" style="text-align:left;height:45px;">
-              <el-radio-group
-                :disabled="EDITorCHECK"
-                style="margin-left:10px;"
-                v-model="tableData.IMPLEMENTTATION_FORM"
-                @change="implentmentChange"
+            <td colspan="3" style="height:45px;">
+              <span v-if="tableData.IMPLEMENTTATION_FORM == 1"
+                >100%按公司设计方案落地，软装物料由公司配置，享受公司建店支持</span
               >
-                <el-radio style="margin-bottom:5px;" :label="1"
-                  >①100%按公司设计方案落地，软装物料由公司配置，享受公司建店支持</el-radio
-                >
-                <br />
-                <el-radio :label="2">②自行落地</el-radio>
-              </el-radio-group>
+              <span v-else>自行落地</span>
             </td>
           </tr>
 
@@ -406,13 +303,8 @@
               是否需要上门测量
             </td>
             <td colspan="1" style="height:35px">
-              <el-radio-group
-                :disabled="tableData.IMPLEMENTTATION_FORM != 1 || EDITorCHECK"
-                v-model="tableData.MEASURE"
-              >
-                <el-radio :label="1">是</el-radio>
-                <el-radio :label="0">否</el-radio>
-              </el-radio-group>
+              <span v-if="tableData.MEASURE == 1">是</span>
+              <span v-else>否</span>
             </td>
             <td colspan="2" style="font-size:12px;color:gray;height:35px">
               *仅100%按公司设计方案落地客户可预约上门测量，并需承担上门人员食宿费用，
@@ -423,14 +315,7 @@
           <tr>
             <td class="grayTD" colspan="1" style="height:50px">其他需求说明</td>
             <td colspan="3" style="height:50px">
-              <el-input
-                :disabled="EDITorCHECK"
-                class="inputStyle"
-                type="textarea"
-                :autosize="{ minRows: 2, maxRow: 4 }"
-                resize="none"
-                v-model="tableData.NOTE"
-              ></el-input>
+              {{ tableData.NOTE }}
             </td>
           </tr>
 
@@ -440,33 +325,7 @@
             </td>
 
             <td colspan="2" style="height:14px;">
-              <el-upload
-                v-if="!EDITorCHECK"
-                class="upload-de"
-                :action="Global.uploadUrl + '/IMAGE_STORE/UploadFiles'"
-                drag
-                multiple
-                :on-change="handleChange"
-                :on-remove="handleRemove"
-                :on-success="handleSuccess"
-                :on-error="handleError"
-                ref="upload"
-                :auto-upload="false"
-                :file-list="fileList"
-                :data="{ cid: cid, dateStamp: dateStamp }"
-              >
-                <i
-                  class="el-icon-upload"
-                  style="width:300px;height:30px;margin-top:10px;"
-                ></i>
-                <div class="el-upload__text">
-                  将文件拖到此处，或<em>点击上传</em>
-                </div>
-                <div class="el-upload__tip" slot="tip">
-                  可上传jpg、dwg、pdf等格式
-                </div>
-              </el-upload>
-              <ul v-else class="el-upload-list el-upload-list--text">
+              <ul class="el-upload-list el-upload-list--text">
                 <li
                   v-for="(fileList, index) in fileList"
                   :key="index"
@@ -499,25 +358,8 @@
             <td class="grayTD" colspan="1" style="height:28px;">
               付款凭证<span style="color:red;">*</span>
             </td>
-            <td colspan="3" style="text-align:left;height:28px;">
-              <el-select
-                v-if="!EDITorCHECK"
-                style="width:500px;"
-                v-model="tableData.PAYMENT"
-                filterable
-                placeholder="请选择汇款凭证"
-              >
-                <el-option
-                  v-for="item in bankData"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-              <span v-else style="margin-left:20px;">{{
-                tableData.PAYMENT
-              }}</span>
+            <td colspan="3" style="height:28px;">
+              {{ tableData.PAYMENT }}
             </td>
           </tr>
 
@@ -526,7 +368,7 @@
               <span style="margin-left:10px;">责任人签字：</span>
             </td>
             <td colspan="2" style="text-align:left;height:28px;">
-              <span v-if="!EDITorCHECK && !newORedit" style="margin-left:10px;"
+              <span v-if="!EDITorCHECK" style="margin-left:10px;"
                 >日期：{{ new Date().getTime() | datatrans }}</span
               >
               <span v-else style="margin-left:10px;"
@@ -551,42 +393,31 @@
         </table>
 
         <br />
-        <div v-if="fileListGM.length > 0" style="width:60%">
-          <span>设计结果：</span>
-          <ul width="50%" class="el-upload-list el-upload-list--text">
-            <li
-              v-for="(fileList, index) in fileListGM"
-              :key="index"
-              class="el-upload-list__item is-success"
-              tabindex="0"
-            >
-              <a class="el-upload-list__item-name">
-                <i class="el-icon-document"> </i>{{ fileList.name }}
-              </a>
-              <label
-                style="display:block;position:absolute;top:1px;right:20px;"
-              >
-                <a style="cursor:pointer;" @click="downLoad(fileList.url)"
-                  >下载附件</a
-                >
-              </label>
-            </li>
-          </ul>
-        </div>
+        <span v-if="tableData.STATUS == 1 && tableData.ENTER_SUG"
+          >上次审核意见:{{ tableData.ENTER_SUG }}</span
+        >
         <div style="margin:0 auto; text-align: center;">
+          <el-input
+            v-if="tableData.STATUS == 1"
+            style="margin-bottom: 10px"
+            resize="none"
+            type="textarea"
+            :rows="3"
+            placeholder="请输入审核意见"
+            v-model="examineSuggestion"
+          >
+          </el-input>
           <el-button
-            :disabled="btnDisable"
-            v-if="newORedit"
-            type="success"
-            @click="submitEDIT"
-            >修改并提交</el-button
+            v-if="tableData.STATUS == 1"
+            type="primary"
+            @click="pass(tableData.ID)"
+            >审核通过</el-button
           >
           <el-button
-            :disabled="btnDisable"
-            v-else-if="!EDITorCHECK"
-            type="success"
-            @click="sumbitNEW"
-            >提交</el-button
+            v-if="tableData.STATUS == 1"
+            type="warning"
+            @click="reject(tableData.ID)"
+            >审核不通过</el-button
           >
         </div>
       </div>
@@ -602,16 +433,12 @@
 
 
 <script>
-import { getBankList } from "@/api/bank";
 import { GetPaymentById } from "@/api/paymentASP";
 import {
-  GetImageCustomer,
-  InsertImageStore,
-  EditImageStore,
-  DeleteImageStore,
-  UploadFiles
+  GetAllData,
+  UploadFiles,
+  MarketUpdateStatus
 } from "@/api/imageStoreASP";
-import { getCustomerInfo } from "@/api/orderListASP";
 import { downLoadFile } from "@/common/js/downLoadFile";
 import Cookies from "js-cookie";
 const Head = "http://14.29.223.114:10250/upload";
@@ -625,15 +452,11 @@ export default {
       cid: Cookies.get("cid"),
       dateStamp: "",
       fileList: [],
-      fileListGM: [],
-      fileChange: false,
       BigPic: false,
       sqlpath: "", //保存图片相对路径
-      newORedit: false, //决定显示新建或者编辑
-      EDITorCHECK: false, //决定显示编辑或者查看
+      EDITorCHECK: true, //决定显示编辑或者查看
       imageStoreData: [],
       tableData: [],
-      deleteFile: [],
       isDelete: false,
       isChuli: false,
       isBack: false,
@@ -643,9 +466,9 @@ export default {
       currentPage: 1,
       beginTime: "",
       finishTime: "",
-      status: "",
+      status: "1",
       imgUrl: "",
-      btnDisable: false,
+      examineSuggestion: "",
       options: [
         {
           label: "全部状态",
@@ -675,9 +498,7 @@ export default {
     };
   },
   created: function() {
-    this.chargeQuery();
     this.getDetail();
-    this._getBankList();
   },
   filters: {
     transStatus(value) {
@@ -743,245 +564,22 @@ export default {
     }
   },
   methods: {
-    //查询经办人
-    chargeQuery() {
-      var data = {
-        cid: Cookies.get("cid"),
-        companyId: Cookies.get("companyId")
-      };
-      getCustomerInfo(data).then(res => {
-        this.chargeData = res.data;
-      });
-    },
-    implentmentChange() {
-      if (this.tableData.IMPLEMENTTATION_FORM != 1) this.tableData.MEASURE = 0;
-    },
-    //新建
-    newOne() {
-      this.EDITorCHECK = false;
-      this.newORedit = false;
-      this.imageStoreDetail = true;
-      this.btnDisable = false;
-      this.tableData = {
-        CUSTOMER_CODE: Cookies.get("companyId"),
-        CUSTOMER_NAME: Cookies.get("realName"),
-        CUSTOMER_AGENT: this.chargeData.CUSTOMER_AGENT,
-        ATTACHMENT_FILE: "",
-        OFFICE_TEL: this.chargeData.OFFICE_TEL,
-        CREATER: Cookies.get("cid"),
-        STATUS: 0,
-        MEASURE: 0
-      };
-      this.dateStamp = new Date().getTime();
-      this.fileList = [];
-      this.fileListGM = [];
-      this._getBankList();
-    },
-    //确定新建
-    sumbitNEW() {
-      //判断是否填完所有信息
-      if (
-        !this.tableData.STORE_ADDRESS ||
-        !this.tableData.STORE_FORM ||
-        !this.tableData.STORE_AREA ||
-        !this.tableData.STORE_PLIE ||
-        !this.tableData.PLAN_DATE ||
-        !this.tableData.IMPLEMENTTATION_FORM ||
-        !this.tableData.PAYMENT
-      ) {
-        this.$alert("请完善信息", "提示", {
-          confirmButtonText: "确定",
-          type: "warning"
-        });
-        return;
-      }
-      //判断是否上传图片
-      if (this.fileList.length == 0) {
-        this.$alert("请上传附件", "提示", {
-          confirmButtonText: "确定",
-          type: "warning"
-        });
-        return;
-      }
-      this.btnDisable = true;
-      this.$refs.upload.submit();
-    },
-    sumbitNEWANSYC() {
-      //相当于同步，等提交成功后再执行
-      //附件拼接
-      for (var i = 0; i < this.fileList.length; i++) {
-        this.tableData.ATTACHMENT_FILE +=
-          "/Files/IMAGE_STORE/" +
-          this.cid +
-          "/" +
-          this.dateStamp +
-          "/" +
-          this.fileList[i].name +
-          ";";
-      }
-      this.tableData.ATTACHMENT_FILE_FOLDER =
-        "/Files/IMAGE_STORE/" + this.cid + "/" + this.dateStamp;
-      InsertImageStore(this.tableData)
-        .then(res => {
-          this.$alert("提交成功", "提示", {
-            confirmButtonText: "确定",
-            type: "success"
-          });
-          //this.$refs.upload.clearFiles();
-          this.fileList = [];
-          this.currentPage = 1;
-          this.getDetail();
-          this.imageStoreDetail = false;
-        })
-        .catch(res => {
-          this.$alert("提交失败，请稍后重试", "提示", {
-            confirmButtonText: "确定",
-            type: "warning"
-          });
-        });
-    },
-    //编辑列表详情
-    editIt(tab) {
-      this.fileList = [];
-      this.fileListGM = [];
-      this.deleteFile = [];
-      this.tableData = JSON.parse(JSON.stringify(tab));
-      this._getBankList();
-      var list = this.tableData.ATTACHMENT_FILE.split(";");
-      for (var i = 0; i < list.length - 1; i++) {
-        var index = list[i].lastIndexOf("/");
-        var fileName = list[i].substr(index + 1);
-        this.fileList.push({
-          name: fileName,
-          url: list[i]
-        });
-      }
-      this.dateStamp = new Date().getTime();
-      this.EDITorCHECK = false;
-      this.newORedit = true;
-      this.imageStoreDetail = true;
-      this.btnDisable = false;
-    },
-    submitEDIT() {
-      if (
-        !this.tableData.STORE_ADDRESS ||
-        !this.tableData.STORE_FORM ||
-        !this.tableData.STORE_AREA ||
-        !this.tableData.STORE_PLIE ||
-        !this.tableData.PLAN_DATE ||
-        !this.tableData.IMPLEMENTTATION_FORM ||
-        !this.tableData.PAYMENT
-      ) {
-        this.$alert("请完善信息", "提示", {
-          confirmButtonText: "确定",
-          type: "warning"
-        });
-        return;
-      }
-      //判断是否上传图片
-      if (this.fileList.length == 0) {
-        this.$alert("请上传附件", "提示", {
-          confirmButtonText: "确定",
-          type: "warning"
-        });
-        return;
-      }
-      if (this.fileChange) {
-        //文件发生改变，重新上传一次
-        this.btnDisable = true;
-        this.$refs.upload.submit();
-        this.tableData.ATTACHMENT_FILE = "";
-        //附件拼接
-        for (var i = 0; i < this.fileList.length; i++) {
-          this.tableData.ATTACHMENT_FILE +=
-            "/Files/IMAGE_STORE/" +
-            this.cid +
-            "/" +
-            this.dateStamp +
-            "/" +
-            this.fileList[i].name +
-            ";";
-        }
-        this.tableData.ATTACHMENT_FILE_FOLDER =
-          "/Files/IMAGE_STORE/" + this.cid + "/" + this.dateStamp;
-      } else {
-        if(this.deleteFile.length>0)
-        {
-          this.tableData.ATTACHMENT_FILE = '';
-          for (var i = 0; i < this.fileList.length; i++) {
-          this.tableData.ATTACHMENT_FILE +=this.fileList[i].url + ";";
-        }
-        }
-        this.submitEDITANSYC();
-      }
-    },
-    submitEDITANSYC() {
-      //相当于同步，等提交成功后再执行
-      EditImageStore({
-        model: this.tableData,
-        attchmentChange: this.fileChange,
-        deleteFile: this.deleteFile
-      })
-        .then(res => {
-          this.$alert("提交成功", "提示", {
-            confirmButtonText: "确定",
-            type: "success"
-          });
-          this.fileList = [];
-          this.currentPage = 1;
-          this.getDetail();
-          this.imageStoreDetail = false;
-        })
-        .catch(res => {
-          this.$alert("提交失败，请稍后重试", "提示", {
-            confirmButtonText: "确定",
-            type: "warning"
-          });
-        });
-    },
     //查看列表详情
     checkDetail(tab) {
+      this.examineSuggestion = "";
       this.fileList = [];
-      this.fileListGM = [];
       this.tableData = JSON.parse(JSON.stringify(tab));
       var list = this.tableData.ATTACHMENT_FILE.split(";");
       for (var i = 0; i < list.length - 1; i++) {
         var index = list[i].lastIndexOf("/");
         var fileName = list[i].substr(index + 1);
         this.fileList.push({
-          name: fileName,
-          url: list[i]
-        });
-      }
-      var listGM = this.tableData.GM_FILE.split(";");
-      for (var i = 0; i < listGM.length - 1; i++) {
-        var index = list[i].lastIndexOf("/");
-        var fileName = list[i].substr(index + 1);
-        this.fileListGM.push({
           name: fileName,
           url: list[i]
         });
       }
       this.EDITorCHECK = true;
       this.imageStoreDetail = true;
-    },
-    deleteDetail(tab) {
-      this.$confirm("删除的数据无法恢复，是否删除？", "提示", {
-        confirmButtonText: "是",
-        cancelButtonText: "否",
-        type: "warning"
-      })
-        .then(() => {
-          DeleteImageStore(JSON.parse(JSON.stringify(tab))).then(res => {
-            this.$alert("删除成功", "提示", {
-              confirmButtonText: "确定",
-              type: "success"
-            });
-            this.currentPage = 1;
-            this.getDetail();
-          });
-        })
-        .catch(() => {});
     },
     //搜索
     search() {
@@ -991,7 +589,6 @@ export default {
     },
     getDetail() {
       let data = {
-        companyId: Cookies.get("companyId"), //公司id
         status: this.status, //
         beginTime: this.beginTime, //起始时间
         finishTime: this.finishTime, //结束时间
@@ -1006,36 +603,9 @@ export default {
       } else {
         data.finishTime = data.finishTime + " 23:59:59";
       }
-      GetImageCustomer(data).then(res => {
+      GetAllData(data).then(res => {
         this.count = res.count;
         this.imageStoreData = res.data;
-      });
-    },
-    _getBankList() {
-      let url =
-        "http://14.29.223.114:10250/yulan-capital/PaymentBill/getPayBills.do";
-      if (this.beginTime == null) this.beginTime = "";
-      if (this.finishTime == null) this.finishTime = "";
-      let data = {
-        cid: Cookies.get("companyId"), //公司id
-        state: "", //状态状态(SUBMITED（已提交）,PROCESED（已处理）,SENDBACK（退回）,CANCELED（作废）)
-        beginTime: "", //起始时间
-        finishTime: "", //结束时间
-        limit: 100000, //限制数
-        page: 1 //页数
-      };
-      getBankList(url, data).then(res => {
-        for (var i = 0; i < res.data.length; i++) {
-          this.bankData[i] = new Object();
-          this.bankData[i].label =
-            "流水号:" +
-            res.data[i].id +
-            " 付款账号：" +
-            res.data[i].payerAccount +
-            " 付款金额：" +
-            res.data[i].payAmount;
-          this.bankData[i].value = res.data[i].id;
-        }
       });
     },
     downLoad(path) {
@@ -1063,6 +633,39 @@ export default {
         this.BigPic = true;
       });
     },
+    pass(id) {
+      var data = {
+        id: id,
+        cid: Cookies.get("cid"),
+        status: 2,
+        suggestion: this.examineSuggestion
+      };
+      MarketUpdateStatus(data).then(res => {
+        this.imageStoreDetail = false;
+        this.getDetail();
+        this.examineSuggestion = "";
+      });
+    },
+    reject(id) {
+      if (!this.examineSuggestion) {
+        this.$alert("请填写意见", "提示", {
+          confirmButtonText: "确定",
+          type: "success"
+        });
+        return;
+      }
+      var data = {
+        id: id,
+        cid: Cookies.get("cid"),
+        status: 4,
+        suggestion: this.examineSuggestion
+      };
+      MarketUpdateStatus(data).then(res => {
+        this.imageStoreDetail = false;
+        this.getDetail();
+        this.examineSuggestion = "";
+      });
+    },
     //翻页获取订单
     handleCurrentChange(val) {
       this.currentPage = val;
@@ -1075,35 +678,7 @@ export default {
       this.getDetail();
     },
     handleChange(file, fileList) {
-      this.fileList = fileList;
-      this.fileChange = true;
-    },
-    handleRemove(file, fileList) {
-      this.fileList = fileList;
-      //this.fileChange = true;
-      if ((file.status = "success")) {
-        this.deleteFile.push(file.url);
-      }
-    },
-    handleSuccess(res, file, fileList) {
-      var successCount = fileList.filter(item=>item.status == "success").length;
-      if (successCount == fileList.length) {
-        if (this.newORedit) {
-          this.submitEDITANSYC();
-        } else {
-          this.sumbitNEWANSYC();
-        }
-      }
-    },
-    handleError(err, file, fileList) {
-      this.$refs.upload.clearFiles();
-      this.fileList = [];
-      this.dateStamp = new Date().getTime();
-      this.btnDisable = false;
-      this.$alert("文件上传失败", "提示", {
-        confirmButtonText: "确定",
-        type: "success"
-      });
+      this.fileList = fileList.slice(-3);
     }
   }
 };

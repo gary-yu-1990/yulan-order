@@ -512,8 +512,6 @@ export default {
   methods: {
     //窗帘提交订单
     summitCurtain(item) {
-      console.log(item);
-      console.log(item.ORDER_NO);
       let orderBody = item.ORDERBODY;
       let transCookies = [];
       for (let i = 0; i < item.ORDERBODY.length; i++) {
@@ -544,7 +542,6 @@ export default {
       sessionStorage.setItem("shoppingHead", JSON.stringify(item));
       Cookies.set("cur_status", 3);
       this.addTab("order/checkOrder");
-      console.log(transCookies);
     },
     //查看审核
     toCheckExamine(value, ID, status) {
@@ -557,8 +554,6 @@ export default {
     toOrderDetail(val, status) {
       Cookies.set("ORDER_NO", val);
       Cookies.set("status_ID", status);
-      console.log(Cookies.get("ORDER_NO"));
-      console.log(Cookies.get("status_ID"));
       this.addTab("order/orderDetail");
     },
     //订单获取

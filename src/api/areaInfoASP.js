@@ -25,6 +25,15 @@ export function getCustomerByAreaCode(data, config = {}) {
     })
 }
 
+//通过提货单查详情
+export function getPackDetailsBySaleNo(data, config = {}) {
+    return post('/PACK_DETAIL/getPackDetailsBySaleNo', data, config).then((res) => {
+        return Promise.resolve(res);
+    }).catch((err) => {
+        return Promise.reject(err);
+    })
+}
+
 //根据时间及客户编码查提货单
 export function getPackDetails(data, config = {}) {
     return post('/PACK_DETAIL/getPackDetails', data, config).then((res) => {

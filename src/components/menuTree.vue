@@ -90,7 +90,7 @@ export default {
   color: #303133;
 }
 .el-menu-item-group span {
-  margin-left: 25px;
+  margin-left: 20px;
 }
 .el-icon-goods {
   color: #303133;

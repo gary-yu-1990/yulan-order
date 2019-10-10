@@ -316,10 +316,10 @@ import Cookies from "js-cookie";
 import DetailCurtainTable from "../detail/detailCurtainTable";
 export default {
   name: "examineDatail",
-  props:['isShowButton'],
+  props: ["isShowButton"],
   data() {
     return {
-      button_1:true,
+      button_1: true,
       deleteIds: [],
       defeatButton: false,
       exButton: true,
@@ -383,17 +383,21 @@ export default {
   created: function() {
     this.orderNum = Cookies.get("ORDER_NO");
     this.isX = this.orderNum.slice(0, 1) == "X";
-    console.log(Cookies.get("CURTAIN_STATUS_ID"));
     this.check_CURTAIN_STATUS_ID = Cookies.get("CURTAIN_STATUS_ID");
     this.check_STATUS_ID = Cookies.get("status_ID");
     this.getDetail();
-    if(this.isShowButton != undefined )
-    {
-      this.button_1 = this.isShowButton
+    if (this.isShowButton != undefined) {
+      this.button_1 = this.isShowButton;
     }
   },
-  activated(){
-    
+  activated() {
+    if (this.isShowButton != undefined) {
+      this.orderNum = Cookies.get("ORDER_NO");
+      this.isX = this.orderNum.slice(0, 1) == "X";
+      this.check_CURTAIN_STATUS_ID = Cookies.get("CURTAIN_STATUS_ID");
+      this.check_STATUS_ID = Cookies.get("status_ID");
+      this.getDetail();
+    }
   },
   methods: {
     formatRole: function(row, column) {
@@ -407,7 +411,6 @@ export default {
       this.detailVisible = msg;
     },
     getDeleteArr(msg) {
-      console.log(msg);
       for (var i = 0; i < msg.length; i++) {
         this.deleteIds.push(msg[i]);
       }
@@ -418,7 +421,6 @@ export default {
         this.saveChange();
       }
       let innerLine = msg[0].lineNo;
-      console.log(innerLine);
       this.allCurtains.push(msg);
       //换掉的item赋值
       for (let i = 0; i < msg.length; i++) {
@@ -429,7 +431,6 @@ export default {
           this.allCurtains.splice(a, 1);
         }
       }
-      console.log(this.allCurtains);
     },
     summitCurtain() {
       var item = this.ruleForm;
@@ -463,7 +464,6 @@ export default {
       sessionStorage.setItem("shoppingHead", JSON.stringify(item));
       Cookies.set("cur_status", 3);
       this.addTab("order/checkOrder");
-      console.log(transCookies);
     },
     //客户修改
     LjExamine() {
@@ -478,7 +478,6 @@ export default {
       //defeatChange(url,data).then(res =>{
       updateCurtainOrder(data)
         .then(res => {
-          console.log(res);
           if (res.code == 0) {
             this.$alert("操作成功,请提交结算再次审核", "提示", {
               confirmButtonText: "确定",
@@ -514,7 +513,6 @@ export default {
       }).then(() => {
         passExamine(url, data)
           .then(res => {
-            console.log(res);
             if (res.code == 0) {
               var recordData = {
                 ORDER_NO: this.orderNum,
@@ -557,7 +555,6 @@ export default {
       }).then(() => {
         passExamine(url, data)
           .then(res => {
-            console.log(res);
             if (res.code == 0) {
               var recordData = {
                 ORDER_NO: this.orderNum,
@@ -591,8 +588,6 @@ export default {
     },
     openDialog(tab, index) {
       this.ljsuggestion = tab.LJ_SUGGESTION;
-      console.log(tab);
-      console.log(index);
       this.tableIndex = index;
       this.cyLineNo = index + 1;
       this.detailVisible = true;
@@ -611,8 +606,6 @@ export default {
           this.curtainData = this.allCurtains[i];
         }
       }
-      console.log(this.curtainData);
-
       this.headerData.quantity = tab.QTY_REQUIRED;
       this.headerData.highJia = tab.CURTAIN_HEIGHT2;
       this.headerData.productGroupType = ""; //
@@ -634,14 +627,11 @@ export default {
       this.headerData.cartItemId = "";
       this.headerData.activityGroupType = ""; //
       this.headerData.activity = tab.PROMOTION_TYPE;
-      console.log(this.headerData);
     },
     //保存修改
     saveChange() {
       this.renderArray = this.ruleForm.ORDERBODY[this.tableIndex];
       this.renderArray.checkStatus = "已修改";
-      console.log(this.ruleForm.ORDERBODY);
-      console.log(this.renderArray);
       this.Render();
       this.detailVisible = false;
       this.exButton = false;
@@ -651,7 +641,6 @@ export default {
     Render() {
       this.$set(this.ruleForm.ORDERBODY, this.tableIndex, this.renderArray);
       this.passORback = true;
-      console.log(this.ruleForm);
     },
     getDetail() {
       let url = "/order/getOrderContent.do";
@@ -660,15 +649,12 @@ export default {
         order_no: Cookies.get("ORDER_NO")
       };
       orderDetail(url, data).then(res => {
-        console.log(res);
-        console.log(res.data.data[0]);
         this.ruleForm.ORDER_NO = Cookies.get("ORDER_NO");
         this.ruleForm = res.data.data[0];
 
         for (let i = 0; i < this.ruleForm.ORDERBODY.length; i++) {
           this.ruleForm.ORDERBODY[i].checkStatus = "未修改";
         }
-        console.log(this.ruleForm.ORDERBODY);
         var recordData = {
           orderNo: this.orderNum
         };
@@ -679,7 +665,6 @@ export default {
     },
     //返回指定
     backTowhere() {
-      console.log(Cookies.get("customerType"));
       let customerType = Cookies.get("customerType");
       if (customerType == 110) {
         this.addTab("order/examine");

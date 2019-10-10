@@ -15,6 +15,7 @@ import './assets/css/base.css'
 import store from './store'
 import { showFullScreenLoading, tryHideFullScreenLoading } from './api/loading'
 import * as custom from './common/js/filter'
+import * as Global from './common/js/global'
 
 Vue.use(ElementUI);
 Vue.use(Cookies);
@@ -25,6 +26,7 @@ Vue.prototype.$get = get;
 Vue.prototype.$post = post;
 Vue.prototype.$patch = patch;
 Vue.prototype.$put = put;
+Vue.prototype.Global = Global//引入全局变量
 
 //请求拦截
 Axios.interceptors.request.use(config => {

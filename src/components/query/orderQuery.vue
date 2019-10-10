@@ -5,12 +5,12 @@
        <el-dialog
         title="客户详情"
         :visible.sync="dialogVisible"
-        width="30%"
+        width="40%"
         style="height:70%"
         
       >
       <div style="margin:0,auto">
- <el-card>
+      <el-card>
        <TABLE class="table_2">
         <tr>
           <td>客户名称:</td>
@@ -29,7 +29,7 @@
           <td>{{customerInfo.POST_ADDRESS}}</td>
         </tr>
          <tr>
-          <td>优惠券余额：</td>
+          <td style="width:150px">优惠券余额：</td>
           <td v-for="item of couponData" :key="item.index">当前余额 {{item.rebateMoneyOver}}元</td>
         </tr>
          <tr>
@@ -38,16 +38,23 @@
         </tr>
        </TABLE>
        </el-card>
-</div>
+      </div>
       </el-dialog>
+
        <el-dialog
-        
         :show-close="true"
         :visible.sync="dialogVisible_1"
         width="65%"
       >
-        <checkExamine :isShowButton='false'></checkExamine>
+       <keep-alive>
+        <checkExamine 
+        v-if="dialogVisible_1"
+        :isShowButton='false' 
+        :ruleForm="ruleForm">
+        </checkExamine>
+        </keep-alive>
       </el-dialog>
+
       <div class="ff"> 
         <el-tabs class="tabs_1"  v-model="activeName" style="width:1340px">
           <el-tab-pane label="区域订单查询" name="first_1">
@@ -113,6 +120,16 @@
                       :label="item.label"
                       :value="item.value"
                     ></el-option>
+                  </el-select>
+                  状态搜索
+                  <el-select v-model= "STATUS.label" placeholder="全部" style="width:178px"
+                  @change="status_id(STATUS.label)">
+                    <el-option
+                      v-for="item in STATUS"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    ></el-option>
                   </el-select></div>
                   <div style="margin-top:15px">
                     <div>
@@ -123,7 +140,7 @@
                         type="#DCDFE6"
                         icon="el-icon-search"
                         class="cx"
-                        @click="queryQuYu_1"
+                        @click="_queryQuYu_1"
                         style="margin-left:65px"
                         >查询</el-button
                       >
@@ -155,37 +172,42 @@
           :data="tableData"
           border
           highlight-current-row
-          style="width: 100%"
+          style="width: 100%;font-weight:normal;font-size:12px"
           class="table_1"
         >
           <el-table-column prop="num" label width="80" align="center">
             <template slot-scope="scope"><span>{{scope.$index+(currentPage - 1) * limit + 1}} </span></template>
           </el-table-column>
-          <el-table-column label="订单号" align="center">
+          <el-table-column label="订单号" align="center" width="200px">
             <template slot-scope="scope1">
               <el-button
-                @click="openDialog(scope1.row.ORDER_NO, scope1.row.STATUS_ID)"
+              size="mini"
+                @click="openDialog(scope1.row.ORDER_NO)"
                 type="text"
                 >{{ scope1.row.ORDER_NO }}</el-button
               >
             </template>
           </el-table-column>
-          <el-table-column label="状态" width="100" align="center">
+          <el-table-column label="状态" width="150px" align="center" >
             <template slot-scope="scope2">
               {{scope2.row.STATUS_ID|transType}}
             </template>
           </el-table-column>
-          <el-table-column prop="DATE_CRE" label="创建时间" align="center"></el-table-column>
-          <el-table-column  label="客户" align="center">
+          <el-table-column prop="DATE_CRE" label="创建时间" align="center" width="150px">
+            <template slot-scope="scope4">
+              {{scope4.row.DATE_CRE|datatrans}}
+            </template>
+          </el-table-column>
+          <el-table-column  label="客户" align="center" width="350px">
              <template slot-scope="scope3">
-  
               <el-button
+              size="mini"
                @click="customer_info(scope3.row)"
                 type="text"
               >{{scope3.row.CUSTOMER_NAME}}</el-button>
             </template>
           </el-table-column>
-          <el-table-column prop="LINKPERSON" label="联系人" align="center"></el-table-column>
+          <el-table-column prop="LINKPERSON" label="联系人" align="center" width="150px"></el-table-column>
           <el-table-column prop="TELEPHONE" label="联系电话" align="center"></el-table-column>
         </el-table>
      
@@ -211,6 +233,7 @@
 </template>
 
 <script>
+
 import checkExamine from "../order/checkExamine";
 import { searchAssignments, orderDetail,manageCoupon } from "@/api/orderList";
 // import { manageCoupon } from "@/api/orderList";
@@ -289,7 +312,50 @@ export default {
         }
       ],
       AREACODE: [],
-      tableData: []
+      tableData: [],
+      STATUS:[
+        {
+          value: "",
+          label: "全部"
+        },
+        {
+          value: "0",
+          label: "待提交"
+        },
+        {
+          value: "1",
+          label: "已提交"
+        },
+        {
+          value: "2",
+          label: "已受理"
+        },
+        {
+          value: "3",
+          label: "已作废"
+        },
+        {
+          value: "4",
+          label: "部分发货"
+        },
+        {
+          value: "5",
+          label: "余额不足待提交"
+        },
+        {
+          value: "6",
+          label: "余额不足可提交"
+        },
+        {
+          value: "7",
+          label: "已完成"
+        },
+        {
+          value: "12",
+          label: "已接收"
+        },
+      ],
+      status_info:"",
     };
   },
   //生命周期
@@ -324,11 +390,10 @@ export default {
           return "已接收";
           break;
       }
-    }
-  },
-   datatrans(value) {
+    },
+    datatrans(value) {
       //时间戳转化大法
-      if (value == null) {
+      if (value == null || value == "9999/12/31 00:00:00") {
         return "";
       }
       let date = new Date(value);
@@ -344,12 +409,15 @@ export default {
       let s = date.getSeconds();
       s = s < 10 ? "0" + s : s;
       return y + "-" + MM + "-" + d + " "; /* + h + ':' + m + ':' + s; */
-    },
+    }
+  },
+
   
   methods: {
-    openDialog(val, status) {
+    openDialog(val) {
       this.cid = Cookies.get("cid");
       this.order_no = val;
+      Cookies.set("ORDER_NO",0)
       this.getDetail();
     },
       getDetail() {
@@ -360,6 +428,7 @@ export default {
       };
       orderDetail(url, data).then(res => {
         this.ruleForm = res.data.data[0];
+         Cookies.set("ORDER_NO", this.ruleForm.ORDER_NO);
         this.dialogVisible_1 = true;
       });
     },
@@ -386,6 +455,8 @@ export default {
     
     //根据用户查区域市场
     _getAreaCode(){
+      this.tableData = []
+      this.value_4= []
       this.AREACODE= [];
       var userInfo = JSON.parse(Cookies.get("userInfo"));
       var data = {
@@ -401,6 +472,8 @@ export default {
     },
     //根据市场区域查片区
     areaCode(val){          //点击选择市场事件
+    this.tableData = []
+      this.value_4= []
           var data = {
             areaCode:val
           }
@@ -413,6 +486,8 @@ export default {
     },
     //根据市场和片区查可选用户
     district_code(val){
+      this.tableData = []
+      this.value_4= []
       this.second = val
          var data = {
            areaCode:this.first,
@@ -422,12 +497,19 @@ export default {
     },
     //根据市场，片区，客户类型查可选用户
     customer_type(val){
+      this.tableData = []
+      this.value_4= []
       var data = {
            areaCode:this.first,
             district:this.second,
           customerType:val
          }
          this._getCustomerByAreaCode_3(data);
+    },
+    //状态搜索
+    status_id(val){
+      this.status_info = val
+      this._queryQuYu_1();
     },
     //通过区域查询可选用户
     _getCustomerByAreaCode_1(val) {
@@ -464,11 +546,14 @@ export default {
       })       
     },
     //订单查询
+    _queryQuYu_1(){
+      this.currentPage = 1
+      this.queryQuYu_1()
+    },
     queryQuYu_1() {  
-       
       this.query_1 = true
       this.tableData = []
-      if(this.value_4 === []){
+      if(this.value_4 == []){
         return this.tableData = []
       }else{
       var data = {
@@ -476,7 +561,8 @@ export default {
          beginTime: this.beginTime_1, //起始时间
         finishTime: this.finishTime_1, //结束时间
         limit: this.limit, //限制数
-        page: this.currentPage //页数
+        page: this.currentPage, //页数
+        status: this.status_info,//状态
       }
       if (!data.beginTime) {
         data.beginTime = "0001/1/1";
@@ -496,28 +582,89 @@ export default {
     //翻页获取订单
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.bankData = [];
+      this.tableData = []
       this.queryQuYu_1();
     },  
     
     //重置
     reset(){
+      this.currentPage = 1
       this.customerData=[]
       this.beginTime_1=""
       this.finishTime_1=""
       this.value_4=[]
       this.tableData=[]
       this.AREA_DISTRICT=[]
-      this.CUSTOMER_TYPE=[]
+      this.CUSTOMER_TYPE = [
+        {
+          value: "",
+          label: "全部"
+        },
+        {
+          value: "notspeciality",
+          label: "非专业市场客户"
+        },
+        {
+          value: "speciality",
+          label: "专业市场客户"
+        }
+      ],
+      this.status_info= ""
+      this.STATUS=[
+        {
+          value: "",
+          label: "全部"
+        },
+        {
+          value: "0",
+          label: "待提交"
+        },
+        {
+          value: "1",
+          label: "已提交"
+        },
+        {
+          value: "2",
+          label: "已受理"
+        },
+        {
+          value: "3",
+          label: "已作废"
+        },
+        {
+          value: "4",
+          label: "部分发货"
+        },
+        {
+          value: "5",
+          label: "余额不足待提交"
+        },
+        {
+          value: "6",
+          label: "余额不足可提交"
+        },
+        {
+          value: "7",
+          label: "已完成"
+        },
+        {
+          value: "12",
+          label: "已接收"
+        },
+      ],
+      this.count = 0
+      Cookies.set("ORDER_NO",0)
        this._getAreaCode();
 
     }
   }
 };
 </script>
-
-
-
+<style>
+.table_1 .el-table__row {
+   height: 5px;
+}
+</style>
 <style scoped>
 .table_2{
   font-size: 20px

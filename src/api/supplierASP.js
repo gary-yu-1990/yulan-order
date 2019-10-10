@@ -21,45 +21,40 @@ export function GetTransDetail(data, config = {}) {
         return Promise.reject(err);
     })
 }
-//窗帘审核订单数据
-// export function getCurtainOrders(data, config = {}) {
-//     return post('/CTM_ORDER/getCurtainOrders', data, config).then((res) => {
-//             return Promise.resolve(res);
-//         }
-//     }).catch((err) => {
-//         return Promise.reject(err);
-//     })
-// }
+export function SaveHeadNotes(data, config = {}) {
+    return post('/PUR_HEAD/SaveHeadNotes', data, config).then((res) => {
+        return Promise.resolve(res);
+    }).catch((err) => {
+        return Promise.reject(err);
+    })
+}
+export function Submit(data, config = {}) {
+    return post('/PUR_HEAD/Submit', data, config).then((res) => {
+        return Promise.resolve(res);
+    }).catch((err) => {
+        return Promise.reject(err);
+    })
+}
+export function UpdateCheckFlag(data, config = {}) {
+    return post('/PUR_HEAD/UpdateCheckFlag', data, config).then((res) => {
+        return Promise.resolve(res);
+    }).catch((err) => {
+        return Promise.reject(err);
+    })
+}
+export function UpdatePartDetail(data, config = {}) {
+    return post('/PUR_HEAD/UpdatePartDetail', data, config).then((res) => {
+        return Promise.resolve(res);
+    }).catch((err) => {
+        return Promise.reject(err);
+    })
+}
+export function UpdateCheckFlagBatch(data, config = {}) {
+    return post('/PUR_HEAD/UpdateCheckFlagBatch', data, config).then((res) => {
+        return Promise.resolve(res);
+    }).catch((err) => {
+        return Promise.reject(err);
+    })
+}
 
-// //墙纸和软装的订单提交
-// export function normalOrderSettlement(data, config = {}) {
-//     return post('/CTM_ORDER/normalOrderSettlement', data, config).then((res) => {
-//             return Promise.resolve(res);
-//     }).catch((err) => {
-//         return Promise.reject(err);
-//     })
-// }
-// //修改，退回，客户修改，审核通过
-// export function updateCurtainOrder(data, config = {}) {
-//     return post('/CTM_ORDER/updateCurtainOrder', data, config).then((res) => {
-//             return Promise.resolve(res);
-//     }).catch((err) => {
-//         return Promise.reject(err);
-//     })
-// }
-// //插入操作记录
-// export function InsertOperationRecord(data, config = {}) {
-//     return post('/ORDER_OPERATION_RECORD/InsertModel', data, config).then((res) => {
-//             return Promise.resolve(res);
-//     }).catch((err) => {
-//         return Promise.reject(err);
-//     })
-// }
-// //出货详情
-// export function getPackDetailInfo(data, config = {}) {
-//     return post('/PACK_DETAIL/getPackDetailInfo', data, config).then((res) => {
-//             return Promise.resolve(res);
-//     }).catch((err) => {
-//         return Promise.reject(err);
-//     })
-// }
+

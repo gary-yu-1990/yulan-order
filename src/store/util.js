@@ -68,6 +68,8 @@ export function tabsName(index) {
     case "notification/notificationMain":
       return "公告";
     case "complaint":
+      return "物流投诉";
+    case "complaintReply":
       return "投诉反馈";
     case "query/stockQuery":
       return "库存查询";
@@ -79,6 +81,9 @@ export function tabsName(index) {
       return "采购单确认";
     case "supplierModule/trans":
       return "入库记录查询";
+    case "design/ISExamineMarket":
+    case "design/ISExamineGM":
+      return "形象店设计审核";  
     default:
       return "xxx";
   }
